@@ -1,0 +1,287 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="Model1.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2012" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityContainer Name="Model1StoreContainer">
+    <EntitySet Name="Clients" EntityType="Model1.Store.Clients" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="CorporateClients" EntityType="Model1.Store.CorporateClients" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="IndividualClients" EntityType="Model1.Store.IndividualClients" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="CorporateClientEmployes" EntityType="Model1.Store.CorporateClientEmployes" store:Type="Tables" Schema="dbo" />
+    <AssociationSet Name="Client_CorporateClient" Association="Model1.Store.Client_CorporateClient">
+      <End Role="Client" EntitySet="Clients" />
+      <End Role="CorporateClient" EntitySet="CorporateClients" />
+    </AssociationSet>
+    <AssociationSet Name="Client_IndividualClient" Association="Model1.Store.Client_IndividualClient">
+      <End Role="Client" EntitySet="Clients" />
+      <End Role="IndividualClient" EntitySet="IndividualClients" />
+    </AssociationSet>
+    <AssociationSet Name="CorporateClientEmployeIndividualClient" Association="Model1.Store.CorporateClientEmployeIndividualClient">
+      <End Role="IndividualClient" EntitySet="IndividualClients" />
+      <End Role="CorporateClientEmploye" EntitySet="CorporateClientEmployes" />
+    </AssociationSet>
+    <AssociationSet Name="CorporateClientEmployeCorporateClient" Association="Model1.Store.CorporateClientEmployeCorporateClient">
+      <End Role="CorporateClientEmploye" EntitySet="CorporateClientEmployes" />
+      <End Role="CorporateClient" EntitySet="CorporateClients" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Clients">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+  </EntityType>
+  <EntityType Name="CorporateClients">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CorporateClientEmployeId" Type="int" Nullable="false" />
+    <Property Name="Client_Id" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="IndividualClients">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" Nullable="false" />
+    <Property Name="Client_Id" Type="int" Nullable="false" />
+    <Property Name="CorporateClientEmploye_Id" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="CorporateClientEmployes">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+  </EntityType>
+  <Association Name="Client_CorporateClient">
+    <End Role="Client" Type="Model1.Store.Clients" Multiplicity="1" />
+    <End Role="CorporateClient" Type="Model1.Store.CorporateClients" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Client">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="CorporateClient">
+        <PropertyRef Name="Client_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="Client_IndividualClient">
+    <End Role="Client" Type="Model1.Store.Clients" Multiplicity="1" />
+    <End Role="IndividualClient" Type="Model1.Store.IndividualClients" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Client">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="IndividualClient">
+        <PropertyRef Name="Client_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="CorporateClientEmployeIndividualClient">
+    <End Role="IndividualClient" Type="Model1.Store.IndividualClients" Multiplicity="*" />
+    <End Role="CorporateClientEmploye" Type="Model1.Store.CorporateClientEmployes" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="CorporateClientEmploye">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="IndividualClient">
+        <PropertyRef Name="CorporateClientEmploye_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="CorporateClientEmployeCorporateClient">
+    <End Role="CorporateClientEmploye" Type="Model1.Store.CorporateClientEmployes" Multiplicity="1" />
+    <End Role="CorporateClient" Type="Model1.Store.CorporateClients" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CorporateClientEmploye">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="CorporateClient">
+        <PropertyRef Name="CorporateClientEmployeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="Model1" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" annotation:UseStrongSpatialTypes="false">
+        <EntityContainer Name="Model1Container" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Clients" EntityType="Model1.Client" />
+          <EntitySet Name="CorporateClients" EntityType="Model1.CorporateClient" />
+          <EntitySet Name="IndividualClients" EntityType="Model1.IndividualClient" />
+          <AssociationSet Name="Client_CorporateClient" Association="Model1.Client_CorporateClient">
+            <End Role="Client" EntitySet="Clients" />
+            <End Role="CorporateClient" EntitySet="CorporateClients" />
+          </AssociationSet>
+          <AssociationSet Name="Client_IndividualClient" Association="Model1.Client_IndividualClient">
+            <End Role="Client" EntitySet="Clients" />
+            <End Role="IndividualClient" EntitySet="IndividualClients" />
+          </AssociationSet>
+          <EntitySet Name="CorporateClientEmployes" EntityType="Model1.CorporateClientEmploye" />
+          <AssociationSet Name="CorporateClientEmployeIndividualClient" Association="Model1.CorporateClientEmployeIndividualClient">
+            <End Role="IndividualClient" EntitySet="IndividualClients" />
+            <End Role="CorporateClientEmploye" EntitySet="CorporateClientEmployes" />
+          </AssociationSet>
+          <AssociationSet Name="CorporateClientEmployeCorporateClient" Association="Model1.CorporateClientEmployeCorporateClient">
+            <End Role="CorporateClientEmploye" EntitySet="CorporateClientEmployes" />
+            <End Role="CorporateClient" EntitySet="CorporateClients" />
+          </AssociationSet>
+          <EntitySet Name="Students" EntityType="Model1.Student" />
+          <AssociationSet Name="StudentIndividualClient" Association="Model1.StudentIndividualClient">
+            <End Role="Student" EntitySet="Students" />
+            <End Role="IndividualClient" EntitySet="IndividualClients" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Client">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="CorporateClient" Relationship="Model1.Client_CorporateClient" FromRole="Client" ToRole="CorporateClient" />
+          <NavigationProperty Name="IndividualClient" Relationship="Model1.Client_IndividualClient" FromRole="Client" ToRole="IndividualClient" />
+        </EntityType>
+        <EntityType Name="CorporateClient">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="Client" Relationship="Model1.Client_CorporateClient" FromRole="CorporateClient" ToRole="Client" />
+          <NavigationProperty Name="CorporateClientEmploye" Relationship="Model1.CorporateClientEmployeCorporateClient" FromRole="CorporateClient" ToRole="CorporateClientEmploye" />
+          <Property Name="CorporateClientEmployeId" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="IndividualClient">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="None" />
+          <NavigationProperty Name="Client" Relationship="Model1.Client_IndividualClient" FromRole="IndividualClient" ToRole="Client" />
+          <NavigationProperty Name="CorporateClientEmploye" Relationship="Model1.CorporateClientEmployeIndividualClient" FromRole="IndividualClient" ToRole="CorporateClientEmploye" />
+          <NavigationProperty Name="Student" Relationship="Model1.StudentIndividualClient" FromRole="IndividualClient" ToRole="Student" />
+        </EntityType>
+        <Association Name="Client_CorporateClient">
+          <End Type="Model1.Client" Role="Client" Multiplicity="1" />
+          <End Type="Model1.CorporateClient" Role="CorporateClient" Multiplicity="0..1" />
+        </Association>
+        <Association Name="Client_IndividualClient">
+          <End Type="Model1.Client" Role="Client" Multiplicity="1" />
+          <End Type="Model1.IndividualClient" Role="IndividualClient" Multiplicity="0..1" />
+        </Association>
+        <EntityType Name="CorporateClientEmploye">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="IndividualClients" Relationship="Model1.CorporateClientEmployeIndividualClient" FromRole="CorporateClientEmploye" ToRole="IndividualClient" />
+          <NavigationProperty Name="CorporateClients" Relationship="Model1.CorporateClientEmployeCorporateClient" FromRole="CorporateClientEmploye" ToRole="CorporateClient" />
+        </EntityType>
+        <Association Name="CorporateClientEmployeIndividualClient">
+          <End Type="Model1.IndividualClient" Role="IndividualClient" Multiplicity="0..1" />
+          <End Type="Model1.CorporateClientEmploye" Role="CorporateClientEmploye" Multiplicity="1" />
+        </Association>
+        <Association Name="CorporateClientEmployeCorporateClient">
+          <End Type="Model1.CorporateClientEmploye" Role="CorporateClientEmploye" Multiplicity="1" />
+          <End Type="Model1.CorporateClient" Role="CorporateClient" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CorporateClientEmploye">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CorporateClient">
+              <PropertyRef Name="CorporateClientEmployeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Student">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="IndividualClient" Relationship="Model1.StudentIndividualClient" FromRole="Student" ToRole="IndividualClient" />
+        </EntityType>
+        <Association Name="StudentIndividualClient">
+          <End Type="Model1.Student" Role="Student" Multiplicity="1" />
+          <End Type="Model1.IndividualClient" Role="IndividualClient" Multiplicity="0..1" />
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+    <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="Model1StoreContainer" CdmEntityContainer="Model1Container">
+    <EntitySetMapping Name="Clients">
+      <EntityTypeMapping TypeName="IsTypeOf(Model1.Client)">
+        <MappingFragment StoreEntitySet="Clients">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="CorporateClients">
+      <EntityTypeMapping TypeName="IsTypeOf(Model1.CorporateClient)">
+        <MappingFragment StoreEntitySet="CorporateClients">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="CorporateClientEmployeId" ColumnName="CorporateClientEmployeId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="IndividualClients">
+      <EntityTypeMapping TypeName="IsTypeOf(Model1.IndividualClient)">
+        <MappingFragment StoreEntitySet="IndividualClients">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="CorporateClientEmployes">
+      <EntityTypeMapping TypeName="IsTypeOf(Model1.CorporateClientEmploye)">
+        <MappingFragment StoreEntitySet="CorporateClientEmployes">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <AssociationSetMapping Name="Client_CorporateClient" TypeName="Model1.Client_CorporateClient" StoreEntitySet="CorporateClients">
+      <EndProperty Name="Client">
+        <ScalarProperty Name="Id" ColumnName="Client_Id" />
+      </EndProperty>
+      <EndProperty Name="CorporateClient">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="Client_IndividualClient" TypeName="Model1.Client_IndividualClient" StoreEntitySet="IndividualClients">
+      <EndProperty Name="Client">
+        <ScalarProperty Name="Id" ColumnName="Client_Id" />
+      </EndProperty>
+      <EndProperty Name="IndividualClient">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <AssociationSetMapping Name="CorporateClientEmployeIndividualClient" TypeName="Model1.CorporateClientEmployeIndividualClient" StoreEntitySet="IndividualClients">
+      <EndProperty Name="CorporateClientEmploye">
+        <ScalarProperty Name="Id" ColumnName="CorporateClientEmploye_Id" />
+      </EndProperty>
+      <EndProperty Name="IndividualClient">
+        <ScalarProperty Name="Id" ColumnName="Id" />
+      </EndProperty>
+    </AssociationSetMapping>
+  </EntityContainerMapping>
+</Mapping></edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <edmx:Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </edmx:Connection>
+    <edmx:Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+        <DesignerProperty Name="UseLegacyProvider" Value="False" />
+      </DesignerInfoPropertySet>
+    </edmx:Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
