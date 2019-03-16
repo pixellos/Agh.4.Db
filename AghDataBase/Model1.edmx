@@ -10,6 +10,10 @@
     <EntitySet Name="CorporateClients" EntityType="Model1.Store.CorporateClients" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="IndividualClients" EntityType="Model1.Store.IndividualClients" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="CorporateClientEmployes" EntityType="Model1.Store.CorporateClientEmployes" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Workshops" EntityType="Model1.Store.Workshops" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="WorkshopPrices" EntityType="Model1.Store.WorkshopPrices" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Conferences" EntityType="Model1.Store.Conferences" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="ConferencePrices" EntityType="Model1.Store.ConferencePrices" store:Type="Tables" Schema="dbo" />
     <AssociationSet Name="Client_CorporateClient" Association="Model1.Store.Client_CorporateClient">
       <End Role="Client" EntitySet="Clients" />
       <End Role="CorporateClient" EntitySet="CorporateClients" />
@@ -22,9 +26,13 @@
       <End Role="IndividualClient" EntitySet="IndividualClients" />
       <End Role="CorporateClientEmploye" EntitySet="CorporateClientEmployes" />
     </AssociationSet>
-    <AssociationSet Name="CorporateClientEmployeCorporateClient" Association="Model1.Store.CorporateClientEmployeCorporateClient">
-      <End Role="CorporateClientEmploye" EntitySet="CorporateClientEmployes" />
+    <AssociationSet Name="CorporateClientCorporateClientEmploye" Association="Model1.Store.CorporateClientCorporateClientEmploye">
       <End Role="CorporateClient" EntitySet="CorporateClients" />
+      <End Role="CorporateClientEmploye" EntitySet="CorporateClientEmployes" />
+    </AssociationSet>
+    <AssociationSet Name="ConferenceConferencePrices" Association="Model1.Store.ConferenceConferencePrices">
+      <End Role="Conference" EntitySet="Conferences" />
+      <End Role="ConferencePrices" EntitySet="ConferencePrices" />
     </AssociationSet>
   </EntityContainer>
   <EntityType Name="Clients">
@@ -32,13 +40,15 @@
       <PropertyRef Name="Id" />
     </Key>
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Telephone" Type="nvarchar(max)" Nullable="false" />
   </EntityType>
   <EntityType Name="CorporateClients">
     <Key>
       <PropertyRef Name="Id" />
     </Key>
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="CorporateClientEmployeId" Type="int" Nullable="false" />
+    <Property Name="CompanyName" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="TaxNumber" Type="nvarchar(max)" Nullable="false" />
     <Property Name="Client_Id" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="IndividualClients">
@@ -46,6 +56,9 @@
       <PropertyRef Name="Id" />
     </Key>
     <Property Name="Id" Type="int" Nullable="false" />
+    <Property Name="FirstName" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="LastName" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="PersonalNumber" Type="nvarchar(max)" Nullable="false" />
     <Property Name="Client_Id" Type="int" Nullable="false" />
     <Property Name="CorporateClientEmploye_Id" Type="int" Nullable="false" />
   </EntityType>
@@ -54,6 +67,35 @@
       <PropertyRef Name="Id" />
     </Key>
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Title" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="CorporateClientId" Type="int" Nullable="true" />
+  </EntityType>
+  <EntityType Name="Workshops">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+  </EntityType>
+  <EntityType Name="WorkshopPrices">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Conferences">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Date" Type="time" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ConferencePrices">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ConferenceId" Type="int" Nullable="false" />
   </EntityType>
   <Association Name="Client_CorporateClient">
     <End Role="Client" Type="Model1.Store.Clients" Multiplicity="1" />
@@ -91,15 +133,27 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="CorporateClientEmployeCorporateClient">
-    <End Role="CorporateClientEmploye" Type="Model1.Store.CorporateClientEmployes" Multiplicity="1" />
-    <End Role="CorporateClient" Type="Model1.Store.CorporateClients" Multiplicity="*" />
+  <Association Name="CorporateClientCorporateClientEmploye">
+    <End Role="CorporateClient" Type="Model1.Store.CorporateClients" Multiplicity="0..1" />
+    <End Role="CorporateClientEmploye" Type="Model1.Store.CorporateClientEmployes" Multiplicity="*" />
     <ReferentialConstraint>
-      <Principal Role="CorporateClientEmploye">
+      <Principal Role="CorporateClient">
         <PropertyRef Name="Id" />
       </Principal>
-      <Dependent Role="CorporateClient">
-        <PropertyRef Name="CorporateClientEmployeId" />
+      <Dependent Role="CorporateClientEmploye">
+        <PropertyRef Name="CorporateClientId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="ConferenceConferencePrices">
+    <End Role="Conference" Type="Model1.Store.Conferences" Multiplicity="1" />
+    <End Role="ConferencePrices" Type="Model1.Store.ConferencePrices" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Conference">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ConferencePrices">
+        <PropertyRef Name="ConferenceId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -107,7 +161,7 @@
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="Model1" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" annotation:UseStrongSpatialTypes="false">
-        <EntityContainer Name="Model1Container" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="Model1Container" annotation:LazyLoadingEnabled="false">
           <EntitySet Name="Clients" EntityType="Model1.Client" />
           <EntitySet Name="CorporateClients" EntityType="Model1.CorporateClient" />
           <EntitySet Name="IndividualClients" EntityType="Model1.IndividualClient" />
@@ -124,14 +178,17 @@
             <End Role="IndividualClient" EntitySet="IndividualClients" />
             <End Role="CorporateClientEmploye" EntitySet="CorporateClientEmployes" />
           </AssociationSet>
-          <AssociationSet Name="CorporateClientEmployeCorporateClient" Association="Model1.CorporateClientEmployeCorporateClient">
-            <End Role="CorporateClientEmploye" EntitySet="CorporateClientEmployes" />
+          <AssociationSet Name="CorporateClientCorporateClientEmploye" Association="Model1.CorporateClientCorporateClientEmploye">
             <End Role="CorporateClient" EntitySet="CorporateClients" />
+            <End Role="CorporateClientEmploye" EntitySet="CorporateClientEmployes" />
           </AssociationSet>
-          <EntitySet Name="Students" EntityType="Model1.Student" />
-          <AssociationSet Name="StudentIndividualClient" Association="Model1.StudentIndividualClient">
-            <End Role="Student" EntitySet="Students" />
-            <End Role="IndividualClient" EntitySet="IndividualClients" />
+          <EntitySet Name="Workshops" EntityType="Model1.Workshop" />
+          <EntitySet Name="WorkshopPrices" EntityType="Model1.WorkshopPrice" />
+          <EntitySet Name="Conferences" EntityType="Model1.Conference" />
+          <EntitySet Name="ConferencePrices" EntityType="Model1.ConferencePrices" />
+          <AssociationSet Name="ConferenceConferencePrices" Association="Model1.ConferenceConferencePrices">
+            <End Role="Conference" EntitySet="Conferences" />
+            <End Role="ConferencePrices" EntitySet="ConferencePrices" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="Client">
@@ -139,6 +196,7 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Telephone" Type="String" Nullable="false" />
           <NavigationProperty Name="CorporateClient" Relationship="Model1.Client_CorporateClient" FromRole="Client" ToRole="CorporateClient" />
           <NavigationProperty Name="IndividualClient" Relationship="Model1.Client_IndividualClient" FromRole="Client" ToRole="IndividualClient" />
         </EntityType>
@@ -148,8 +206,9 @@
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <NavigationProperty Name="Client" Relationship="Model1.Client_CorporateClient" FromRole="CorporateClient" ToRole="Client" />
-          <NavigationProperty Name="CorporateClientEmploye" Relationship="Model1.CorporateClientEmployeCorporateClient" FromRole="CorporateClient" ToRole="CorporateClientEmploye" />
-          <Property Name="CorporateClientEmployeId" Type="Int32" Nullable="false" />
+          <Property Name="CompanyName" Type="String" Nullable="false" />
+          <Property Name="TaxNumber" Type="String" Nullable="false" />
+          <NavigationProperty Name="CorporateClientEmployes" Relationship="Model1.CorporateClientCorporateClientEmploye" FromRole="CorporateClient" ToRole="CorporateClientEmploye" />
         </EntityType>
         <EntityType Name="IndividualClient">
           <Key>
@@ -158,7 +217,9 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="None" />
           <NavigationProperty Name="Client" Relationship="Model1.Client_IndividualClient" FromRole="IndividualClient" ToRole="Client" />
           <NavigationProperty Name="CorporateClientEmploye" Relationship="Model1.CorporateClientEmployeIndividualClient" FromRole="IndividualClient" ToRole="CorporateClientEmploye" />
-          <NavigationProperty Name="Student" Relationship="Model1.StudentIndividualClient" FromRole="IndividualClient" ToRole="Student" />
+          <Property Name="FirstName" Type="String" Nullable="false" />
+          <Property Name="LastName" Type="String" Nullable="false" />
+          <Property Name="PersonalNumber" Type="String" Nullable="false" />
         </EntityType>
         <Association Name="Client_CorporateClient">
           <End Type="Model1.Client" Role="Client" Multiplicity="1" />
@@ -174,34 +235,66 @@
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <NavigationProperty Name="IndividualClients" Relationship="Model1.CorporateClientEmployeIndividualClient" FromRole="CorporateClientEmploye" ToRole="IndividualClient" />
-          <NavigationProperty Name="CorporateClients" Relationship="Model1.CorporateClientEmployeCorporateClient" FromRole="CorporateClientEmploye" ToRole="CorporateClient" />
+          <Property Name="Title" Type="String" Nullable="false" />
+          <NavigationProperty Name="CorporateClient" Relationship="Model1.CorporateClientCorporateClientEmploye" FromRole="CorporateClientEmploye" ToRole="CorporateClient" />
+          <Property Name="CorporateClientId" Type="Int32" Nullable="true" />
         </EntityType>
         <Association Name="CorporateClientEmployeIndividualClient">
           <End Type="Model1.IndividualClient" Role="IndividualClient" Multiplicity="0..1" />
           <End Type="Model1.CorporateClientEmploye" Role="CorporateClientEmploye" Multiplicity="1" />
         </Association>
-        <Association Name="CorporateClientEmployeCorporateClient">
-          <End Type="Model1.CorporateClientEmploye" Role="CorporateClientEmploye" Multiplicity="1" />
-          <End Type="Model1.CorporateClient" Role="CorporateClient" Multiplicity="*" />
+        <Association Name="CorporateClientCorporateClientEmploye">
+          <End Type="Model1.CorporateClient" Role="CorporateClient" Multiplicity="0..1" />
+          <End Type="Model1.CorporateClientEmploye" Role="CorporateClientEmploye" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="CorporateClientEmploye">
+            <Principal Role="CorporateClient">
               <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="CorporateClient">
-              <PropertyRef Name="CorporateClientEmployeId" />
+            <Dependent Role="CorporateClientEmploye">
+              <PropertyRef Name="CorporateClientId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="Student">
+        <EntityType Name="Workshop">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <NavigationProperty Name="IndividualClient" Relationship="Model1.StudentIndividualClient" FromRole="Student" ToRole="IndividualClient" />
         </EntityType>
-        <Association Name="StudentIndividualClient">
-          <End Type="Model1.Student" Role="Student" Multiplicity="1" />
-          <End Type="Model1.IndividualClient" Role="IndividualClient" Multiplicity="0..1" />
+        <EntityType Name="WorkshopPrice">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+        </EntityType>
+        <EntityType Name="Conference">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="ConferencePrices" Relationship="Model1.ConferenceConferencePrices" FromRole="Conference" ToRole="ConferencePrices" />
+          <Property Name="Name" Type="String" Nullable="false" />
+          <Property Name="Date" Type="Time" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ConferencePrices">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="Conference" Relationship="Model1.ConferenceConferencePrices" FromRole="ConferencePrices" ToRole="Conference" />
+          <Property Name="ConferenceId" Type="Int32" Nullable="false" />
+        </EntityType>
+        <Association Name="ConferenceConferencePrices">
+          <End Type="Model1.Conference" Role="Conference" Multiplicity="1" />
+          <End Type="Model1.ConferencePrices" Role="ConferencePrices" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Conference">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ConferencePrices">
+              <PropertyRef Name="ConferenceId" />
+            </Dependent>
+          </ReferentialConstraint>
         </Association>
       </Schema>
     </edmx:ConceptualModels>
@@ -213,6 +306,7 @@
       <EntityTypeMapping TypeName="IsTypeOf(Model1.Client)">
         <MappingFragment StoreEntitySet="Clients">
           <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Telephone" ColumnName="Telephone" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -220,7 +314,8 @@
       <EntityTypeMapping TypeName="IsTypeOf(Model1.CorporateClient)">
         <MappingFragment StoreEntitySet="CorporateClients">
           <ScalarProperty Name="Id" ColumnName="Id" />
-          <ScalarProperty Name="CorporateClientEmployeId" ColumnName="CorporateClientEmployeId" />
+          <ScalarProperty Name="CompanyName" ColumnName="CompanyName" />
+          <ScalarProperty Name="TaxNumber" ColumnName="TaxNumber" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -228,6 +323,9 @@
       <EntityTypeMapping TypeName="IsTypeOf(Model1.IndividualClient)">
         <MappingFragment StoreEntitySet="IndividualClients">
           <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+          <ScalarProperty Name="LastName" ColumnName="LastName" />
+          <ScalarProperty Name="PersonalNumber" ColumnName="PersonalNumber" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -235,6 +333,39 @@
       <EntityTypeMapping TypeName="IsTypeOf(Model1.CorporateClientEmploye)">
         <MappingFragment StoreEntitySet="CorporateClientEmployes">
           <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Title" ColumnName="Title" />
+          <ScalarProperty Name="CorporateClientId" ColumnName="CorporateClientId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Workshops">
+      <EntityTypeMapping TypeName="IsTypeOf(Model1.Workshop)">
+        <MappingFragment StoreEntitySet="Workshops">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="WorkshopPrices">
+      <EntityTypeMapping TypeName="IsTypeOf(Model1.WorkshopPrice)">
+        <MappingFragment StoreEntitySet="WorkshopPrices">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Conferences">
+      <EntityTypeMapping TypeName="IsTypeOf(Model1.Conference)">
+        <MappingFragment StoreEntitySet="Conferences">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Date" ColumnName="Date" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ConferencePrices">
+      <EntityTypeMapping TypeName="IsTypeOf(Model1.ConferencePrices)">
+        <MappingFragment StoreEntitySet="ConferencePrices">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="ConferenceId" ColumnName="ConferenceId" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

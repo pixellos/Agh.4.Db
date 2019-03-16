@@ -12,14 +12,8 @@ namespace AghDataBase
     using System;
     using System.Collections.Generic;
     
-    public partial class IndividualClient
+    public partial class Workshop
     {
         public int Id { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public string PersonalNumber { get; set; }
-    
-        public virtual Client Client { get; set; }
-        public virtual CorporateClientEmploye CorporateClientEmploye { get; set; }
     }
 }

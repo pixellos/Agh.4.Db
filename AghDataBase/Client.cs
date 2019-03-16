@@ -15,6 +15,7 @@ namespace AghDataBase
     public partial class Client
     {
         public int Id { get; set; }
+        public string Telephone { get; set; }
     
         public virtual CorporateClient CorporateClient { get; set; }
         public virtual IndividualClient IndividualClient { get; set; }

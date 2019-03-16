@@ -18,6 +18,7 @@ namespace AghDataBase
         public Model1Container()
             : base("name=Model1Container")
         {
+            this.Configuration.LazyLoadingEnabled = false;
         }
     
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
@@ -29,6 +30,9 @@ namespace AghDataBase
         public virtual DbSet<CorporateClient> CorporateClients { get; set; }
         public virtual DbSet<IndividualClient> IndividualClients { get; set; }
         public virtual DbSet<CorporateClientEmploye> CorporateClientEmployes { get; set; }
-        public virtual DbSet<Student> Students { get; set; }
+        public virtual DbSet<Workshop> Workshops { get; set; }
+        public virtual DbSet<WorkshopPrice> WorkshopPrices { get; set; }
+        public virtual DbSet<Conference> Conferences { get; set; }
+        public virtual DbSet<ConferencePrices> ConferencePrices { get; set; }
     }
 }

@@ -14,16 +14,11 @@ namespace AghDataBase
     
     public partial class CorporateClientEmploye
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public CorporateClientEmploye()
-        {
-            this.CorporateClients = new HashSet<CorporateClient>();
-        }
-    
         public int Id { get; set; }
+        public string Title { get; set; }
+        public Nullable<int> CorporateClientId { get; set; }
     
         public virtual IndividualClient IndividualClients { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CorporateClient> CorporateClients { get; set; }
+        public virtual CorporateClient CorporateClient { get; set; }
     }
 }

@@ -12,20 +12,19 @@ namespace AghDataBase
     using System;
     using System.Collections.Generic;
     
-    public partial class CorporateClient
+    public partial class Conference
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public CorporateClient()
+        public Conference()
         {
-            this.CorporateClientEmployes = new HashSet<CorporateClientEmploye>();
+            this.ConferencePrices = new HashSet<ConferencePrices>();
         }
     
         public int Id { get; set; }
-        public string CompanyName { get; set; }
-        public string TaxNumber { get; set; }
+        public string Name { get; set; }
+        public System.TimeSpan Date { get; set; }
     
-        public virtual Client Client { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CorporateClientEmploye> CorporateClientEmployes { get; set; }
+        public virtual ICollection<ConferencePrices> ConferencePrices { get; set; }
     }
 }
