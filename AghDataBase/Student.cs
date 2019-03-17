@@ -12,15 +12,12 @@ namespace AghDataBase
     using System;
     using System.Collections.Generic;
     
-    public partial class IndividualClient
+    public partial class Student
     {
         public int Id { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public string PersonalNumber { get; set; }
+        public string Discount { get; set; }
+        public string StudentId { get; set; }
     
-        public virtual Client Client { get; set; }
-        public virtual CorporateClientEmploye CorporateClientEmploye { get; set; }
-        public virtual Student Student { get; set; }
+        public virtual IndividualClient IndividualClient { get; set; }
     }
 }

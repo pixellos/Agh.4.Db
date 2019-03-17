@@ -20,6 +20,8 @@
         <EntityTypeShape EntityType="Model1.ConferencePrices" Width="1.5" PointX="3" PointY="6.875" />
         <AssociationConnector Association="Model1.ConferenceConferencePrices" />
         <AssociationConnector Association="Model1.ConferenceConferencePrices" />
+        <EntityTypeShape EntityType="Model1.Student" Width="1.5" PointX="2.75" PointY="3.375" />
+        <AssociationConnector Association="Model1.StudentIndividualClient" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

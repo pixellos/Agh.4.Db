@@ -34,5 +34,6 @@ namespace AghDataBase
         public virtual DbSet<WorkshopPrice> WorkshopPrices { get; set; }
         public virtual DbSet<Conference> Conferences { get; set; }
         public virtual DbSet<ConferencePrices> ConferencePrices { get; set; }
+        public virtual DbSet<Student> Students1 { get; set; }
     }
 }
