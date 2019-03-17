@@ -12,21 +12,21 @@ namespace AghDataBase
     using System;
     using System.Collections.Generic;
     
-    public partial class Conference
+    public partial class Street
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Conference()
+        public Street()
         {
-            this.ConferencePrices = new HashSet<ConferencePrices>();
+            this.Buildings = new HashSet<Building>();
         }
     
         public int Id { get; set; }
         public string Name { get; set; }
-        public System.TimeSpan Date { get; set; }
-        public int BuildingId { get; set; }
+        public string ZipCode { get; set; }
+        public int CityId { get; set; }
     
+        public virtual City City { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ConferencePrices> ConferencePrices { get; set; }
-        public virtual Building Building { get; set; }
+        public virtual ICollection<Building> Buildings { get; set; }
     }
 }

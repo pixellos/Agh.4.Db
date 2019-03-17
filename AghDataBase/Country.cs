@@ -12,10 +12,17 @@ namespace AghDataBase
     using System;
     using System.Collections.Generic;
     
-    public partial class WorkshopPrice
+    public partial class Country
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Country()
+        {
+            this.Provinces = new HashSet<Province>();
+        }
+    
         public int Id { get; set; }
     
-        public virtual Workshop Workshop { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Province> Provinces { get; set; }
     }
 }

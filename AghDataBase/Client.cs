@@ -16,8 +16,10 @@ namespace AghDataBase
     {
         public int Id { get; set; }
         public string Telephone { get; set; }
+        public int BuildingId { get; set; }
     
         public virtual CorporateClient CorporateClient { get; set; }
         public virtual IndividualClient IndividualClient { get; set; }
+        public virtual Building Building { get; set; }
     }
 }

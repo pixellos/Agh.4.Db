@@ -13,8 +13,8 @@
         <EntityTypeShape EntityType="Model1.CorporateClientEmploye" Width="4.75" PointX="6.125" PointY="5.75" />
         <AssociationConnector Association="Model1.CorporateClientEmployeIndividualClient" />
         <AssociationConnector Association="Model1.CorporateClientCorporateClientEmploye" />
-        <EntityTypeShape EntityType="Model1.Workshop" Width="1.5" PointX="8" PointY="9" />
-        <EntityTypeShape EntityType="Model1.WorkshopPrice" Width="1.5" PointX="5.75" PointY="8.875" />
+        <EntityTypeShape EntityType="Model1.Workshop" Width="1.5" PointX="2.875" PointY="9.375" />
+        <EntityTypeShape EntityType="Model1.WorkshopPrice" Width="1.5" PointX="0.625" PointY="9.25" />
         <AssociationConnector Association="Model1.WorkshopPriceWorkshop" />
         <EntityTypeShape EntityType="Model1.Conference" Width="1.5" PointX="0.75" PointY="7.125" />
         <EntityTypeShape EntityType="Model1.ConferencePrices" Width="1.5" PointX="3" PointY="6.875" />
@@ -22,6 +22,18 @@
         <AssociationConnector Association="Model1.ConferenceConferencePrices" />
         <EntityTypeShape EntityType="Model1.Student" Width="1.5" PointX="2.75" PointY="3.375" />
         <AssociationConnector Association="Model1.StudentIndividualClient" />
+        <AssociationConnector Association="Model1.WorkshopPriceWorkshop" />
+        <EntityTypeShape EntityType="Model1.City" Width="1.5" PointX="13.875" PointY="7.5" />
+        <EntityTypeShape EntityType="Model1.Street" Width="1.5" PointX="15.75" PointY="8.25" />
+        <EntityTypeShape EntityType="Model1.Province" Width="1.5" PointX="11.5" PointY="8.5" />
+        <AssociationConnector Association="Model1.CityStreet" />
+        <AssociationConnector Association="Model1.ProvinceCity" />
+        <EntityTypeShape EntityType="Model1.Building" Width="1.5" PointX="18" PointY="9.375" />
+        <AssociationConnector Association="Model1.StreetBuilding" />
+        <EntityTypeShape EntityType="Model1.Country" Width="1.5" PointX="8.75" PointY="8.75" />
+        <AssociationConnector Association="Model1.CountryProvince" />
+        <AssociationConnector Association="Model1.ClientBuilding" />
+        <AssociationConnector Association="Model1.ConferenceBuilding" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

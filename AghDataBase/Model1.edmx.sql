@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 03/16/2019 18:51:20
+-- Date Created: 03/17/2019 09:19:14
 -- Generated from EDMX file: C:\Users\rogoz\source\repos\AghDataBase\AghDataBase\Model1.edmx
 -- --------------------------------------------------
 
@@ -29,6 +29,9 @@ GO
 IF OBJECT_ID(N'[dbo].[FK_CorporateClientCorporateClientEmploye]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[CorporateClientEmployes] DROP CONSTRAINT [FK_CorporateClientCorporateClientEmploye];
 GO
+IF OBJECT_ID(N'[dbo].[FK_ConferenceConferencePrices]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[ConferencePrices] DROP CONSTRAINT [FK_ConferenceConferencePrices];
+GO
 
 -- --------------------------------------------------
 -- Dropping existing tables
@@ -46,6 +49,18 @@ GO
 IF OBJECT_ID(N'[dbo].[CorporateClientEmployes]', 'U') IS NOT NULL
     DROP TABLE [dbo].[CorporateClientEmployes];
 GO
+IF OBJECT_ID(N'[dbo].[Workshops]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[Workshops];
+GO
+IF OBJECT_ID(N'[dbo].[WorkshopPrices]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[WorkshopPrices];
+GO
+IF OBJECT_ID(N'[dbo].[Conferences]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[Conferences];
+GO
+IF OBJECT_ID(N'[dbo].[ConferencePrices]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[ConferencePrices];
+GO
 
 -- --------------------------------------------------
 -- Creating all tables
@@ -54,7 +69,8 @@ GO
 -- Creating table 'Clients'
 CREATE TABLE [dbo].[Clients] (
     [Id] int IDENTITY(1,1) NOT NULL,
-    [Telephone] nvarchar(max)  NOT NULL
+    [Telephone] nvarchar(max)  NOT NULL,
+    [BuildingId] int  NOT NULL
 );
 GO
 
@@ -102,7 +118,8 @@ GO
 CREATE TABLE [dbo].[Conferences] (
     [Id] int IDENTITY(1,1) NOT NULL,
     [Name] nvarchar(max)  NOT NULL,
-    [Date] time  NOT NULL
+    [Date] time  NOT NULL,
+    [BuildingId] int  NOT NULL
 );
 GO
 
@@ -110,6 +127,54 @@ GO
 CREATE TABLE [dbo].[ConferencePrices] (
     [Id] int IDENTITY(1,1) NOT NULL,
     [ConferenceId] int  NOT NULL
+);
+GO
+
+-- Creating table 'Students1'
+CREATE TABLE [dbo].[Students1] (
+    [Id] int IDENTITY(1,1) NOT NULL,
+    [Discount] nvarchar(max)  NOT NULL,
+    [StudentId] nvarchar(max)  NOT NULL
+);
+GO
+
+-- Creating table 'Cities'
+CREATE TABLE [dbo].[Cities] (
+    [Id] int IDENTITY(1,1) NOT NULL,
+    [Name] nvarchar(max)  NOT NULL,
+    [ProvinceId] int  NOT NULL
+);
+GO
+
+-- Creating table 'Streets'
+CREATE TABLE [dbo].[Streets] (
+    [Id] int IDENTITY(1,1) NOT NULL,
+    [Name] nvarchar(max)  NOT NULL,
+    [ZipCode] nvarchar(max)  NOT NULL,
+    [CityId] int  NOT NULL
+);
+GO
+
+-- Creating table 'Provinces'
+CREATE TABLE [dbo].[Provinces] (
+    [Id] int IDENTITY(1,1) NOT NULL,
+    [Name] nvarchar(max)  NOT NULL,
+    [CountryId] int  NOT NULL
+);
+GO
+
+-- Creating table 'Buildings'
+CREATE TABLE [dbo].[Buildings] (
+    [Id] int IDENTITY(1,1) NOT NULL,
+    [StreetId] int  NOT NULL,
+    [Number] nvarchar(max)  NOT NULL,
+    [ConferenceId] int  NOT NULL
+);
+GO
+
+-- Creating table 'Countries'
+CREATE TABLE [dbo].[Countries] (
+    [Id] int IDENTITY(1,1) NOT NULL
 );
 GO
 
@@ -162,6 +227,42 @@ GO
 -- Creating primary key on [Id] in table 'ConferencePrices'
 ALTER TABLE [dbo].[ConferencePrices]
 ADD CONSTRAINT [PK_ConferencePrices]
+    PRIMARY KEY CLUSTERED ([Id] ASC);
+GO
+
+-- Creating primary key on [Id] in table 'Students1'
+ALTER TABLE [dbo].[Students1]
+ADD CONSTRAINT [PK_Students1]
+    PRIMARY KEY CLUSTERED ([Id] ASC);
+GO
+
+-- Creating primary key on [Id] in table 'Cities'
+ALTER TABLE [dbo].[Cities]
+ADD CONSTRAINT [PK_Cities]
+    PRIMARY KEY CLUSTERED ([Id] ASC);
+GO
+
+-- Creating primary key on [Id] in table 'Streets'
+ALTER TABLE [dbo].[Streets]
+ADD CONSTRAINT [PK_Streets]
+    PRIMARY KEY CLUSTERED ([Id] ASC);
+GO
+
+-- Creating primary key on [Id] in table 'Provinces'
+ALTER TABLE [dbo].[Provinces]
+ADD CONSTRAINT [PK_Provinces]
+    PRIMARY KEY CLUSTERED ([Id] ASC);
+GO
+
+-- Creating primary key on [Id] in table 'Buildings'
+ALTER TABLE [dbo].[Buildings]
+ADD CONSTRAINT [PK_Buildings]
+    PRIMARY KEY CLUSTERED ([Id] ASC);
+GO
+
+-- Creating primary key on [Id] in table 'Countries'
+ALTER TABLE [dbo].[Countries]
+ADD CONSTRAINT [PK_Countries]
     PRIMARY KEY CLUSTERED ([Id] ASC);
 GO
 
@@ -242,6 +343,114 @@ GO
 CREATE INDEX [IX_FK_ConferenceConferencePrices]
 ON [dbo].[ConferencePrices]
     ([ConferenceId]);
+GO
+
+-- Creating foreign key on [Id] in table 'Students1'
+ALTER TABLE [dbo].[Students1]
+ADD CONSTRAINT [FK_StudentIndividualClient]
+    FOREIGN KEY ([Id])
+    REFERENCES [dbo].[IndividualClients]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating foreign key on [Id] in table 'WorkshopPrices'
+ALTER TABLE [dbo].[WorkshopPrices]
+ADD CONSTRAINT [FK_WorkshopPriceWorkshop]
+    FOREIGN KEY ([Id])
+    REFERENCES [dbo].[Workshops]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating foreign key on [CityId] in table 'Streets'
+ALTER TABLE [dbo].[Streets]
+ADD CONSTRAINT [FK_CityStreet]
+    FOREIGN KEY ([CityId])
+    REFERENCES [dbo].[Cities]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_CityStreet'
+CREATE INDEX [IX_FK_CityStreet]
+ON [dbo].[Streets]
+    ([CityId]);
+GO
+
+-- Creating foreign key on [ProvinceId] in table 'Cities'
+ALTER TABLE [dbo].[Cities]
+ADD CONSTRAINT [FK_ProvinceCity]
+    FOREIGN KEY ([ProvinceId])
+    REFERENCES [dbo].[Provinces]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_ProvinceCity'
+CREATE INDEX [IX_FK_ProvinceCity]
+ON [dbo].[Cities]
+    ([ProvinceId]);
+GO
+
+-- Creating foreign key on [StreetId] in table 'Buildings'
+ALTER TABLE [dbo].[Buildings]
+ADD CONSTRAINT [FK_StreetBuilding]
+    FOREIGN KEY ([StreetId])
+    REFERENCES [dbo].[Streets]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_StreetBuilding'
+CREATE INDEX [IX_FK_StreetBuilding]
+ON [dbo].[Buildings]
+    ([StreetId]);
+GO
+
+-- Creating foreign key on [CountryId] in table 'Provinces'
+ALTER TABLE [dbo].[Provinces]
+ADD CONSTRAINT [FK_CountryProvince]
+    FOREIGN KEY ([CountryId])
+    REFERENCES [dbo].[Countries]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_CountryProvince'
+CREATE INDEX [IX_FK_CountryProvince]
+ON [dbo].[Provinces]
+    ([CountryId]);
+GO
+
+-- Creating foreign key on [BuildingId] in table 'Clients'
+ALTER TABLE [dbo].[Clients]
+ADD CONSTRAINT [FK_ClientBuilding]
+    FOREIGN KEY ([BuildingId])
+    REFERENCES [dbo].[Buildings]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_ClientBuilding'
+CREATE INDEX [IX_FK_ClientBuilding]
+ON [dbo].[Clients]
+    ([BuildingId]);
+GO
+
+-- Creating foreign key on [BuildingId] in table 'Conferences'
+ALTER TABLE [dbo].[Conferences]
+ADD CONSTRAINT [FK_ConferenceBuilding]
+    FOREIGN KEY ([BuildingId])
+    REFERENCES [dbo].[Buildings]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_ConferenceBuilding'
+CREATE INDEX [IX_FK_ConferenceBuilding]
+ON [dbo].[Conferences]
+    ([BuildingId]);
 GO
 
 -- --------------------------------------------------

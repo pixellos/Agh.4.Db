@@ -15,5 +15,7 @@ namespace AghDataBase
     public partial class Workshop
     {
         public int Id { get; set; }
+    
+        public virtual WorkshopPrice WorkshopPrice { get; set; }
     }
 }
