@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 03/17/2019 09:19:14
+-- Date Created: 03/17/2019 15:23:36
 -- Generated from EDMX file: C:\Users\rogoz\source\repos\AghDataBase\AghDataBase\Model1.edmx
 -- --------------------------------------------------
 
@@ -32,6 +32,30 @@ GO
 IF OBJECT_ID(N'[dbo].[FK_ConferenceConferencePrices]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[ConferencePrices] DROP CONSTRAINT [FK_ConferenceConferencePrices];
 GO
+IF OBJECT_ID(N'[dbo].[FK_StudentIndividualClient]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Students1] DROP CONSTRAINT [FK_StudentIndividualClient];
+GO
+IF OBJECT_ID(N'[dbo].[FK_WorkshopPriceWorkshop]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[WorkshopPrices] DROP CONSTRAINT [FK_WorkshopPriceWorkshop];
+GO
+IF OBJECT_ID(N'[dbo].[FK_CityStreet]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Streets] DROP CONSTRAINT [FK_CityStreet];
+GO
+IF OBJECT_ID(N'[dbo].[FK_ProvinceCity]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Cities] DROP CONSTRAINT [FK_ProvinceCity];
+GO
+IF OBJECT_ID(N'[dbo].[FK_StreetBuilding]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Buildings] DROP CONSTRAINT [FK_StreetBuilding];
+GO
+IF OBJECT_ID(N'[dbo].[FK_CountryProvince]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Provinces] DROP CONSTRAINT [FK_CountryProvince];
+GO
+IF OBJECT_ID(N'[dbo].[FK_ClientBuilding]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Clients] DROP CONSTRAINT [FK_ClientBuilding];
+GO
+IF OBJECT_ID(N'[dbo].[FK_ConferenceBuilding]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Conferences] DROP CONSTRAINT [FK_ConferenceBuilding];
+GO
 
 -- --------------------------------------------------
 -- Dropping existing tables
@@ -60,6 +84,24 @@ IF OBJECT_ID(N'[dbo].[Conferences]', 'U') IS NOT NULL
 GO
 IF OBJECT_ID(N'[dbo].[ConferencePrices]', 'U') IS NOT NULL
     DROP TABLE [dbo].[ConferencePrices];
+GO
+IF OBJECT_ID(N'[dbo].[Students1]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[Students1];
+GO
+IF OBJECT_ID(N'[dbo].[Cities]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[Cities];
+GO
+IF OBJECT_ID(N'[dbo].[Streets]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[Streets];
+GO
+IF OBJECT_ID(N'[dbo].[Provinces]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[Provinces];
+GO
+IF OBJECT_ID(N'[dbo].[Buildings]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[Buildings];
+GO
+IF OBJECT_ID(N'[dbo].[Countries]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[Countries];
 GO
 
 -- --------------------------------------------------

@@ -401,8 +401,8 @@
           </AssociationSet>
           <EntitySet Name="Countries" EntityType="Model1.Country" />
           <AssociationSet Name="CountryProvince" Association="Model1.CountryProvince">
-            <End Role="Country" EntitySet="Countries" />
-            <End Role="Province" EntitySet="Provinces" />
+            <End EntitySet="Countries" Role="Country" />
+            <End EntitySet="Provinces" Role="Province" />
           </AssociationSet>
           <AssociationSet Name="ClientBuilding" Association="Model1.ClientBuilding">
             <End Role="Client" EntitySet="Clients" />
@@ -641,12 +641,12 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" Type="Int32" />
           <NavigationProperty Name="Provinces" Relationship="Model1.CountryProvince" FromRole="Country" ToRole="Province" />
         </EntityType>
         <Association Name="CountryProvince">
-          <End Type="Model1.Country" Role="Country" Multiplicity="1" />
-          <End Type="Model1.Province" Role="Province" Multiplicity="*" />
+          <End Type="Model1.Country" Multiplicity="1" Role="Country" />
+          <End Type="Model1.Province" Multiplicity="*" Role="Province" />
           <ReferentialConstraint>
             <Principal Role="Country">
               <PropertyRef Name="Id" />
