@@ -16,6 +16,8 @@ namespace AghDataBase
     {
         public int Id { get; set; }
         public int ConferenceId { get; set; }
+        public System.DateTimeOffset TillConferenceStart { get; set; }
+        public string Price { get; set; }
     
         public virtual Conference Conference { get; set; }
     }

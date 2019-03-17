@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="312838832c154d10ad153683f6ce68f8" Name="Diagram1" ZoomLevel="74" >
+      <Diagram DiagramId="312838832c154d10ad153683f6ce68f8" Name="Diagram1" ZoomLevel="62" >
         <EntityTypeShape EntityType="Model1.Client" Width="1.5" PointX="7.625" PointY="3.125" />
         <EntityTypeShape EntityType="Model1.CorporateClient" Width="3.5" PointX="10.375" PointY="3.25" />
         <EntityTypeShape EntityType="Model1.IndividualClient" Width="1.5" PointX="5" PointY="3" />
@@ -17,7 +17,7 @@
         <EntityTypeShape EntityType="Model1.WorkshopPrice" Width="1.5" PointX="0.625" PointY="9.25" />
         <AssociationConnector Association="Model1.WorkshopPriceWorkshop" />
         <EntityTypeShape EntityType="Model1.Conference" Width="1.5" PointX="0.875" PointY="5" />
-        <EntityTypeShape EntityType="Model1.ConferencePrices" Width="1.5" PointX="3" PointY="6.875" />
+        <EntityTypeShape EntityType="Model1.ConferencePrices" Width="1.5" PointX="3" PointY="6.75" />
         <AssociationConnector Association="Model1.ConferenceConferencePrices" />
         <EntityTypeShape EntityType="Model1.Student" Width="1.5" PointX="2.75" PointY="3.375" />
         <AssociationConnector Association="Model1.StudentIndividualClient" />
@@ -33,6 +33,11 @@
         <AssociationConnector Association="Model1.ClientBuilding" />
         <AssociationConnector Association="Model1.ConferenceBuilding" />
         <AssociationConnector Association="Model1.WorkshopPriceConference" />
+        <EntityTypeShape EntityType="Model1.Reservation" Width="1.5" PointX="17.125" PointY="5.25" />
+        <EntityTypeShape EntityType="Model1.ConferenceDay" Width="1.5" PointX="0.875" PointY="2.75" />
+        <AssociationConnector Association="Model1.ConferenceDayConference" />
+        <EntityTypeShape EntityType="Model1.WorkshopReservation" Width="1.5" PointX="19.875" PointY="5.25" />
+        <AssociationConnector Association="Model1.WorkshopReservationClient" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

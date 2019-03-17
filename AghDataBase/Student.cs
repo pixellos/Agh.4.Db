@@ -15,7 +15,6 @@ namespace AghDataBase
     public partial class Student
     {
         public int Id { get; set; }
-        public string Discount { get; set; }
         public string StudentId { get; set; }
     
         public virtual IndividualClient IndividualClient { get; set; }

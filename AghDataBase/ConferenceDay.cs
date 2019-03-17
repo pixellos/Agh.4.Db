@@ -12,16 +12,13 @@ namespace AghDataBase
     using System;
     using System.Collections.Generic;
     
-    public partial class Client
+    public partial class ConferenceDay
     {
         public int Id { get; set; }
-        public string Telephone { get; set; }
-        public int BuildingId { get; set; }
-        public int WorkshopReservationId { get; set; }
+        public string Date { get; set; }
+        public int ConferenceId { get; set; }
+        public int Capacity { get; set; }
     
-        public virtual CorporateClient CorporateClient { get; set; }
-        public virtual IndividualClient IndividualClient { get; set; }
-        public virtual Building Building { get; set; }
-        public virtual WorkshopReservation WorkshopReservation { get; set; }
+        public virtual Conference Conference { get; set; }
     }
 }

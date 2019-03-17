@@ -12,19 +12,19 @@ namespace AghDataBase
     using System;
     using System.Collections.Generic;
     
-    public partial class WorkshopPrice
+    public partial class WorkshopReservation
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public WorkshopPrice()
+        public WorkshopReservation()
         {
-            this.Conferences = new HashSet<Conference>();
+            this.Clients = new HashSet<Client>();
         }
     
         public int Id { get; set; }
-        public string Price { get; set; }
+        public string ClientId { get; set; }
+        public string WorkshopId { get; set; }
     
-        public virtual Workshop Workshop { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Conference> Conferences { get; set; }
+        public virtual ICollection<Client> Clients { get; set; }
     }
 }

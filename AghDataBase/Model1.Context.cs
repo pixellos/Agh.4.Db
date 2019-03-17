@@ -40,5 +40,8 @@ namespace AghDataBase
         public virtual DbSet<Province> Provinces { get; set; }
         public virtual DbSet<Building> Buildings { get; set; }
         public virtual DbSet<Country> Countries { get; set; }
+        public virtual DbSet<Reservation> Reservations { get; set; }
+        public virtual DbSet<ConferenceDay> ConferenceDays { get; set; }
+        public virtual DbSet<WorkshopReservation> WorkshopReservations { get; set; }
     }
 }
