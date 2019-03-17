@@ -72,6 +72,10 @@
       <End Role="Conference" EntitySet="Conferences" />
       <End Role="Building" EntitySet="Buildings" />
     </AssociationSet>
+    <AssociationSet Name="WorkshopPriceConference" Association="Model1.Store.WorkshopPriceConference">
+      <End Role="WorkshopPrice" EntitySet="WorkshopPrices" />
+      <End Role="Conference" EntitySet="Conferences" />
+    </AssociationSet>
   </EntityContainer>
   <EntityType Name="Clients">
     <Key>
@@ -114,6 +118,8 @@
       <PropertyRef Name="Id" />
     </Key>
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="StartTime" Type="datetime" Nullable="false" />
+    <Property Name="EndTime" Type="datetime" Nullable="false" />
   </EntityType>
   <EntityType Name="WorkshopPrices">
     <Key>
@@ -129,6 +135,7 @@
     <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
     <Property Name="Date" Type="time" Nullable="false" />
     <Property Name="BuildingId" Type="int" Nullable="false" />
+    <Property Name="WorkshopPriceId" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="ConferencePrices">
     <Key>
@@ -341,6 +348,18 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="WorkshopPriceConference">
+    <End Role="WorkshopPrice" Type="Model1.Store.WorkshopPrices" Multiplicity="1" />
+    <End Role="Conference" Type="Model1.Store.Conferences" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="WorkshopPrice">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Conference">
+        <PropertyRef Name="WorkshopPriceId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
 </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
@@ -411,6 +430,10 @@
           <AssociationSet Name="ConferenceBuilding" Association="Model1.ConferenceBuilding">
             <End Role="Conference" EntitySet="Conferences" />
             <End Role="Building" EntitySet="Buildings" />
+          </AssociationSet>
+          <AssociationSet Name="WorkshopPriceConference" Association="Model1.WorkshopPriceConference">
+            <End Role="WorkshopPrice" EntitySet="WorkshopPrices" />
+            <End Role="Conference" EntitySet="Conferences" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="Client">
@@ -486,6 +509,8 @@
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <NavigationProperty Name="WorkshopPrice" Relationship="Model1.WorkshopPriceWorkshop" FromRole="Workshop" ToRole="WorkshopPrice" />
+          <Property Name="StartTime" Type="DateTime" Nullable="false" />
+          <Property Name="EndTime" Type="DateTime" Nullable="false" />
         </EntityType>
         <EntityType Name="WorkshopPrice">
           <Key>
@@ -493,6 +518,7 @@
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <NavigationProperty Name="Workshop" Relationship="Model1.WorkshopPriceWorkshop" FromRole="WorkshopPrice" ToRole="Workshop" />
+          <NavigationProperty Name="Conferences" Relationship="Model1.WorkshopPriceConference" FromRole="WorkshopPrice" ToRole="Conference" />
         </EntityType>
         <EntityType Name="Conference">
           <Key>
@@ -504,6 +530,8 @@
           <Property Name="Date" Type="Time" Nullable="false" />
           <NavigationProperty Name="Building" Relationship="Model1.ConferenceBuilding" FromRole="Conference" ToRole="Building" />
           <Property Name="BuildingId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="WorkshopPrice" Relationship="Model1.WorkshopPriceConference" FromRole="Conference" ToRole="WorkshopPrice" />
+          <Property Name="WorkshopPriceId" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="ConferencePrices">
           <Key>
@@ -680,6 +708,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="WorkshopPriceConference">
+          <End Type="Model1.WorkshopPrice" Role="WorkshopPrice" Multiplicity="1" />
+          <End Type="Model1.Conference" Role="Conference" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="WorkshopPrice">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Conference">
+              <PropertyRef Name="WorkshopPriceId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -727,6 +767,8 @@
       <EntityTypeMapping TypeName="IsTypeOf(Model1.Workshop)">
         <MappingFragment StoreEntitySet="Workshops">
           <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="StartTime" ColumnName="StartTime" />
+          <ScalarProperty Name="EndTime" ColumnName="EndTime" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -744,6 +786,7 @@
           <ScalarProperty Name="Name" ColumnName="Name" />
           <ScalarProperty Name="Date" ColumnName="Date" />
           <ScalarProperty Name="BuildingId" ColumnName="BuildingId" />
+          <ScalarProperty Name="WorkshopPriceId" ColumnName="WorkshopPriceId" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

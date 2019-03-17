@@ -24,9 +24,11 @@ namespace AghDataBase
         public string Name { get; set; }
         public System.TimeSpan Date { get; set; }
         public int BuildingId { get; set; }
+        public int WorkshopPriceId { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ConferencePrices> ConferencePrices { get; set; }
         public virtual Building Building { get; set; }
+        public virtual WorkshopPrice WorkshopPrice { get; set; }
     }
 }

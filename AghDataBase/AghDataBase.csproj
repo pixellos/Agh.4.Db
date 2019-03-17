@@ -136,6 +136,7 @@
       <DependentUpon>Model1.edmx</DependentUpon>
     </Content>
     <Content Include="DbInit.sql" />
+    <Content Include="StoredProcedures.sql" />
     <Content Include="Views.sql" />
     <Content Include="Triggers.sql" />
   </ItemGroup>

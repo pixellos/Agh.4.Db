@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 03/17/2019 15:23:36
+-- Date Created: 03/17/2019 15:35:29
 -- Generated from EDMX file: C:\Users\rogoz\source\repos\AghDataBase\AghDataBase\Model1.edmx
 -- --------------------------------------------------
 
@@ -146,7 +146,9 @@ GO
 
 -- Creating table 'Workshops'
 CREATE TABLE [dbo].[Workshops] (
-    [Id] int IDENTITY(1,1) NOT NULL
+    [Id] int IDENTITY(1,1) NOT NULL,
+    [StartTime] datetime  NOT NULL,
+    [EndTime] datetime  NOT NULL
 );
 GO
 
@@ -161,7 +163,8 @@ CREATE TABLE [dbo].[Conferences] (
     [Id] int IDENTITY(1,1) NOT NULL,
     [Name] nvarchar(max)  NOT NULL,
     [Date] time  NOT NULL,
-    [BuildingId] int  NOT NULL
+    [BuildingId] int  NOT NULL,
+    [WorkshopPriceId] int  NOT NULL
 );
 GO
 
@@ -493,6 +496,21 @@ GO
 CREATE INDEX [IX_FK_ConferenceBuilding]
 ON [dbo].[Conferences]
     ([BuildingId]);
+GO
+
+-- Creating foreign key on [WorkshopPriceId] in table 'Conferences'
+ALTER TABLE [dbo].[Conferences]
+ADD CONSTRAINT [FK_WorkshopPriceConference]
+    FOREIGN KEY ([WorkshopPriceId])
+    REFERENCES [dbo].[WorkshopPrices]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_WorkshopPriceConference'
+CREATE INDEX [IX_FK_WorkshopPriceConference]
+ON [dbo].[Conferences]
+    ([WorkshopPriceId]);
 GO
 
 -- --------------------------------------------------
