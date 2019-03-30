@@ -24,8 +24,8 @@ namespace AghDataBase
         public System.DateTime StartTime { get; set; }
         public System.DateTime EndTime { get; set; }
     
-        public virtual WorkshopPrice WorkshopPrice { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<WorkshopReservation> WorkshopReservations { get; set; }
+        public virtual WorkshopPrice WorkshopPrice { get; set; }
     }
 }
