@@ -21,8 +21,8 @@ namespace AghDataBase
         }
     
         public int Id { get; set; }
-        public string ClientId { get; set; }
-        public string WorkshopId { get; set; }
+        public int ClientId { get; set; }
+        public int WorkshopId { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Client> Clients { get; set; }

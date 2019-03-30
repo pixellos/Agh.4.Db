@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 03/30/2019 09:41:28
+-- Date Created: 03/30/2019 09:47:40
 -- Generated from EDMX file: C:\Users\rogoz\source\repos\AghDataBase\AghDataBase\Model1.edmx
 -- --------------------------------------------------
 
@@ -59,6 +59,15 @@ GO
 IF OBJECT_ID(N'[dbo].[FK_WorkshopPriceConference]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[Conferences] DROP CONSTRAINT [FK_WorkshopPriceConference];
 GO
+IF OBJECT_ID(N'[dbo].[FK_ConferenceDayConference]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[ConferenceDays] DROP CONSTRAINT [FK_ConferenceDayConference];
+GO
+IF OBJECT_ID(N'[dbo].[FK_WorkshopReservationClient]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Clients] DROP CONSTRAINT [FK_WorkshopReservationClient];
+GO
+IF OBJECT_ID(N'[dbo].[FK_WorkshopReservationWorkshop]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[WorkshopReservations] DROP CONSTRAINT [FK_WorkshopReservationWorkshop];
+GO
 
 -- --------------------------------------------------
 -- Dropping existing tables
@@ -105,6 +114,15 @@ IF OBJECT_ID(N'[dbo].[Buildings]', 'U') IS NOT NULL
 GO
 IF OBJECT_ID(N'[dbo].[Countries]', 'U') IS NOT NULL
     DROP TABLE [dbo].[Countries];
+GO
+IF OBJECT_ID(N'[dbo].[Reservations]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[Reservations];
+GO
+IF OBJECT_ID(N'[dbo].[ConferenceDays]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[ConferenceDays];
+GO
+IF OBJECT_ID(N'[dbo].[WorkshopReservations]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[WorkshopReservations];
 GO
 
 -- --------------------------------------------------
@@ -249,9 +267,8 @@ GO
 -- Creating table 'WorkshopReservations'
 CREATE TABLE [dbo].[WorkshopReservations] (
     [Id] int IDENTITY(1,1) NOT NULL,
-    [ClientId] nvarchar(max)  NOT NULL,
-    [WorkshopId] nvarchar(max)  NOT NULL,
-    [Workshop_Id] int  NOT NULL
+    [ClientId] int  NOT NULL,
+    [WorkshopId] int  NOT NULL
 );
 GO
 
@@ -593,10 +610,10 @@ ON [dbo].[Clients]
     ([WorkshopReservationId]);
 GO
 
--- Creating foreign key on [Workshop_Id] in table 'WorkshopReservations'
+-- Creating foreign key on [WorkshopId] in table 'WorkshopReservations'
 ALTER TABLE [dbo].[WorkshopReservations]
 ADD CONSTRAINT [FK_WorkshopReservationWorkshop]
-    FOREIGN KEY ([Workshop_Id])
+    FOREIGN KEY ([WorkshopId])
     REFERENCES [dbo].[Workshops]
         ([Id])
     ON DELETE NO ACTION ON UPDATE NO ACTION;
@@ -605,7 +622,7 @@ GO
 -- Creating non-clustered index for FOREIGN KEY 'FK_WorkshopReservationWorkshop'
 CREATE INDEX [IX_FK_WorkshopReservationWorkshop]
 ON [dbo].[WorkshopReservations]
-    ([Workshop_Id]);
+    ([WorkshopId]);
 GO
 
 -- --------------------------------------------------

@@ -232,9 +232,8 @@
       <PropertyRef Name="Id" />
     </Key>
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="ClientId" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="WorkshopId" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="Workshop_Id" Type="int" Nullable="false" />
+    <Property Name="ClientId" Type="int" Nullable="false" />
+    <Property Name="WorkshopId" Type="int" Nullable="false" />
   </EntityType>
   <Association Name="Client_CorporateClient">
     <End Role="Client" Type="Model1.Store.Clients" Multiplicity="1" />
@@ -436,7 +435,7 @@
         <PropertyRef Name="Id" />
       </Principal>
       <Dependent Role="WorkshopReservation">
-        <PropertyRef Name="Workshop_Id" />
+        <PropertyRef Name="WorkshopId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -856,8 +855,8 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ClientId" Type="String" Nullable="false" />
-          <Property Name="WorkshopId" Type="String" Nullable="false" />
+          <Property Name="ClientId" Type="Int32" Nullable="false" />
+          <Property Name="WorkshopId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Clients" Relationship="Model1.WorkshopReservationClient" FromRole="WorkshopReservation" ToRole="Client" />
           <NavigationProperty Name="Workshop" Relationship="Model1.WorkshopReservationWorkshop" FromRole="WorkshopReservation" ToRole="Workshop" />
         </EntityType>
@@ -876,6 +875,14 @@
         <Association Name="WorkshopReservationWorkshop">
           <End Type="Model1.WorkshopReservation" Role="WorkshopReservation" Multiplicity="*" />
           <End Type="Model1.Workshop" Role="Workshop" Multiplicity="1" />
+          <ReferentialConstraint>
+            <Principal Role="Workshop">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="WorkshopReservation">
+              <PropertyRef Name="WorkshopId" />
+            </Dependent>
+          </ReferentialConstraint>
         </Association>
       </Schema>
     </edmx:ConceptualModels>
@@ -1061,14 +1068,6 @@
         <ScalarProperty Name="Id" ColumnName="CorporateClientEmploye_Id" />
       </EndProperty>
       <EndProperty Name="IndividualClient">
-        <ScalarProperty Name="Id" ColumnName="Id" />
-      </EndProperty>
-    </AssociationSetMapping>
-    <AssociationSetMapping Name="WorkshopReservationWorkshop" TypeName="Model1.WorkshopReservationWorkshop" StoreEntitySet="WorkshopReservations">
-      <EndProperty Name="Workshop">
-        <ScalarProperty Name="Id" ColumnName="Workshop_Id" />
-      </EndProperty>
-      <EndProperty Name="WorkshopReservation">
         <ScalarProperty Name="Id" ColumnName="Id" />
       </EndProperty>
     </AssociationSetMapping>
