@@ -19,6 +19,7 @@ namespace AghDataBase
         {
             this.ConferencePrices = new HashSet<ConferencePrices>();
             this.ConferenceDays = new HashSet<ConferenceDay>();
+            this.Reservations = new HashSet<Reservation>();
         }
     
         public int Id { get; set; }
@@ -33,5 +34,7 @@ namespace AghDataBase
         public virtual WorkshopPrice WorkshopPrice { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ConferenceDay> ConferenceDays { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Reservation> Reservations { get; set; }
     }
 }

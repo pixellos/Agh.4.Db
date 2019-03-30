@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 03/30/2019 09:47:40
+-- Date Created: 03/30/2019 09:53:48
 -- Generated from EDMX file: C:\Users\rogoz\source\repos\AghDataBase\AghDataBase\Model1.edmx
 -- --------------------------------------------------
 
@@ -251,7 +251,7 @@ GO
 CREATE TABLE [dbo].[Reservations] (
     [Id] int IDENTITY(1,1) NOT NULL,
     [ClientId] int  NOT NULL,
-    [ConferenceId] nvarchar(max)  NOT NULL
+    [ConferenceId] int  NOT NULL
 );
 GO
 
@@ -623,6 +623,36 @@ GO
 CREATE INDEX [IX_FK_WorkshopReservationWorkshop]
 ON [dbo].[WorkshopReservations]
     ([WorkshopId]);
+GO
+
+-- Creating foreign key on [ClientId] in table 'Reservations'
+ALTER TABLE [dbo].[Reservations]
+ADD CONSTRAINT [FK_ReservationClient]
+    FOREIGN KEY ([ClientId])
+    REFERENCES [dbo].[Clients]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_ReservationClient'
+CREATE INDEX [IX_FK_ReservationClient]
+ON [dbo].[Reservations]
+    ([ClientId]);
+GO
+
+-- Creating foreign key on [ConferenceId] in table 'Reservations'
+ALTER TABLE [dbo].[Reservations]
+ADD CONSTRAINT [FK_ConferenceReservation]
+    FOREIGN KEY ([ConferenceId])
+    REFERENCES [dbo].[Conferences]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_ConferenceReservation'
+CREATE INDEX [IX_FK_ConferenceReservation]
+ON [dbo].[Reservations]
+    ([ConferenceId]);
 GO
 
 -- --------------------------------------------------

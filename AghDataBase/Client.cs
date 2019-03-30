@@ -14,6 +14,12 @@ namespace AghDataBase
     
     public partial class Client
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Client()
+        {
+            this.Reservations = new HashSet<Reservation>();
+        }
+    
         public int Id { get; set; }
         public string Telephone { get; set; }
         public int BuildingId { get; set; }
@@ -23,5 +29,7 @@ namespace AghDataBase
         public virtual IndividualClient IndividualClient { get; set; }
         public virtual Building Building { get; set; }
         public virtual WorkshopReservation WorkshopReservation { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Reservation> Reservations { get; set; }
     }
 }
