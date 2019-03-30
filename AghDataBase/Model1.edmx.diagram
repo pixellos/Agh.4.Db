@@ -33,11 +33,12 @@
         <AssociationConnector Association="Model1.ClientBuilding" />
         <AssociationConnector Association="Model1.ConferenceBuilding" />
         <AssociationConnector Association="Model1.WorkshopPriceConference" />
-        <EntityTypeShape EntityType="Model1.Reservation" Width="1.5" PointX="17.125" PointY="5.25" />
+        <EntityTypeShape EntityType="Model1.Reservation" Width="1.5" PointX="16.25" PointY="5" />
         <EntityTypeShape EntityType="Model1.ConferenceDay" Width="1.5" PointX="0.875" PointY="2.75" />
         <AssociationConnector Association="Model1.ConferenceDayConference" />
-        <EntityTypeShape EntityType="Model1.WorkshopReservation" Width="1.5" PointX="19.875" PointY="5.25" />
+        <EntityTypeShape EntityType="Model1.WorkshopReservation" Width="1.5" PointX="23.75" PointY="8.5" />
         <AssociationConnector Association="Model1.WorkshopReservationClient" />
+        <AssociationConnector Association="Model1.WorkshopReservationWorkshop" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

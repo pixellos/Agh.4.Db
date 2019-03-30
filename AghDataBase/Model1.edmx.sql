@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 03/17/2019 15:35:29
+-- Date Created: 03/30/2019 09:41:28
 -- Generated from EDMX file: C:\Users\rogoz\source\repos\AghDataBase\AghDataBase\Model1.edmx
 -- --------------------------------------------------
 
@@ -55,6 +55,9 @@ IF OBJECT_ID(N'[dbo].[FK_ClientBuilding]', 'F') IS NOT NULL
 GO
 IF OBJECT_ID(N'[dbo].[FK_ConferenceBuilding]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[Conferences] DROP CONSTRAINT [FK_ConferenceBuilding];
+GO
+IF OBJECT_ID(N'[dbo].[FK_WorkshopPriceConference]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Conferences] DROP CONSTRAINT [FK_WorkshopPriceConference];
 GO
 
 -- --------------------------------------------------
@@ -112,7 +115,8 @@ GO
 CREATE TABLE [dbo].[Clients] (
     [Id] int IDENTITY(1,1) NOT NULL,
     [Telephone] nvarchar(max)  NOT NULL,
-    [BuildingId] int  NOT NULL
+    [BuildingId] int  NOT NULL,
+    [WorkshopReservationId] int  NOT NULL
 );
 GO
 
@@ -154,7 +158,8 @@ GO
 
 -- Creating table 'WorkshopPrices'
 CREATE TABLE [dbo].[WorkshopPrices] (
-    [Id] int IDENTITY(1,1) NOT NULL
+    [Id] int IDENTITY(1,1) NOT NULL,
+    [Price] nvarchar(max)  NOT NULL
 );
 GO
 
@@ -162,23 +167,24 @@ GO
 CREATE TABLE [dbo].[Conferences] (
     [Id] int IDENTITY(1,1) NOT NULL,
     [Name] nvarchar(max)  NOT NULL,
-    [Date] time  NOT NULL,
     [BuildingId] int  NOT NULL,
-    [WorkshopPriceId] int  NOT NULL
+    [WorkshopPriceId] int  NOT NULL,
+    [Discount] tinyint  NOT NULL
 );
 GO
 
 -- Creating table 'ConferencePrices'
 CREATE TABLE [dbo].[ConferencePrices] (
     [Id] int IDENTITY(1,1) NOT NULL,
-    [ConferenceId] int  NOT NULL
+    [ConferenceId] int  NOT NULL,
+    [TillConferenceStart] datetimeoffset  NOT NULL,
+    [Price] nvarchar(max)  NOT NULL
 );
 GO
 
 -- Creating table 'Students1'
 CREATE TABLE [dbo].[Students1] (
     [Id] int IDENTITY(1,1) NOT NULL,
-    [Discount] nvarchar(max)  NOT NULL,
     [StudentId] nvarchar(max)  NOT NULL
 );
 GO
@@ -220,6 +226,32 @@ GO
 -- Creating table 'Countries'
 CREATE TABLE [dbo].[Countries] (
     [Id] int IDENTITY(1,1) NOT NULL
+);
+GO
+
+-- Creating table 'Reservations'
+CREATE TABLE [dbo].[Reservations] (
+    [Id] int IDENTITY(1,1) NOT NULL,
+    [ClientId] int  NOT NULL,
+    [ConferenceId] nvarchar(max)  NOT NULL
+);
+GO
+
+-- Creating table 'ConferenceDays'
+CREATE TABLE [dbo].[ConferenceDays] (
+    [Id] int IDENTITY(1,1) NOT NULL,
+    [Date] nvarchar(max)  NOT NULL,
+    [ConferenceId] int  NOT NULL,
+    [Capacity] int  NOT NULL
+);
+GO
+
+-- Creating table 'WorkshopReservations'
+CREATE TABLE [dbo].[WorkshopReservations] (
+    [Id] int IDENTITY(1,1) NOT NULL,
+    [ClientId] nvarchar(max)  NOT NULL,
+    [WorkshopId] nvarchar(max)  NOT NULL,
+    [Workshop_Id] int  NOT NULL
 );
 GO
 
@@ -308,6 +340,24 @@ GO
 -- Creating primary key on [Id] in table 'Countries'
 ALTER TABLE [dbo].[Countries]
 ADD CONSTRAINT [PK_Countries]
+    PRIMARY KEY CLUSTERED ([Id] ASC);
+GO
+
+-- Creating primary key on [Id] in table 'Reservations'
+ALTER TABLE [dbo].[Reservations]
+ADD CONSTRAINT [PK_Reservations]
+    PRIMARY KEY CLUSTERED ([Id] ASC);
+GO
+
+-- Creating primary key on [Id] in table 'ConferenceDays'
+ALTER TABLE [dbo].[ConferenceDays]
+ADD CONSTRAINT [PK_ConferenceDays]
+    PRIMARY KEY CLUSTERED ([Id] ASC);
+GO
+
+-- Creating primary key on [Id] in table 'WorkshopReservations'
+ALTER TABLE [dbo].[WorkshopReservations]
+ADD CONSTRAINT [PK_WorkshopReservations]
     PRIMARY KEY CLUSTERED ([Id] ASC);
 GO
 
@@ -511,6 +561,51 @@ GO
 CREATE INDEX [IX_FK_WorkshopPriceConference]
 ON [dbo].[Conferences]
     ([WorkshopPriceId]);
+GO
+
+-- Creating foreign key on [ConferenceId] in table 'ConferenceDays'
+ALTER TABLE [dbo].[ConferenceDays]
+ADD CONSTRAINT [FK_ConferenceDayConference]
+    FOREIGN KEY ([ConferenceId])
+    REFERENCES [dbo].[Conferences]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_ConferenceDayConference'
+CREATE INDEX [IX_FK_ConferenceDayConference]
+ON [dbo].[ConferenceDays]
+    ([ConferenceId]);
+GO
+
+-- Creating foreign key on [WorkshopReservationId] in table 'Clients'
+ALTER TABLE [dbo].[Clients]
+ADD CONSTRAINT [FK_WorkshopReservationClient]
+    FOREIGN KEY ([WorkshopReservationId])
+    REFERENCES [dbo].[WorkshopReservations]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_WorkshopReservationClient'
+CREATE INDEX [IX_FK_WorkshopReservationClient]
+ON [dbo].[Clients]
+    ([WorkshopReservationId]);
+GO
+
+-- Creating foreign key on [Workshop_Id] in table 'WorkshopReservations'
+ALTER TABLE [dbo].[WorkshopReservations]
+ADD CONSTRAINT [FK_WorkshopReservationWorkshop]
+    FOREIGN KEY ([Workshop_Id])
+    REFERENCES [dbo].[Workshops]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_WorkshopReservationWorkshop'
+CREATE INDEX [IX_FK_WorkshopReservationWorkshop]
+ON [dbo].[WorkshopReservations]
+    ([Workshop_Id]);
 GO
 
 -- --------------------------------------------------

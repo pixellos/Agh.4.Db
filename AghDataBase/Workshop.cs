@@ -14,10 +14,18 @@ namespace AghDataBase
     
     public partial class Workshop
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Workshop()
+        {
+            this.WorkshopReservations = new HashSet<WorkshopReservation>();
+        }
+    
         public int Id { get; set; }
         public System.DateTime StartTime { get; set; }
         public System.DateTime EndTime { get; set; }
     
         public virtual WorkshopPrice WorkshopPrice { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<WorkshopReservation> WorkshopReservations { get; set; }
     }
 }
