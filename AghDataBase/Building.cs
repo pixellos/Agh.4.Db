@@ -24,7 +24,7 @@ namespace AghDataBase
         public int Id { get; set; }
         public int StreetId { get; set; }
         public string Number { get; set; }
-        public int ConferenceId { get; set; }
+        public Nullable<int> ApartmentNumber { get; set; }
     
         public virtual Street Street { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
