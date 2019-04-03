@@ -14,6 +14,8 @@ CREATE OR ALTER PROCEDURE AddClient
 	@Province nvarchar(50),
 	@Country nvarchar(50)
 	AS
+
+	DECLARE @individual_client_id int;
 	
 	BEGIN TRANSACTION
 	DECLARE @building_id int;
@@ -27,13 +29,15 @@ CREATE OR ALTER PROCEDURE AddClient
 	@Country
 	
 	BEGIN
-	   IF NOT EXISTS (SELECT * FROM [dbo].IndividualClients WHERE FirstName = @FirstName and LastName = @LastName and PersonalNumber = @PersonalNumber)
+	SET @individual_client_id = (SELECT Min(Id) FROM [dbo].IndividualClients WHERE FirstName = @FirstName and LastName = @LastName and PersonalNumber = @PersonalNumber);
+	   IF @individual_client_id IS NULL
 	   BEGIN
 			INSERT INTO [dbo].Clients(Telephone, BuildingId) VALUES (@Telephone, @building_id);
 			INSERT INTO [dbo].IndividualClients(Id, FirstName, LastName, PersonalNumber) VALUES (@@IDENTITY, @FirstName, @LastName, @PersonalNumber)  
+			SET @individual_client_id = @@IDENTITY;
 	   END
 	END
 
 	COMMIT;
-	RETURN 0;
+	RETURN @individual_client_id;
 	GO
