@@ -112,10 +112,9 @@
     <Key>
       <PropertyRef Name="Id" />
     </Key>
-    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Id" Type="int" Nullable="false" />
     <Property Name="CompanyName" Type="nvarchar(max)" Nullable="false" />
     <Property Name="TaxNumber" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="Client_Id" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="IndividualClients">
     <Key>
@@ -125,14 +124,12 @@
     <Property Name="FirstName" Type="nvarchar(max)" Nullable="false" />
     <Property Name="LastName" Type="nvarchar(max)" Nullable="false" />
     <Property Name="PersonalNumber" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="Client_Id" Type="int" Nullable="false" />
-    <Property Name="CorporateClientEmploye_Id" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="CorporateClientEmployes">
     <Key>
       <PropertyRef Name="Id" />
     </Key>
-    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Id" Type="int" Nullable="false" />
     <Property Name="Title" Type="nvarchar(max)" Nullable="false" />
     <Property Name="CorporateClientId" Type="int" Nullable="true" />
   </EntityType>
@@ -174,7 +171,7 @@
     <Key>
       <PropertyRef Name="Id" />
     </Key>
-    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Id" Type="int" Nullable="false" />
     <Property Name="StudentId" Type="nvarchar(max)" Nullable="false" />
   </EntityType>
   <EntityType Name="Cities">
@@ -246,37 +243,37 @@
   </EntityType>
   <Association Name="Client_CorporateClient">
     <End Role="Client" Type="Model1.Store.Clients" Multiplicity="1" />
-    <End Role="CorporateClient" Type="Model1.Store.CorporateClients" Multiplicity="*" />
+    <End Role="CorporateClient" Type="Model1.Store.CorporateClients" Multiplicity="0..1" />
     <ReferentialConstraint>
       <Principal Role="Client">
         <PropertyRef Name="Id" />
       </Principal>
       <Dependent Role="CorporateClient">
-        <PropertyRef Name="Client_Id" />
+        <PropertyRef Name="Id" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
   <Association Name="Client_IndividualClient">
     <End Role="Client" Type="Model1.Store.Clients" Multiplicity="1" />
-    <End Role="IndividualClient" Type="Model1.Store.IndividualClients" Multiplicity="*" />
+    <End Role="IndividualClient" Type="Model1.Store.IndividualClients" Multiplicity="0..1" />
     <ReferentialConstraint>
       <Principal Role="Client">
         <PropertyRef Name="Id" />
       </Principal>
       <Dependent Role="IndividualClient">
-        <PropertyRef Name="Client_Id" />
+        <PropertyRef Name="Id" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
   <Association Name="CorporateClientEmployeIndividualClient">
-    <End Role="IndividualClient" Type="Model1.Store.IndividualClients" Multiplicity="*" />
-    <End Role="CorporateClientEmploye" Type="Model1.Store.CorporateClientEmployes" Multiplicity="1" />
+    <End Role="IndividualClient" Type="Model1.Store.IndividualClients" Multiplicity="1" />
+    <End Role="CorporateClientEmploye" Type="Model1.Store.CorporateClientEmployes" Multiplicity="0..1" />
     <ReferentialConstraint>
-      <Principal Role="CorporateClientEmploye">
+      <Principal Role="IndividualClient">
         <PropertyRef Name="Id" />
       </Principal>
-      <Dependent Role="IndividualClient">
-        <PropertyRef Name="CorporateClientEmploye_Id" />
+      <Dependent Role="CorporateClientEmploye">
+        <PropertyRef Name="Id" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -587,7 +584,7 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="None" />
           <NavigationProperty Name="Client" Relationship="Model1.Client_CorporateClient" FromRole="CorporateClient" ToRole="Client" />
           <Property Name="CompanyName" Type="String" Nullable="false" />
           <Property Name="TaxNumber" Type="String" Nullable="false" />
@@ -610,24 +607,48 @@
         <Association Name="Client_CorporateClient">
           <End Type="Model1.Client" Role="Client" Multiplicity="1" />
           <End Type="Model1.CorporateClient" Role="CorporateClient" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Client">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CorporateClient">
+              <PropertyRef Name="Id" />
+            </Dependent>
+          </ReferentialConstraint>
         </Association>
         <Association Name="Client_IndividualClient">
           <End Type="Model1.Client" Role="Client" Multiplicity="1" />
           <End Type="Model1.IndividualClient" Role="IndividualClient" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Client">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="IndividualClient">
+              <PropertyRef Name="Id" />
+            </Dependent>
+          </ReferentialConstraint>
         </Association>
         <EntityType Name="CorporateClientEmploye">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="None" />
           <NavigationProperty Name="IndividualClients" Relationship="Model1.CorporateClientEmployeIndividualClient" FromRole="CorporateClientEmploye" ToRole="IndividualClient" />
           <Property Name="Title" Type="String" Nullable="false" />
           <NavigationProperty Name="CorporateClient" Relationship="Model1.CorporateClientCorporateClientEmploye" FromRole="CorporateClientEmploye" ToRole="CorporateClient" />
           <Property Name="CorporateClientId" Type="Int32" Nullable="true" />
         </EntityType>
         <Association Name="CorporateClientEmployeIndividualClient">
-          <End Type="Model1.IndividualClient" Role="IndividualClient" Multiplicity="0..1" />
-          <End Type="Model1.CorporateClientEmploye" Role="CorporateClientEmploye" Multiplicity="1" />
+          <End Type="Model1.IndividualClient" Role="IndividualClient" Multiplicity="1" />
+          <End Type="Model1.CorporateClientEmploye" Role="CorporateClientEmploye" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="IndividualClient">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CorporateClientEmploye">
+              <PropertyRef Name="Id" />
+            </Dependent>
+          </ReferentialConstraint>
         </Association>
         <Association Name="CorporateClientCorporateClientEmploye">
           <End Type="Model1.CorporateClient" Role="CorporateClient" Multiplicity="0..1" />
@@ -698,7 +719,7 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="None" />
           <Property Name="StudentId" Type="String" Nullable="false" />
           <NavigationProperty Name="IndividualClient" Relationship="Model1.StudentIndividualClient" FromRole="Student" ToRole="IndividualClient" />
         </EntityType>
@@ -1108,30 +1129,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <AssociationSetMapping Name="Client_CorporateClient" TypeName="Model1.Client_CorporateClient" StoreEntitySet="CorporateClients">
-      <EndProperty Name="Client">
-        <ScalarProperty Name="Id" ColumnName="Client_Id" />
-      </EndProperty>
-      <EndProperty Name="CorporateClient">
-        <ScalarProperty Name="Id" ColumnName="Id" />
-      </EndProperty>
-    </AssociationSetMapping>
-    <AssociationSetMapping Name="Client_IndividualClient" TypeName="Model1.Client_IndividualClient" StoreEntitySet="IndividualClients">
-      <EndProperty Name="Client">
-        <ScalarProperty Name="Id" ColumnName="Client_Id" />
-      </EndProperty>
-      <EndProperty Name="IndividualClient">
-        <ScalarProperty Name="Id" ColumnName="Id" />
-      </EndProperty>
-    </AssociationSetMapping>
-    <AssociationSetMapping Name="CorporateClientEmployeIndividualClient" TypeName="Model1.CorporateClientEmployeIndividualClient" StoreEntitySet="IndividualClients">
-      <EndProperty Name="CorporateClientEmploye">
-        <ScalarProperty Name="Id" ColumnName="CorporateClientEmploye_Id" />
-      </EndProperty>
-      <EndProperty Name="IndividualClient">
-        <ScalarProperty Name="Id" ColumnName="Id" />
-      </EndProperty>
-    </AssociationSetMapping>
     <AssociationSetMapping Name="WorkshopWorkshopPrice" TypeName="Model1.WorkshopWorkshopPrice" StoreEntitySet="Workshops">
       <EndProperty Name="WorkshopPrice">
         <ScalarProperty Name="Id" ColumnName="WorkshopPrice_Id" />

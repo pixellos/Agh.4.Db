@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 03/30/2019 11:01:55
+-- Date Created: 04/03/2019 19:38:34
 -- Generated from EDMX file: C:\Users\rogoz\source\repos\AghDataBase\AghDataBase\Model1.edmx
 -- --------------------------------------------------
 
@@ -33,7 +33,7 @@ IF OBJECT_ID(N'[dbo].[FK_ConferenceConferencePrices]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[ConferencePrices] DROP CONSTRAINT [FK_ConferenceConferencePrices];
 GO
 IF OBJECT_ID(N'[dbo].[FK_StudentIndividualClient]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[Students1] DROP CONSTRAINT [FK_StudentIndividualClient];
+    ALTER TABLE [dbo].[Students] DROP CONSTRAINT [FK_StudentIndividualClient];
 GO
 IF OBJECT_ID(N'[dbo].[FK_CityStreet]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[Streets] DROP CONSTRAINT [FK_CityStreet];
@@ -103,8 +103,8 @@ GO
 IF OBJECT_ID(N'[dbo].[ConferencePrices]', 'U') IS NOT NULL
     DROP TABLE [dbo].[ConferencePrices];
 GO
-IF OBJECT_ID(N'[dbo].[Students1]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[Students1];
+IF OBJECT_ID(N'[dbo].[Students]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[Students];
 GO
 IF OBJECT_ID(N'[dbo].[Cities]', 'U') IS NOT NULL
     DROP TABLE [dbo].[Cities];
@@ -145,10 +145,9 @@ GO
 
 -- Creating table 'CorporateClients'
 CREATE TABLE [dbo].[CorporateClients] (
-    [Id] int IDENTITY(1,1) NOT NULL,
+    [Id] int  NOT NULL,
     [CompanyName] nvarchar(max)  NOT NULL,
-    [TaxNumber] nvarchar(max)  NOT NULL,
-    [Client_Id] int  NOT NULL
+    [TaxNumber] nvarchar(max)  NOT NULL
 );
 GO
 
@@ -157,15 +156,13 @@ CREATE TABLE [dbo].[IndividualClients] (
     [Id] int  NOT NULL,
     [FirstName] nvarchar(max)  NOT NULL,
     [LastName] nvarchar(max)  NOT NULL,
-    [PersonalNumber] nvarchar(max)  NOT NULL,
-    [Client_Id] int  NOT NULL,
-    [CorporateClientEmploye_Id] int  NOT NULL
+    [PersonalNumber] nvarchar(max)  NOT NULL
 );
 GO
 
 -- Creating table 'CorporateClientEmployes'
 CREATE TABLE [dbo].[CorporateClientEmployes] (
-    [Id] int IDENTITY(1,1) NOT NULL,
+    [Id] int  NOT NULL,
     [Title] nvarchar(max)  NOT NULL,
     [CorporateClientId] int  NULL
 );
@@ -207,7 +204,7 @@ GO
 
 -- Creating table 'Students'
 CREATE TABLE [dbo].[Students] (
-    [Id] int IDENTITY(1,1) NOT NULL,
+    [Id] int  NOT NULL,
     [StudentId] nvarchar(max)  NOT NULL
 );
 GO
@@ -389,49 +386,31 @@ GO
 -- Creating all FOREIGN KEY constraints
 -- --------------------------------------------------
 
--- Creating foreign key on [Client_Id] in table 'CorporateClients'
+-- Creating foreign key on [Id] in table 'CorporateClients'
 ALTER TABLE [dbo].[CorporateClients]
 ADD CONSTRAINT [FK_Client_CorporateClient]
-    FOREIGN KEY ([Client_Id])
+    FOREIGN KEY ([Id])
     REFERENCES [dbo].[Clients]
         ([Id])
     ON DELETE NO ACTION ON UPDATE NO ACTION;
 GO
 
--- Creating non-clustered index for FOREIGN KEY 'FK_Client_CorporateClient'
-CREATE INDEX [IX_FK_Client_CorporateClient]
-ON [dbo].[CorporateClients]
-    ([Client_Id]);
-GO
-
--- Creating foreign key on [Client_Id] in table 'IndividualClients'
+-- Creating foreign key on [Id] in table 'IndividualClients'
 ALTER TABLE [dbo].[IndividualClients]
 ADD CONSTRAINT [FK_Client_IndividualClient]
-    FOREIGN KEY ([Client_Id])
+    FOREIGN KEY ([Id])
     REFERENCES [dbo].[Clients]
         ([Id])
     ON DELETE NO ACTION ON UPDATE NO ACTION;
 GO
 
--- Creating non-clustered index for FOREIGN KEY 'FK_Client_IndividualClient'
-CREATE INDEX [IX_FK_Client_IndividualClient]
-ON [dbo].[IndividualClients]
-    ([Client_Id]);
-GO
-
--- Creating foreign key on [CorporateClientEmploye_Id] in table 'IndividualClients'
-ALTER TABLE [dbo].[IndividualClients]
+-- Creating foreign key on [Id] in table 'CorporateClientEmployes'
+ALTER TABLE [dbo].[CorporateClientEmployes]
 ADD CONSTRAINT [FK_CorporateClientEmployeIndividualClient]
-    FOREIGN KEY ([CorporateClientEmploye_Id])
-    REFERENCES [dbo].[CorporateClientEmployes]
+    FOREIGN KEY ([Id])
+    REFERENCES [dbo].[IndividualClients]
         ([Id])
     ON DELETE NO ACTION ON UPDATE NO ACTION;
-GO
-
--- Creating non-clustered index for FOREIGN KEY 'FK_CorporateClientEmployeIndividualClient'
-CREATE INDEX [IX_FK_CorporateClientEmployeIndividualClient]
-ON [dbo].[IndividualClients]
-    ([CorporateClientEmploye_Id]);
 GO
 
 -- Creating foreign key on [CorporateClientId] in table 'CorporateClientEmployes'
