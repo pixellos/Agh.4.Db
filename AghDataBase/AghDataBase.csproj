@@ -92,10 +92,10 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
-    <Compile Include="Model1.Designer.cs">
+    <Compile Include="1_DbTableShema.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>Model1.edmx</DependentUpon>
+      <DependentUpon>1_DbTableShema.edmx</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -123,34 +123,35 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <EntityDeploy Include="Model1.edmx">
+    <EntityDeploy Include="1_DbTableShema.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>Model1.Designer.cs</LastGenOutput>
+      <LastGenOutput>1_DbTableShema.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <None Include="Model1.edmx.diagram">
-      <DependentUpon>Model1.edmx</DependentUpon>
+    <None Include="1_DbTableShema.edmx.diagram">
+      <DependentUpon>1_DbTableShema.edmx</DependentUpon>
     </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="1_DbTableShema.edmx.sql" />
     <Content Include="Model1.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Model1.Context.cs</LastGenOutput>
-      <DependentUpon>Model1.edmx</DependentUpon>
+      <DependentUpon>1_DbTableShema.edmx</DependentUpon>
     </Content>
-    <Content Include="Model1.edmx.sql" />
     <Content Include="Model1.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Model1.cs</LastGenOutput>
-      <DependentUpon>Model1.edmx</DependentUpon>
+      <DependentUpon>1_DbTableShema.edmx</DependentUpon>
     </Content>
-    <Content Include="DbInit.sql" />
-    <Content Include="StoredProcedures\AddClient.sql" />
-    <Content Include="StoredProcedures\AddCorporateClient.sql" />
-    <Content Include="StoredProcedures\AddAddres.sql" />
-    <Content Include="Tests.sql" />
-    <Content Include="Views.sql" />
-    <Content Include="Triggers.sql" />
+    <Content Include="0_DbInit.sql" />
+    <Content Include="0_StoredProcedures\3_AddStudent.sql" />
+    <Content Include="0_StoredProcedures\1_AddClient.sql" />
+    <Content Include="0_StoredProcedures\2_AddCorporateClient.sql" />
+    <Content Include="0_StoredProcedures\0_AddAddres.sql" />
+    <Content Include="1_Tests\9_Tests.sql" />
+    <Content Include="3_Views.sql" />
+    <Content Include="2_Triggers.sql" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

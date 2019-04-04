@@ -14,6 +14,8 @@ CREATE OR ALTER  PROCEDURE AddAddress
 	@Country nvarchar(50)
 AS
 
+BEGIN TRANSACTION
+
 BEGIN
    IF NOT EXISTS (SELECT * FROM [dbo].[Countries] WHERE Name = @Country)
    BEGIN
@@ -65,5 +67,7 @@ BEGIN
        VALUES (@BuildingNumber, @ApartmentNumber, @street_id)
    END
 END
+
+COMMIT;
 
 RETURN (SELECT MIN(Id) FROM [dbo].Buildings WHERE Number = @BuildingNumber and (ApartmentNumber = @ApartmentNumber or (ApartmentNumber is NULL and @ApartmentNumber is NULL)) and StreetId = @street_id)
