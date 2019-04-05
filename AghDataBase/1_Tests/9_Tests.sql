@@ -17,16 +17,19 @@ EXEC AddCorporateClient 'ForteDigital', '000000000', '+48 123456789', 'UlicaFort
 EXEC AddCorporateClient 'PowerShellPl', '1234561', '+48 143456789', 'Ulicapower', null, 6 ,'12-122','Kraków', 'Małopolskie', 'Polska';
 EXEC AddCorporateClient 'ForteDigital2', '000000002', '+48 111111111', 'UlicaForte', 10, 6 ,'12-122','Kraków', 'Małopolskie', 'Polska';
 
-EXEC AddClient 'Mateusz', 'Popielarz', '97010207000', '+48 123456789', 'Brodzińskiego', 5, 1, '38-400', 'Krosno', 'Podkarpacie', 'Polska';
-EXEC AddClient 'Mateusz', 'Popielarz', '97010207001', '+48 123456789', 'Brodzińskiego', 5, 1, '38-400', 'Krosno', 'Podkarpacie', 'Polska';
-EXEC AddClient 'Mateusz', 'Popielarz', '97010207002', '+48 123456789', 'Mickiewicza', 4, 1, '38-400', 'Krosno', 'Podkarpacie', 'Polska';
+EXEC AddClient 'Mateusz', 'Popielarz', '97010207000', '+48 111111112', 'Brodzińskiego', 5, 1, '38-400', 'Krosno', 'Podkarpacie', 'Polska';
+EXEC AddClient 'Mateusz', 'Popielarz', '97010207001', '+48 111111112', 'Brodzińskiego', 5, 1, '38-400', 'Krosno', 'Podkarpacie', 'Polska';
+EXEC AddClient 'Mateusz', 'Popielarz', '97010207002', '+48 111111112', 'Mickiewicza', 4, 1, '38-400', 'Krosno', 'Podkarpacie', 'Polska';
 
+EXEC AddStudent 'Mateusz', 'Popielarz', '97010207003','600988', '+48 123456789', 'Mickiewicza', 4, 1, '38-400', 'Krosno', 'Podkarpacie', 'Polska';
+EXEC AddStudent 'NotExisting', 'NotExisting', '97010207999','600000', '+48 123456680', 'Mickiewicza2', 4, 1, '38-400', 'Krosno', 'Podkarpacie', 'Polska';
 
-SELECT * from Countries
-SELECT * from Provinces
-SELECT * from Cities
-SELECT * from Streets
-SELECT * from Buildings
-SELECT * FROM Clients
-SELECT * FROM CorporateClients
-SELECT * FROM IndividualClients
+EXEC AssignEmployerToEmployee '1234561', 'Associate', 'Mateusz', 'Popielarz', '97010207002', '+48 111111112', 'Mickiewicza', 4, 1, '38-400', 'Krosno', 'Podkarpacie', 'Polska';
+
+--/*Will fail on adding student with same id */
+--BEGIN TRY  
+--	EXEC AddStudent 'NotExisting2', 'NotExisting', '97010207999','600000', '+48 123456689', 'Mickiewicza', 4, 1, '38-400', 'Krosno', 'Podkarpacie', 'Polska';
+--END TRY  
+--BEGIN CATCH  
+--	PRINT N'TEST FAILED';
+--END CATCH  

@@ -20,20 +20,17 @@ CREATE OR ALTER PROCEDURE AddStudent
 	DECLARE @individual_client_id int;
 	
 	BEGIN TRANSACTION
-	DECLARE @client_id int;
-	EXEC @client_id = AddClient @FirstName, @LastName, @PersonalNumber, @Telephone, @Street, @ApartmentNumber, @BuildingNumber, @ZipCode, @City, @Province, @Country
-	
+		
 	DECLARE @student_id int;
 
 	BEGIN
 	SET @student_id = (SELECT Min(Id) FROM [dbo].Students WHERE StudentId = @StudentId);
 	   IF @student_id IS NULL
 	   BEGIN
-		INSERT INTO [dbo].Students(Id, StudentId) VALUES (@client_id, @StudentId);
-	   SET @student_id = @@IDENTITY;
+		EXEC @student_id = AddClient @FirstName, @LastName, @PersonalNumber, @Telephone, @Street, @ApartmentNumber, @BuildingNumber, @ZipCode, @City, @Province, @Country
+		INSERT INTO [dbo].Students(Id, StudentId) VALUES (@student_id, @StudentId);
 	   END
 	END
 
 	COMMIT;
 	RETURN @student_id;
-	GO

@@ -1,5 +1,7 @@
 ﻿/*
-    Add a client that is a company
+    Add a client that is a individual client
+	Założenia:
+	Numer telefonu jest unikatowy dla każdego użytkownika, nie może być pusty (musimy się jakoś kontaktować z uczestnikami)	
 */
 CREATE OR ALTER PROCEDURE AddClient 
 	@FirstName nvarchar(50),
@@ -33,8 +35,8 @@ CREATE OR ALTER PROCEDURE AddClient
 	   IF @individual_client_id IS NULL
 	   BEGIN
 			INSERT INTO [dbo].Clients(Telephone, BuildingId) VALUES (@Telephone, @building_id);
-			INSERT INTO [dbo].IndividualClients(Id, FirstName, LastName, PersonalNumber) VALUES (@@IDENTITY, @FirstName, @LastName, @PersonalNumber)  
-			SET @individual_client_id = @@IDENTITY;
+			SET @individual_client_id = SCOPE_IDENTITY()
+			INSERT INTO [dbo].IndividualClients(Id, FirstName, LastName, PersonalNumber) VALUES (@individual_client_id, @FirstName, @LastName, @PersonalNumber)  
 	   END
 	END
 

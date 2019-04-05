@@ -4,7 +4,7 @@
 	Przyjmuje krotkę z danymi adresowymi
 	Zwraca nic.
 */
-CREATE OR ALTER  PROCEDURE AddAddress
+CREATE PROCEDURE AddAddress
 	@Street nvarchar(50),
 	@ApartmentNumber int NULL,
 	@BuildingNumber int,

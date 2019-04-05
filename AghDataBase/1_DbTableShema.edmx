@@ -689,7 +689,7 @@
           <Property Name="Name" Type="String" Nullable="false" />
           <NavigationProperty Name="Building" Relationship="Model1.ConferenceBuilding" FromRole="Conference" ToRole="Building" />
           <Property Name="BuildingId" Type="Int32" Nullable="false" />
-          <Property Name="Discount" Type="Byte" Nullable="false" />
+          <Property Name="StudentDiscount" Type="Byte" Nullable="false" />
           <NavigationProperty Name="ConferenceDays" Relationship="Model1.ConferenceDayConference" FromRole="Conference" ToRole="ConferenceDay" />
           <NavigationProperty Name="Reservations" Relationship="Model1.ConferenceReservation" FromRole="Conference" ToRole="Reservation" />
         </EntityType>
@@ -1032,7 +1032,7 @@
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="Name" ColumnName="Name" />
           <ScalarProperty Name="BuildingId" ColumnName="BuildingId" />
-          <ScalarProperty Name="Discount" ColumnName="Discount" />
+          <ScalarProperty Name="StudentDiscount" ColumnName="Discount" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

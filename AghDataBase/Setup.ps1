@@ -9,8 +9,11 @@ $localScriptRoot = Get-Location;
 $Server = "POPIELARZM\SQLEXPRESS"
 $scripts = Get-ChildItem $localScriptRoot -Recurse  | Where-Object { $_.Extension -eq ".sql" }
   
+Invoke-Sqlcmd -ServerInstance $Server -InputFile (Join-Path $localScriptRoot '.\0_DbInit.sql') -Database master
+
 foreach ($s in $scripts) {
     Write-Host "Running Script : " $s.Name -BackgroundColor DarkGreen -ForegroundColor White
     $script = $s.FullName
-    Invoke-Sqlcmd -ServerInstance $Server -InputFile $script -Database AghDataBase
+    Invoke-Sqlcmd -ServerInstance $Server -InputFile $script -Database AghDataBase 
 }
+
