@@ -36,7 +36,12 @@ EXEC MakeReservation '97010207001', @confitura;
 EXEC MakeReservation '97010207001', @confitura;
 EXEC MakeReservation '97010207002', @confitura;
 
-
+BEGIN TRY  
+EXEC MakeReservation 'NOTEXISTING', @confitura;
+DECLARE @RAISE int = CAST('Raise error.' AS INT);
+END TRY  
+BEGIN CATCH  
+END CATCH  
 
 --/*Will fail on adding student with same id */
 --BEGIN TRY  
