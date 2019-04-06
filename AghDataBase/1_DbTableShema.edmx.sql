@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 04/06/2019 10:44:22
+-- Date Created: 04/06/2019 12:16:20
 -- Generated from EDMX file: C:\Users\rogoz\source\repos\AghDataBase\AghDataBase\1_DbTableShema.edmx
 -- --------------------------------------------------
 
@@ -77,11 +77,14 @@ GO
 IF OBJECT_ID(N'[dbo].[FK_CorporateClientConference]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[Conferences] DROP CONSTRAINT [FK_CorporateClientConference];
 GO
-IF OBJECT_ID(N'[dbo].[FK_PaymentReservation]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[Reservations] DROP CONSTRAINT [FK_PaymentReservation];
-GO
 IF OBJECT_ID(N'[dbo].[FK_PaymentClient]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[Payments] DROP CONSTRAINT [FK_PaymentClient];
+    ALTER TABLE [dbo].[ReservationPayments] DROP CONSTRAINT [FK_PaymentClient];
+GO
+IF OBJECT_ID(N'[dbo].[FK_ReservationPaymentReservation]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[ReservationPayments] DROP CONSTRAINT [FK_ReservationPaymentReservation];
+GO
+IF OBJECT_ID(N'[dbo].[FK_WorkshopReservationPaymentWorkshopReservation]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[WorkshopReservationPayments] DROP CONSTRAINT [FK_WorkshopReservationPaymentWorkshopReservation];
 GO
 
 -- --------------------------------------------------
@@ -139,8 +142,11 @@ GO
 IF OBJECT_ID(N'[dbo].[WorkshopReservations]', 'U') IS NOT NULL
     DROP TABLE [dbo].[WorkshopReservations];
 GO
-IF OBJECT_ID(N'[dbo].[Payments]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[Payments];
+IF OBJECT_ID(N'[dbo].[ReservationPayments]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[ReservationPayments];
+GO
+IF OBJECT_ID(N'[dbo].[WorkshopReservationPayments]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[WorkshopReservationPayments];
 GO
 
 -- --------------------------------------------------
@@ -305,6 +311,13 @@ CREATE TABLE [dbo].[WorkshopReservationPayments] (
 );
 GO
 
+-- Creating table 'IndividualClientConferenceDay'
+CREATE TABLE [dbo].[IndividualClientConferenceDay] (
+    [IndividualClient_Id] int  NOT NULL,
+    [ConferenceDays_Id] int  NOT NULL
+);
+GO
+
 -- --------------------------------------------------
 -- Creating all PRIMARY KEY constraints
 -- --------------------------------------------------
@@ -421,6 +434,12 @@ GO
 ALTER TABLE [dbo].[WorkshopReservationPayments]
 ADD CONSTRAINT [PK_WorkshopReservationPayments]
     PRIMARY KEY CLUSTERED ([Id] ASC);
+GO
+
+-- Creating primary key on [IndividualClient_Id], [ConferenceDays_Id] in table 'IndividualClientConferenceDay'
+ALTER TABLE [dbo].[IndividualClientConferenceDay]
+ADD CONSTRAINT [PK_IndividualClientConferenceDay]
+    PRIMARY KEY CLUSTERED ([IndividualClient_Id], [ConferenceDays_Id] ASC);
 GO
 
 -- --------------------------------------------------
@@ -643,19 +662,28 @@ ON [dbo].[Reservations]
     ([ConferenceId]);
 GO
 
--- Creating foreign key on [IndividualClientId] in table 'ConferenceDays'
-ALTER TABLE [dbo].[ConferenceDays]
-ADD CONSTRAINT [FK_IndividualClientConferenceDay]
-    FOREIGN KEY ([IndividualClientId])
+-- Creating foreign key on [IndividualClient_Id] in table 'IndividualClientConferenceDay'
+ALTER TABLE [dbo].[IndividualClientConferenceDay]
+ADD CONSTRAINT [FK_IndividualClientConferenceDay_IndividualClient]
+    FOREIGN KEY ([IndividualClient_Id])
     REFERENCES [dbo].[IndividualClients]
         ([Id])
     ON DELETE NO ACTION ON UPDATE NO ACTION;
 GO
 
--- Creating non-clustered index for FOREIGN KEY 'FK_IndividualClientConferenceDay'
-CREATE INDEX [IX_FK_IndividualClientConferenceDay]
-ON [dbo].[ConferenceDays]
-    ([IndividualClientId]);
+-- Creating foreign key on [ConferenceDays_Id] in table 'IndividualClientConferenceDay'
+ALTER TABLE [dbo].[IndividualClientConferenceDay]
+ADD CONSTRAINT [FK_IndividualClientConferenceDay_ConferenceDay]
+    FOREIGN KEY ([ConferenceDays_Id])
+    REFERENCES [dbo].[ConferenceDays]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_IndividualClientConferenceDay_ConferenceDay'
+CREATE INDEX [IX_FK_IndividualClientConferenceDay_ConferenceDay]
+ON [dbo].[IndividualClientConferenceDay]
+    ([ConferenceDays_Id]);
 GO
 
 -- Creating foreign key on [IndividualClientId] in table 'WorkshopReservations'

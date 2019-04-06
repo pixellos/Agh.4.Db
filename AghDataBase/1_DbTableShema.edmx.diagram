@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="312838832c154d10ad153683f6ce68f8" Name="Diagram1" ZoomLevel="98" >
+      <Diagram DiagramId="312838832c154d10ad153683f6ce68f8" Name="Diagram1" ZoomLevel="63" >
         <EntityTypeShape EntityType="Model1.Client" Width="1.5" PointX="7.625" PointY="3.125" />
         <EntityTypeShape EntityType="Model1.CorporateClient" Width="3.5" PointX="10.375" PointY="3.25" />
         <EntityTypeShape EntityType="Model1.IndividualClient" Width="1.5" PointX="5" PointY="3" />
@@ -42,7 +42,7 @@
         <AssociationConnector Association="Model1.IndividualClientWorkshopReservation" />
         <AssociationConnector Association="Model1.WorkshopWorkshopPrice" />
         <AssociationConnector Association="Model1.CorporateClientConference" />
-        <EntityTypeShape EntityType="Model1.ReservationPayment" Width="1.5" PointX="20.5" PointY="6.25" />
+        <EntityTypeShape EntityType="Model1.ReservationPayment" Width="2.125" PointX="20.5" PointY="6.25" />
         <AssociationConnector Association="Model1.PaymentClient" />
         <AssociationConnector Association="Model1.ReservationPaymentReservation" />
         <EntityTypeShape EntityType="Model1.WorkshopReservationPayment" Width="1.5" PointX="6.75" PointY="9" />
