@@ -6,7 +6,7 @@ RETURNS TABLE
 AS  
 RETURN   
 (  
-    SELECT A.FirstName, A.LastName, A.PersonalNumber, S.StudentId, C.CompanyName
+    SELECT A.FirstName, A.LastName, A.PersonalNumber, S.StudentId, CC.CompanyName
 	from (
 		SELECT * FROM ConferenceDay CD 
 		where CD.ConferenceId = @conferenceId
@@ -18,10 +18,12 @@ RETURN
 	LEFT JOIN IndividualClient A
 	ON A.Id = CDC.IndividualClientId 
 
-	LEFT JOIN S
+	LEFT JOIN Student S
 	ON S.Id = A.Id
-	and
-	CDC.ConferenceId = @ConferenceId
-	and
-	CDC.ConferenceDay = @ConferenceId
+
+	LEFT JOIN CorporateClientEmployee CCE
+	ON A.Id = CCE.Id
+
+	LEFT JOIN CorporateClient CC
+	ON CC.Id = CCE.CorporateClientId
 );  
