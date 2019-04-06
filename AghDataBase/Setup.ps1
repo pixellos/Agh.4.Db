@@ -16,4 +16,3 @@ foreach ($s in $scripts) {
     $script = $s.FullName
     Invoke-Sqlcmd -ServerInstance $Server -InputFile $script -Database AghDataBase 
 }
-

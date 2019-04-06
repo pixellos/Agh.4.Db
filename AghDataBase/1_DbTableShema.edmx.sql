@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 04/06/2019 10:00:35
+-- Date Created: 04/06/2019 10:44:22
 -- Generated from EDMX file: C:\Users\rogoz\source\repos\AghDataBase\AghDataBase\1_DbTableShema.edmx
 -- --------------------------------------------------
 
@@ -77,6 +77,12 @@ GO
 IF OBJECT_ID(N'[dbo].[FK_CorporateClientConference]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[Conferences] DROP CONSTRAINT [FK_CorporateClientConference];
 GO
+IF OBJECT_ID(N'[dbo].[FK_PaymentReservation]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Reservations] DROP CONSTRAINT [FK_PaymentReservation];
+GO
+IF OBJECT_ID(N'[dbo].[FK_PaymentClient]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Payments] DROP CONSTRAINT [FK_PaymentClient];
+GO
 
 -- --------------------------------------------------
 -- Dropping existing tables
@@ -132,6 +138,9 @@ IF OBJECT_ID(N'[dbo].[ConferenceDays]', 'U') IS NOT NULL
 GO
 IF OBJECT_ID(N'[dbo].[WorkshopReservations]', 'U') IS NOT NULL
     DROP TABLE [dbo].[WorkshopReservations];
+GO
+IF OBJECT_ID(N'[dbo].[Payments]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[Payments];
 GO
 
 -- --------------------------------------------------
@@ -280,6 +289,22 @@ CREATE TABLE [dbo].[WorkshopReservations] (
 );
 GO
 
+-- Creating table 'ReservationPayments'
+CREATE TABLE [dbo].[ReservationPayments] (
+    [Id] int IDENTITY(1,1) NOT NULL,
+    [PriceStage] nvarchar(max)  NOT NULL,
+    [Ammount] nvarchar(max)  NOT NULL,
+    [ClientId] int  NOT NULL
+);
+GO
+
+-- Creating table 'WorkshopReservationPayments'
+CREATE TABLE [dbo].[WorkshopReservationPayments] (
+    [Id] int IDENTITY(1,1) NOT NULL,
+    [Ammount] nvarchar(max)  NOT NULL
+);
+GO
+
 -- --------------------------------------------------
 -- Creating all PRIMARY KEY constraints
 -- --------------------------------------------------
@@ -383,6 +408,18 @@ GO
 -- Creating primary key on [Id] in table 'WorkshopReservations'
 ALTER TABLE [dbo].[WorkshopReservations]
 ADD CONSTRAINT [PK_WorkshopReservations]
+    PRIMARY KEY CLUSTERED ([Id] ASC);
+GO
+
+-- Creating primary key on [Id] in table 'ReservationPayments'
+ALTER TABLE [dbo].[ReservationPayments]
+ADD CONSTRAINT [PK_ReservationPayments]
+    PRIMARY KEY CLUSTERED ([Id] ASC);
+GO
+
+-- Creating primary key on [Id] in table 'WorkshopReservationPayments'
+ALTER TABLE [dbo].[WorkshopReservationPayments]
+ADD CONSTRAINT [PK_WorkshopReservationPayments]
     PRIMARY KEY CLUSTERED ([Id] ASC);
 GO
 
@@ -664,6 +701,39 @@ GO
 CREATE INDEX [IX_FK_CorporateClientConference]
 ON [dbo].[Conferences]
     ([Issuer]);
+GO
+
+-- Creating foreign key on [ClientId] in table 'ReservationPayments'
+ALTER TABLE [dbo].[ReservationPayments]
+ADD CONSTRAINT [FK_PaymentClient]
+    FOREIGN KEY ([ClientId])
+    REFERENCES [dbo].[Clients]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_PaymentClient'
+CREATE INDEX [IX_FK_PaymentClient]
+ON [dbo].[ReservationPayments]
+    ([ClientId]);
+GO
+
+-- Creating foreign key on [Id] in table 'ReservationPayments'
+ALTER TABLE [dbo].[ReservationPayments]
+ADD CONSTRAINT [FK_ReservationPaymentReservation]
+    FOREIGN KEY ([Id])
+    REFERENCES [dbo].[Reservations]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating foreign key on [Id] in table 'WorkshopReservationPayments'
+ALTER TABLE [dbo].[WorkshopReservationPayments]
+ADD CONSTRAINT [FK_WorkshopReservationPaymentWorkshopReservation]
+    FOREIGN KEY ([Id])
+    REFERENCES [dbo].[WorkshopReservations]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
 GO
 
 -- --------------------------------------------------
