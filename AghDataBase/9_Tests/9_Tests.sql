@@ -27,8 +27,14 @@ EXEC AddStudent 'NotExisting', 'NotExisting', '97010207999','600000', '+48 12345
 EXEC AssignEmployerToEmployee '1234561', 'Associate', 'Mateusz', 'Popielarz', '97010207002', '+48 111111112', 'Mickiewicza', 4, 1, '38-400', 'Krosno', 'Podkarpacie', 'Polska';
 EXEC AssignEmployerToEmployee '1234561', 'Associate', 'Mateusz', 'Popielarz', '97010207002', '+48 111111112', 'Mickiewicza', 4, 1, '38-400', 'Krosno', 'Podkarpacie', 'England';
 
-EXEC AddConference '1234561', 'ConfituraPL',0 , 500, 'Konferencyjna', 14, 7, '32-234', 'Kraków', 'Małopolskie', 'Polska';
+DECLARE @confitura int;
+EXEC @confitura = AddConference '1234561', 'ConfituraPL',0 , 500, 'Konferencyjna', 14, 7, '32-234', 'Kraków', 'Małopolskie', 'Polska';
+
 EXEC AddConference '1234561', 'ConfituraStudent', 100, 800, 'Konferencyjna', 14, 7, '32-234', 'Kraków', 'Małopolskie', 'Polska';
+
+EXEC MakeReservation '97010207001', @confitura;
+EXEC MakeReservation '97010207001', @confitura;
+EXEC MakeReservation '97010207002', @confitura;
 
 
 

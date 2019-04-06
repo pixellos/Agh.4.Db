@@ -136,7 +136,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="0_Functions\0_Constant.sql" />
-    <Content Include="0_Functions\1_AttendantsAtConferenceDay.sql" />
+    <Content Include="0_Functions\1_GetIndividualClientOrThrow.sql" />
+    <Content Include="0_Functions\2_AttendantsAtConferenceDay.sql" />
     <Content Include="1_StoredProcedures\7_MakeReservation.sql" />
     <Content Include="1_StoredProcedures\6_AddConference.sql" />
     <Content Include="1_StoredProcedures\5_AddPriceToConference.sql" />
@@ -152,7 +153,7 @@
       <LastGenOutput>Model1.cs</LastGenOutput>
       <DependentUpon>1_DbTableShema.edmx</DependentUpon>
     </Content>
-    <Content Include="0_DbInit.sql" />
+    <None Include="0_DbInit.sqli" />
     <Content Include="1_StoredProcedures\3_AddStudent.sql" />
     <Content Include="1_StoredProcedures\1_AddClient.sql" />
     <Content Include="1_StoredProcedures\2_AddCorporateClient.sql" />
