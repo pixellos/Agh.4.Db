@@ -2,7 +2,7 @@
 /*
     Dodaj studenta
 */
-CREATE OR ALTER PROCEDURE AddStudent 
+CREATE PROCEDURE AddStudent 
 	@FirstName nvarchar(50),
 	@LastName nvarchar(50),
 	@PersonalNumber nvarchar(50),

@@ -32,7 +32,7 @@
         <AssociationConnector Association="Model1.ClientBuilding" />
         <AssociationConnector Association="Model1.ConferenceBuilding" />
         <EntityTypeShape EntityType="Model1.Reservation" Width="1.5" PointX="16.25" PointY="5" />
-        <EntityTypeShape EntityType="Model1.ConferenceDay" Width="1.5" PointX="0.875" PointY="2.75" />
+        <EntityTypeShape EntityType="Model1.ConferenceDay" Width="1.5" PointX="0.875" PointY="2.75" IsExpanded="true" />
         <AssociationConnector Association="Model1.ConferenceDayConference" />
         <EntityTypeShape EntityType="Model1.WorkshopReservation" Width="1.5" PointX="4.875" PointY="9.125" />
         <AssociationConnector Association="Model1.WorkshopReservationWorkshop" />

@@ -1,7 +1,7 @@
 ﻿/*
     Add a client that is a company
 */
-CREATE OR ALTER PROCEDURE AddCorporateClient 
+CREATE PROCEDURE AddCorporateClient 
 	@CompanyName nvarchar(50),
 	@TaxNumber nvarchar(50),
 	@Telephone nvarchar(50),

@@ -3,7 +3,7 @@
 	Założenia:
 	Numer telefonu jest unikatowy dla każdego użytkownika, nie może być pusty (musimy się jakoś kontaktować z uczestnikami)	
 */
-CREATE OR ALTER PROCEDURE AddClient 
+CREATE PROCEDURE AddClient 
 	@FirstName nvarchar(50),
 	@LastName nvarchar(50),
 	@PersonalNumber nvarchar(50),

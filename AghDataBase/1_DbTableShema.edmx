@@ -1046,16 +1046,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="IndividualClientConferenceDay">
-          <End Type="Model1.IndividualClient" Role="IndividualClient" Multiplicity="1" />
+          <End Type="Model1.IndividualClient" Role="IndividualClient" Multiplicity="*" />
           <End Type="Model1.ConferenceDay" Role="ConferenceDay" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="IndividualClient">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ConferenceDay">
-              <PropertyRef Name="IndividualClientId" />
-            </Dependent>
-          </ReferentialConstraint>
         </Association>
         <Association Name="IndividualClientWorkshopReservation">
           <End Type="Model1.WorkshopReservation" Role="WorkshopReservation" Multiplicity="*" />
