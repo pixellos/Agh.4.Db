@@ -25,6 +25,7 @@ EXEC AddStudent 'Mateusz', 'Popielarz', '97010207003','600988', '+48 123456789',
 EXEC AddStudent 'NotExisting', 'NotExisting', '97010207999','600000', '+48 123456680', 'Mickiewicza2', 4, 1, '38-400', 'Krosno', 'Podkarpacie', 'Polska';
 
 EXEC AssignEmployerToEmployee '1234561', 'Associate', 'Mateusz', 'Popielarz', '97010207002', '+48 111111112', 'Mickiewicza', 4, 1, '38-400', 'Krosno', 'Podkarpacie', 'Polska';
+EXEC AssignEmployerToEmployee '1234561', 'Associate', 'Mateusz', 'Popielarz', '97010207002', '+48 111111112', 'Mickiewicza', 4, 1, '38-400', 'Krosno', 'Podkarpacie', 'England';
 
 --/*Will fail on adding student with same id */
 --BEGIN TRY  

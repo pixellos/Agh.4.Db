@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 04/04/2019 12:03:41
+-- Date Created: 04/06/2019 10:00:35
 -- Generated from EDMX file: C:\Users\rogoz\source\repos\AghDataBase\AghDataBase\1_DbTableShema.edmx
 -- --------------------------------------------------
 
@@ -73,6 +73,9 @@ IF OBJECT_ID(N'[dbo].[FK_IndividualClientWorkshopReservation]', 'F') IS NOT NULL
 GO
 IF OBJECT_ID(N'[dbo].[FK_WorkshopWorkshopPrice]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[Workshops] DROP CONSTRAINT [FK_WorkshopWorkshopPrice];
+GO
+IF OBJECT_ID(N'[dbo].[FK_CorporateClientConference]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Conferences] DROP CONSTRAINT [FK_CorporateClientConference];
 GO
 
 -- --------------------------------------------------
@@ -189,7 +192,8 @@ CREATE TABLE [dbo].[Conferences] (
     [Id] int IDENTITY(1,1) NOT NULL,
     [Name] nvarchar(max)  NOT NULL,
     [BuildingId] int  NOT NULL,
-    [Discount] tinyint  NOT NULL
+    [StudentDiscount] tinyint  NOT NULL,
+    [Issuer] int  NOT NULL
 );
 GO
 
@@ -197,8 +201,8 @@ GO
 CREATE TABLE [dbo].[ConferencePrices] (
     [Id] int IDENTITY(1,1) NOT NULL,
     [ConferenceId] int  NOT NULL,
-    [TillConferenceStart] datetimeoffset  NOT NULL,
-    [Price] nvarchar(max)  NOT NULL
+    [TillConferenceStart] smallint  NOT NULL,
+    [Price] decimal(18,0)  NOT NULL
 );
 GO
 
@@ -645,6 +649,21 @@ GO
 CREATE INDEX [IX_FK_WorkshopWorkshopPrice]
 ON [dbo].[Workshops]
     ([WorkshopPrice_Id]);
+GO
+
+-- Creating foreign key on [Issuer] in table 'Conferences'
+ALTER TABLE [dbo].[Conferences]
+ADD CONSTRAINT [FK_CorporateClientConference]
+    FOREIGN KEY ([Issuer])
+    REFERENCES [dbo].[CorporateClients]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_CorporateClientConference'
+CREATE INDEX [IX_FK_CorporateClientConference]
+ON [dbo].[Conferences]
+    ([Issuer]);
 GO
 
 -- --------------------------------------------------

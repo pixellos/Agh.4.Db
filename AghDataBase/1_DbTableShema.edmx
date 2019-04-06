@@ -99,6 +99,10 @@
       <End Role="Workshop" EntitySet="Workshops" />
       <End Role="WorkshopPrice" EntitySet="WorkshopPrices" />
     </AssociationSet>
+    <AssociationSet Name="CorporateClientConference" Association="Model1.Store.CorporateClientConference">
+      <End Role="CorporateClient" EntitySet="CorporateClients" />
+      <End Role="Conference" EntitySet="Conferences" />
+    </AssociationSet>
   </EntityContainer>
   <EntityType Name="Clients">
     <Key>
@@ -156,7 +160,8 @@
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
     <Property Name="BuildingId" Type="int" Nullable="false" />
-    <Property Name="Discount" Type="tinyint" Nullable="false" />
+    <Property Name="StudentDiscount" Type="tinyint" Nullable="false" />
+    <Property Name="Issuer" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="ConferencePrices">
     <Key>
@@ -164,8 +169,8 @@
     </Key>
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="ConferenceId" Type="int" Nullable="false" />
-    <Property Name="TillConferenceStart" Type="datetimeoffset" Nullable="false" />
-    <Property Name="Price" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="TillConferenceStart" Type="smallint" Nullable="false" />
+    <Property Name="Price" Type="decimal" Nullable="false" />
   </EntityType>
   <EntityType Name="Students">
     <Key>
@@ -469,6 +474,18 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="CorporateClientConference">
+    <End Role="CorporateClient" Type="Model1.Store.CorporateClients" Multiplicity="1" />
+    <End Role="Conference" Type="Model1.Store.Conferences" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CorporateClient">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Conference">
+        <PropertyRef Name="Issuer" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
 </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
@@ -567,6 +584,10 @@
             <End Role="Workshop" EntitySet="Workshops" />
             <End Role="WorkshopPrice" EntitySet="WorkshopPrices" />
           </AssociationSet>
+          <AssociationSet Name="CorporateClientConference" Association="Model1.CorporateClientConference">
+            <End Role="CorporateClient" EntitySet="CorporateClients" />
+            <End Role="Conference" EntitySet="Conferences" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="Client">
           <Key>
@@ -589,6 +610,7 @@
           <Property Name="CompanyName" Type="String" Nullable="false" />
           <Property Name="TaxNumber" Type="String" Nullable="false" />
           <NavigationProperty Name="CorporateClientEmployes" Relationship="Model1.CorporateClientCorporateClientEmploye" FromRole="CorporateClient" ToRole="CorporateClientEmploye" />
+          <NavigationProperty Name="Conferences" Relationship="Model1.CorporateClientConference" FromRole="CorporateClient" ToRole="Conference" />
         </EntityType>
         <EntityType Name="IndividualClient">
           <Key>
@@ -692,6 +714,8 @@
           <Property Name="StudentDiscount" Type="Byte" Nullable="false" />
           <NavigationProperty Name="ConferenceDays" Relationship="Model1.ConferenceDayConference" FromRole="Conference" ToRole="ConferenceDay" />
           <NavigationProperty Name="Reservations" Relationship="Model1.ConferenceReservation" FromRole="Conference" ToRole="Reservation" />
+          <NavigationProperty Name="CorporateClient" Relationship="Model1.CorporateClientConference" FromRole="Conference" ToRole="CorporateClient" />
+          <Property Name="Issuer" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="ConferencePrices">
           <Key>
@@ -700,8 +724,8 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <NavigationProperty Name="Conference" Relationship="Model1.ConferenceConferencePrices" FromRole="ConferencePrices" ToRole="Conference" />
           <Property Name="ConferenceId" Type="Int32" Nullable="false" />
-          <Property Name="TillConferenceStart" Type="DateTimeOffset" Nullable="false" />
-          <Property Name="Price" Type="String" Nullable="false" />
+          <Property Name="TillConferenceStart" Type="Int16" Nullable="false" />
+          <Property Name="Price" Type="Decimal" Nullable="false" />
         </EntityType>
         <Association Name="ConferenceConferencePrices">
           <End Type="Model1.Conference" Role="Conference" Multiplicity="1" />
@@ -966,6 +990,18 @@
           <End Type="Model1.Workshop" Role="Workshop" Multiplicity="0..1" />
           <End Type="Model1.WorkshopPrice" Role="WorkshopPrice" Multiplicity="1" />
         </Association>
+        <Association Name="CorporateClientConference">
+          <End Type="Model1.CorporateClient" Role="CorporateClient" Multiplicity="1" />
+          <End Type="Model1.Conference" Role="Conference" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CorporateClient">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Conference">
+              <PropertyRef Name="Issuer" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1032,7 +1068,8 @@
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="Name" ColumnName="Name" />
           <ScalarProperty Name="BuildingId" ColumnName="BuildingId" />
-          <ScalarProperty Name="StudentDiscount" ColumnName="Discount" />
+          <ScalarProperty Name="StudentDiscount" ColumnName="StudentDiscount" />
+          <ScalarProperty Name="Issuer" ColumnName="Issuer" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

@@ -133,8 +133,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="0_StoredProcedures\5_CreateConference.sql" />
-    <Content Include="0_StoredProcedures\4_AssignEmployeeToEmployer.sql" />
+    <Content Include="0_Functions\0_Constant.sql" />
+    <Content Include="1_StoredProcedures\5_AddPriceToConference.sql" />
+    <Content Include="1_StoredProcedures\6_CreateConferenceAndAssignCompany.sql" />
+    <Content Include="1_StoredProcedures\4_AssignEmployeeToEmployer.sql" />
     <Content Include="1_DbTableShema.edmx.sql" />
     <Content Include="Model1.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -147,11 +149,11 @@
       <DependentUpon>1_DbTableShema.edmx</DependentUpon>
     </Content>
     <Content Include="0_DbInit.sql" />
-    <Content Include="0_StoredProcedures\3_AddStudent.sql" />
-    <Content Include="0_StoredProcedures\1_AddClient.sql" />
-    <Content Include="0_StoredProcedures\2_AddCorporateClient.sql" />
-    <Content Include="0_StoredProcedures\0_AddAddres.sql" />
-    <Content Include="1_Tests\9_Tests.sql" />
+    <Content Include="1_StoredProcedures\3_AddStudent.sql" />
+    <Content Include="1_StoredProcedures\1_AddClient.sql" />
+    <Content Include="1_StoredProcedures\2_AddCorporateClient.sql" />
+    <Content Include="1_StoredProcedures\0_AddAddres.sql" />
+    <Content Include="9_Tests\9_Tests.sql" />
     <Content Include="3_Views.sql" />
     <Content Include="2_Triggers.sql" />
   </ItemGroup>
