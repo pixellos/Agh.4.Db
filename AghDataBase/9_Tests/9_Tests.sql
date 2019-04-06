@@ -29,6 +29,11 @@ EXEC AssignEmployerToEmployee '1234561', 'Associate', 'Mateusz', 'Popielarz', '9
 
 DECLARE @confitura int;
 EXEC @confitura = AddConference '1234561', 'ConfituraPL',0 , 500, 'Konferencyjna', 14, 7, '32-234', 'Kraków', 'Małopolskie', 'Polska';
+EXEC AddPriceToConference 400, 2, @confitura;
+EXEC AddPriceToConference 300, 14, @confitura;
+EXEC AddPriceToConference 200, 31, @confitura;
+EXEC AddPriceToConference 100, 9999, @confitura;
+EXEC AddPriceToConference 100, 32766, @confitura;
 
 EXEC AddConference '1234561', 'ConfituraStudent', 100, 800, 'Konferencyjna', 14, 7, '32-234', 'Kraków', 'Małopolskie', 'Polska';
 
