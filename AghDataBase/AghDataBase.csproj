@@ -131,6 +131,8 @@
       <DependentUpon>1_DbTableShema.edmx</DependentUpon>
     </None>
     <None Include="packages.config" />
+    <None Include="Setup.ps1" />
+    <None Include="Watch.ps1" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="0_Functions\0_Constant.sql" />

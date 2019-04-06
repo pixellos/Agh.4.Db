@@ -1,0 +1,1 @@
+﻿while ($true) { .\setup.ps1; sleep 10}
