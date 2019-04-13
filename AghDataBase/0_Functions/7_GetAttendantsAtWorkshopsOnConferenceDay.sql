@@ -1,4 +1,4 @@
-﻿CREATE FUNCTION GetAttendantsAtConferenceDay (
+﻿CREATE FUNCTION GetAttendantsAtWorkshopsOnConferenceDay (
 	@ConferenceId int,
 	@ConferenceDay int
 	)  
@@ -6,7 +6,7 @@ RETURNS TABLE
 AS  
 RETURN   
 (  
-    SELECT CDC.Id as ConferenceDayId, A.FirstName, A.LastName, A.PersonalNumber, S.StudentId, CC.CompanyName
+    SELECT CDC.Id as ConferenceDayId, A.FirstName, A.LastName, A.PersonalNumber, S.StudentId, CC.CompanyName, W.Name
 	from (
 		SELECT * FROM ConferenceDays CD 
 		where CD.ConferenceId = @conferenceId
@@ -29,4 +29,10 @@ RETURN
 
 	LEFT JOIN CorporateClients CC
 	ON CC.Id = CCE.CorporateClientId
+
+	INNER JOIN WorkshopReservations WR
+	ON WR.Id = A.Id
+
+	INNER JOIN Workshops W
+	ON W.Id = WR.WorkshopId
 );  

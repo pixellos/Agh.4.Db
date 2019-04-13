@@ -137,9 +137,10 @@
   <ItemGroup>
     <Content Include="0_Functions\0_Constant.sql" />
     <Content Include="0_Functions\1_GetIndividualClientOrThrow.sql" />
+    <Content Include="0_Functions\2_GetAttendantsAtConferenceDay.sql" />
     <Content Include="0_Functions\5_GetConferenceStart.sql" />
     <Content Include="0_Functions\6_GetConferencePrice.sql" />
-    <Content Include="0_Functions\2_AttendantsAtConferenceDay.sql" />
+    <Content Include="0_Functions\7_GetAttendantsAtWorkshopsOnConferenceDay.sql" />
     <Content Include="1_StoredProcedures\7_MakeReservation.sql" />
     <Content Include="1_StoredProcedures\6_AddConference.sql" />
     <Content Include="1_StoredProcedures\5_AddPriceToConference.sql" />

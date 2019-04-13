@@ -2,8 +2,8 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 04/06/2019 12:16:20
--- Generated from EDMX file: C:\Users\rogoz\source\repos\AghDataBase\AghDataBase\1_DbTableShema.edmx
+-- Date Created: 04/13/2019 10:12:12
+-- Generated from EDMX file: C:\Users\Michal\Documents\bazy projekt\https-github.com-pixellos-Agh_DB_4\AghDataBase\1_DbTableShema.edmx
 -- --------------------------------------------------
 
 SET QUOTED_IDENTIFIER OFF;
@@ -65,8 +65,11 @@ GO
 IF OBJECT_ID(N'[dbo].[FK_ConferenceReservation]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[Reservations] DROP CONSTRAINT [FK_ConferenceReservation];
 GO
-IF OBJECT_ID(N'[dbo].[FK_IndividualClientConferenceDay]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[ConferenceDays] DROP CONSTRAINT [FK_IndividualClientConferenceDay];
+IF OBJECT_ID(N'[dbo].[FK_IndividualClientConferenceDay_IndividualClient]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[IndividualClientConferenceDay] DROP CONSTRAINT [FK_IndividualClientConferenceDay_IndividualClient];
+GO
+IF OBJECT_ID(N'[dbo].[FK_IndividualClientConferenceDay_ConferenceDay]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[IndividualClientConferenceDay] DROP CONSTRAINT [FK_IndividualClientConferenceDay_ConferenceDay];
 GO
 IF OBJECT_ID(N'[dbo].[FK_IndividualClientWorkshopReservation]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[WorkshopReservations] DROP CONSTRAINT [FK_IndividualClientWorkshopReservation];
@@ -148,6 +151,9 @@ GO
 IF OBJECT_ID(N'[dbo].[WorkshopReservationPayments]', 'U') IS NOT NULL
     DROP TABLE [dbo].[WorkshopReservationPayments];
 GO
+IF OBJECT_ID(N'[dbo].[IndividualClientConferenceDay]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[IndividualClientConferenceDay];
+GO
 
 -- --------------------------------------------------
 -- Creating all tables
@@ -191,6 +197,7 @@ CREATE TABLE [dbo].[Workshops] (
     [Id] int IDENTITY(1,1) NOT NULL,
     [StartTime] datetime  NOT NULL,
     [EndTime] datetime  NOT NULL,
+    [Name] nvarchar(max)  NOT NULL,
     [WorkshopPrice_Id] int  NOT NULL
 );
 GO
@@ -282,8 +289,7 @@ CREATE TABLE [dbo].[ConferenceDays] (
     [Id] int IDENTITY(1,1) NOT NULL,
     [Date] nvarchar(max)  NOT NULL,
     [ConferenceId] int  NOT NULL,
-    [Capacity] int  NOT NULL,
-    [IndividualClientId] int  NOT NULL
+    [Capacity] int  NOT NULL
 );
 GO
 
