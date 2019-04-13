@@ -1,5 +1,5 @@
 ﻿
-CREATE OR ALTER FUNCTION GetIndividualClientOrThrow(@PersonalNumber int)
+CREATE FUNCTION GetIndividualClientOrThrow(@PersonalNumber nvarchar(50))
 RETURNS INT
 AS
 BEGIN
