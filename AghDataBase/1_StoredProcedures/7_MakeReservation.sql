@@ -12,7 +12,6 @@ SELECT @client_id =  Min(Id)
 FROM IndividualClients
 WHERE PersonalNumber = @PersonalNumber;
 
-
 DECLARE @reservation_id int;
 SELECT @reservation_id = Min(Id)
 FROM Reservations
@@ -31,13 +30,31 @@ RETURN @reservation_id;
 GO
 
 
+/*
+
+*/
+CREATE PROCEDURE AddConferenceDay
+AS
+
+return 0;
+GO
+
+/*
+	Założenie: Klient w treści przelewu wpisuje numer konferencji, gdy przelew był zły dzwonimy do klienta i 
+
+	Klient wpłacił płatność w dniu podanym
+	W przypadku odrzucenia rzucany jest wyjątek
+*/
 CREATE PROCEDURE PayForReservationWithADate
 	@PersonalNumber varchar(50),
 	@ConferenceId int,
+	@PaymentDate datetime,
 	@Ammount decimal
 AS
 
-
+DECLARE @clientId INT;
+SELECT @clientId = dbo.GetIndividualClientOrThrow(@PersonalNumber);
+	
 
 RETURN 0;
 GO
