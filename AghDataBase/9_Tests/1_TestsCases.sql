@@ -1,4 +1,5 @@
-﻿/*Will add a street 5/5 38-400 City, Provice, Country*/
+﻿
+/*Will add a street 5/5 38-400 City, Provice, Country*/
 EXEC AddAddress 'street', 5,5,'38-400','City', 'Province', 'Country';
 
 /*Will add a street 6/5 38-400 City, Provice, Country  -- Additional building*/
@@ -92,5 +93,7 @@ BEGIN
 	set @i = CAST(('@twoWeeksBefore != 300, ' + @twoWeeksBefore) AS INT);
 END
 
-EXEC PayForReservationWithADate  '97010207001', @confitura, '2017/08/24', 400;
-EXEC PayForReservationWithADate  '97010207001', @confitura, '2017/08/10', 300;
+select 'Test1'
+select 'Test1'
+
+EXEC PayForReservationWithADate  '97010207001', @confitura, '2017/08/12', 300;

@@ -37,7 +37,7 @@ GO
     Zwraca id conference price biorąc pod uwagę datę zaksięgowania przelewu
 */
 CREATE OR ALTER FUNCTION GetConferencePriceId(@ConferenceId int, @PaymentDate datetime)
-RETURNS decimal
+RETURNS int
 AS
 BEGIN
 	DECLARE @result int;
@@ -82,6 +82,8 @@ BEGIN
 	BEGIN
 		RETURN @conference_price * @student_discount / 100;
 	END
+
+
 
 	RETURN Cast('Never should be there' as int)
 END
