@@ -255,7 +255,6 @@
     <Property Name="Date" Type="nvarchar(max)" Nullable="false" />
     <Property Name="ConferenceId" Type="int" Nullable="false" />
     <Property Name="Capacity" Type="int" Nullable="false" />
-    <Property Name="IndividualClientId" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="WorkshopReservations">
     <Key>
@@ -283,10 +282,10 @@
   </EntityType>
   <EntityType Name="IndividualClientConferenceDay">
     <Key>
-      <PropertyRef Name="IndividualClient_Id" />
+      <PropertyRef Name="IndividualClientConferenceDay_ConferenceDay_Id" />
       <PropertyRef Name="ConferenceDays_Id" />
     </Key>
-    <Property Name="IndividualClient_Id" Type="int" Nullable="false" />
+    <Property Name="IndividualClientConferenceDay_ConferenceDay_Id" Type="int" Nullable="false" />
     <Property Name="ConferenceDays_Id" Type="int" Nullable="false" />
   </EntityType>
   <Association Name="Client_CorporateClient">
@@ -561,7 +560,7 @@
         <PropertyRef Name="Id" />
       </Principal>
       <Dependent Role="IndividualClientConferenceDay">
-        <PropertyRef Name="IndividualClient_Id" />
+        <PropertyRef Name="IndividualClientConferenceDay_ConferenceDay_Id" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -692,6 +691,10 @@
           <AssociationSet Name="WorkshopReservationPaymentWorkshopReservation" Association="Model1.WorkshopReservationPaymentWorkshopReservation">
             <End Role="WorkshopReservationPayment" EntitySet="WorkshopReservationPayments" />
             <End Role="WorkshopReservation" EntitySet="WorkshopReservations" />
+          </AssociationSet>
+          <AssociationSet Name="ConferencePricesReservationPayment" Association="Model1.ConferencePricesReservationPayment">
+            <End Role="ConferencePrices" EntitySet="ConferencePrices" />
+            <End Role="ReservationPayment" EntitySet="ReservationPayments" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="Client">
@@ -832,6 +835,7 @@
           <Property Name="ConferenceId" Type="Int32" Nullable="false" />
           <Property Name="TillConferenceStart" Type="Int16" Nullable="false" />
           <Property Name="Price" Type="Decimal" Nullable="false" />
+          <NavigationProperty Name="ReservationPayments" Relationship="Model1.ConferencePricesReservationPayment" FromRole="ConferencePrices" ToRole="ReservationPayment" />
         </EntityType>
         <Association Name="ConferenceConferencePrices">
           <End Type="Model1.Conference" Role="Conference" Multiplicity="1" />
@@ -1008,7 +1012,6 @@
           <NavigationProperty Name="Conference" Relationship="Model1.ConferenceDayConference" FromRole="ConferenceDay" ToRole="Conference" />
           <Property Name="ConferenceId" Type="Int32" Nullable="false" />
           <Property Name="Capacity" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="IndividualClient" Relationship="Model1.IndividualClientConferenceDay" FromRole="ConferenceDay" ToRole="IndividualClient" />
         </EntityType>
         <Association Name="ConferenceDayConference">
           <End Type="Model1.ConferenceDay" Role="ConferenceDay" Multiplicity="*" />
@@ -1111,6 +1114,8 @@
           <NavigationProperty Name="Client" Relationship="Model1.PaymentClient" FromRole="Payment" ToRole="Client" />
           <Property Name="ClientId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Reservation" Relationship="Model1.ReservationPaymentReservation" FromRole="ReservationPayment" ToRole="Reservation" />
+          <NavigationProperty Name="ConferencePrice" Relationship="Model1.ConferencePricesReservationPayment" FromRole="ReservationPayment" ToRole="ConferencePrices" />
+          <Property Name="ConferencePricesId" Type="Int32" Nullable="true" />
         </EntityType>
         <Association Name="PaymentClient">
           <End Type="Model1.ReservationPayment" Role="Payment" Multiplicity="*" />
@@ -1153,6 +1158,18 @@
             </Principal>
             <Dependent Role="WorkshopReservationPayment">
               <PropertyRef Name="Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="ConferencePricesReservationPayment">
+          <End Type="Model1.ConferencePrices" Role="ConferencePrices" Multiplicity="0..1" />
+          <End Type="Model1.ReservationPayment" Role="ReservationPayment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ConferencePrices">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ReservationPayment">
+              <PropertyRef Name="ConferencePricesId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1339,7 +1356,7 @@
     </EntitySetMapping>
     <AssociationSetMapping Name="IndividualClientConferenceDay" TypeName="Model1.IndividualClientConferenceDay" StoreEntitySet="IndividualClientConferenceDay">
       <EndProperty Name="IndividualClient">
-        <ScalarProperty Name="Id" ColumnName="IndividualClient_Id" />
+        <ScalarProperty Name="Id" ColumnName="IndividualClientConferenceDay_ConferenceDay_Id" />
       </EndProperty>
       <EndProperty Name="ConferenceDay">
         <ScalarProperty Name="Id" ColumnName="ConferenceDays_Id" />

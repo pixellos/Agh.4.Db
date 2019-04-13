@@ -2,7 +2,7 @@
    Tworzymy rezerwację dla osoby o numerze PESEL @PersonalNumber i firmy o numerze podatkowym @CompanyTax,
    Gdy rezerwacja jest stworzona zwracamy już istniejącą
 */
-CREATE PROCEDURE MakeReservation
+CREATE OR ALTER PROCEDURE MakeReservation
 	@PersonalNumber varchar(50),
 	@ConferenceId int
 AS
@@ -29,32 +29,23 @@ END
 RETURN @reservation_id;
 GO
 
-
 /*
-
+	Rejestrujemy dzień konferencji do konferencji
 */
-CREATE PROCEDURE AddConferenceDay
+CREATE OR ALTER PROCEDURE AddConferenceDay
+@ConferenceId int, 
+@Date datetime,
+@Capacity int
 AS
+DECLARE @id int;
 
-return 0;
-GO
+select TOP(1) @id = id from ConferenceDays where CONVERT(datE, Date) = CONVERT(DATE, @Date); 
 
-/*
-	Założenie: Klient w treści przelewu wpisuje numer konferencji, gdy przelew był zły dzwonimy do klienta i 
+IF @id IS NULL
+BEGIN
+	INSERT INTO ConferenceDays(Capacity, ConferenceId, Date) VALUES (@Capacity, @ConferenceId, CONVERT(DATE, @Date));
+	SET @id = @@IDENTITY;
+END
 
-	Klient wpłacił płatność w dniu podanym
-	W przypadku odrzucenia rzucany jest wyjątek
-*/
-CREATE PROCEDURE PayForReservationWithADate
-	@PersonalNumber varchar(50),
-	@ConferenceId int,
-	@PaymentDate datetime,
-	@Ammount decimal
-AS
-
-DECLARE @clientId INT;
-SELECT @clientId = dbo.GetIndividualClientOrThrow(@PersonalNumber);
-	
-
-RETURN 0;
+return @id;
 GO

@@ -46,6 +46,15 @@ EXEC AddPriceToConference 200, 31, @confitura;
 EXEC AddPriceToConference 100, 9999, @confitura;
 EXEC AddPriceToConference 100, 32766, @confitura; 
 
+EXEC AddConferenceDay @confitura,  '2017/08/25', 5
+EXEC AddConferenceDay @confitura,  '2017/08/25', 4
+EXEC AddConferenceDay @confitura,  '2018/08/25', 4
+
+IF (SELECT COUNT(*) FROM ConferenceDays) != 2
+BEGIN
+	set @i = CAST(('(SELECT COUNT(*) FROM ConferenceDays) != 2) ' +  CAST((SELECT COUNT(*) FROM ConferenceDays) AS varchar(10))) AS INT);
+END
+
 
 IF (SELECT COUNT(*) FROM ConferencePrices) != 6
 BEGIN
@@ -63,5 +72,9 @@ IF (SELECT COUNT(*) FROM Reservations) = 3
 BEGIN
 	set @i = CAST('Assert error.' AS INT);
 END
+
+DECLARE @price decimal;
+
+SELECT @price = dbo.GetConferencePrice(5,  '97010207001', '2017/08/25');
 
 

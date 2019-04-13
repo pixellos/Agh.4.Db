@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 04/06/2019 12:16:20
+-- Date Created: 04/13/2019 11:58:14
 -- Generated from EDMX file: C:\Users\rogoz\source\repos\AghDataBase\AghDataBase\1_DbTableShema.edmx
 -- --------------------------------------------------
 
@@ -65,8 +65,11 @@ GO
 IF OBJECT_ID(N'[dbo].[FK_ConferenceReservation]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[Reservations] DROP CONSTRAINT [FK_ConferenceReservation];
 GO
-IF OBJECT_ID(N'[dbo].[FK_IndividualClientConferenceDay]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[ConferenceDays] DROP CONSTRAINT [FK_IndividualClientConferenceDay];
+IF OBJECT_ID(N'[dbo].[FK_IndividualClientConferenceDay_IndividualClient]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[IndividualClientConferenceDay] DROP CONSTRAINT [FK_IndividualClientConferenceDay_IndividualClient];
+GO
+IF OBJECT_ID(N'[dbo].[FK_IndividualClientConferenceDay_ConferenceDay]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[IndividualClientConferenceDay] DROP CONSTRAINT [FK_IndividualClientConferenceDay_ConferenceDay];
 GO
 IF OBJECT_ID(N'[dbo].[FK_IndividualClientWorkshopReservation]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[WorkshopReservations] DROP CONSTRAINT [FK_IndividualClientWorkshopReservation];
@@ -147,6 +150,9 @@ IF OBJECT_ID(N'[dbo].[ReservationPayments]', 'U') IS NOT NULL
 GO
 IF OBJECT_ID(N'[dbo].[WorkshopReservationPayments]', 'U') IS NOT NULL
     DROP TABLE [dbo].[WorkshopReservationPayments];
+GO
+IF OBJECT_ID(N'[dbo].[IndividualClientConferenceDay]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[IndividualClientConferenceDay];
 GO
 
 -- --------------------------------------------------
@@ -282,8 +288,7 @@ CREATE TABLE [dbo].[ConferenceDays] (
     [Id] int IDENTITY(1,1) NOT NULL,
     [Date] nvarchar(max)  NOT NULL,
     [ConferenceId] int  NOT NULL,
-    [Capacity] int  NOT NULL,
-    [IndividualClientId] int  NOT NULL
+    [Capacity] int  NOT NULL
 );
 GO
 
@@ -313,7 +318,7 @@ GO
 
 -- Creating table 'IndividualClientConferenceDay'
 CREATE TABLE [dbo].[IndividualClientConferenceDay] (
-    [IndividualClient_Id] int  NOT NULL,
+    [IndividualClientConferenceDay_ConferenceDay_Id] int  NOT NULL,
     [ConferenceDays_Id] int  NOT NULL
 );
 GO
@@ -436,10 +441,10 @@ ADD CONSTRAINT [PK_WorkshopReservationPayments]
     PRIMARY KEY CLUSTERED ([Id] ASC);
 GO
 
--- Creating primary key on [IndividualClient_Id], [ConferenceDays_Id] in table 'IndividualClientConferenceDay'
+-- Creating primary key on [IndividualClientConferenceDay_ConferenceDay_Id], [ConferenceDays_Id] in table 'IndividualClientConferenceDay'
 ALTER TABLE [dbo].[IndividualClientConferenceDay]
 ADD CONSTRAINT [PK_IndividualClientConferenceDay]
-    PRIMARY KEY CLUSTERED ([IndividualClient_Id], [ConferenceDays_Id] ASC);
+    PRIMARY KEY CLUSTERED ([IndividualClientConferenceDay_ConferenceDay_Id], [ConferenceDays_Id] ASC);
 GO
 
 -- --------------------------------------------------
@@ -662,10 +667,10 @@ ON [dbo].[Reservations]
     ([ConferenceId]);
 GO
 
--- Creating foreign key on [IndividualClient_Id] in table 'IndividualClientConferenceDay'
+-- Creating foreign key on [IndividualClientConferenceDay_ConferenceDay_Id] in table 'IndividualClientConferenceDay'
 ALTER TABLE [dbo].[IndividualClientConferenceDay]
 ADD CONSTRAINT [FK_IndividualClientConferenceDay_IndividualClient]
-    FOREIGN KEY ([IndividualClient_Id])
+    FOREIGN KEY ([IndividualClientConferenceDay_ConferenceDay_Id])
     REFERENCES [dbo].[IndividualClients]
         ([Id])
     ON DELETE NO ACTION ON UPDATE NO ACTION;

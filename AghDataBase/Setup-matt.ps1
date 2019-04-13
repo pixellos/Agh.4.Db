@@ -6,7 +6,7 @@ IF (!(Get-Module -Name sqlps)) {
 }
   
 $localScriptRoot = Get-Location;
-$Server = "POPIELARZM\SQLEXPRESS"
+$Server = "LOCALHOST\SQLEXPRESS"
 $scripts = Get-ChildItem $localScriptRoot -Recurse  | Where-Object { $_.Extension -eq ".sql" }
   
 Invoke-Sqlcmd -ServerInstance $Server -InputFile (Join-Path $localScriptRoot '.\0_DbInit.sqli') -Database master

@@ -47,6 +47,7 @@
         <AssociationConnector Association="Model1.ReservationPaymentReservation" />
         <EntityTypeShape EntityType="Model1.WorkshopReservationPayment" Width="1.5" PointX="6.75" PointY="9" />
         <AssociationConnector Association="Model1.WorkshopReservationPaymentWorkshopReservation" />
+        <AssociationConnector Association="Model1.ConferencePricesReservationPayment" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
