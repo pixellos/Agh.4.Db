@@ -1,4 +1,4 @@
-﻿CREATE FUNCTION AttendantsAtConferenceDay (
+﻿CREATE FUNCTION GetAttendantsAtConferenceDay (
 	@ConferenceId int,
 	@ConferenceDay int
 	)  
@@ -8,22 +8,22 @@ RETURN
 (  
     SELECT A.FirstName, A.LastName, A.PersonalNumber, S.StudentId, CC.CompanyName
 	from (
-		SELECT * FROM ConferenceDay CD 
+		SELECT * FROM ConferenceDays CD 
 		where CD.ConferenceId = @conferenceId
 		ORDER BY CD.Date ASC
 		OFFSET @ConferenceDay ROWS
 		FETCH NEXT 1 ROW ONLY
 	) AS CDC
 
-	LEFT JOIN IndividualClient A
+	LEFT JOIN IndividualClients A
 	ON A.Id = CDC.IndividualClientId 
 
-	LEFT JOIN Student S
+	LEFT JOIN Students S
 	ON S.Id = A.Id
 
-	LEFT JOIN CorporateClientEmployee CCE
+	LEFT JOIN CorporateClientEmployes CCE
 	ON A.Id = CCE.Id
 
-	LEFT JOIN CorporateClient CC
+	LEFT JOIN CorporateClients CC
 	ON CC.Id = CCE.CorporateClientId
 );  
