@@ -23,14 +23,13 @@ SELECT @clientId = dbo.GetIndividualClientOrThrow(@PersonalNumber);
 DECLARE @price decimal;
 select @price = dbo.GetConferencePrice(@ConferenceId, @PersonalNumber, @PaymentDate);
 
-
 DECLARE @priceId int;
-select @priceId = dbo.GetConferencePriceId(@ConferenceId, @PersonalNumber, @PaymentDate);
+select @priceId = dbo.GetConferencePriceId(@ConferenceId, @PaymentDate);
 
 DECLARE @reservationId int;
 SELECT @reservationId = Id FROM Reservations WHERE ConferenceId = @ConferenceId and ClientId = @clientId;
 
-if @reservationId = null 
+if @reservationId is null 
 BEGIN
 	;THROW 51001, 'RESERVATION DOES NOT EXISTS', 1;
 END
@@ -39,18 +38,18 @@ DECLARE @reservationPaymentId int;
 SELECT @reservationPaymentId = Id FROM ReservationPayments 
 WHERE Id = @reservationId;
 
-IF @reservationPaymentId != null
+IF @reservationPaymentId IS NOT null
 BEGIN
 	;THROW 51002, 'RESERVATION HAS BEEN ALREADY PAID FOR', 2;
 END
 
 IF @price != @Ammount
 BEGIN
-	DECLARE @msg NVARCHAR(2048) = 'RESERVATION CANNOT BE PLACED - AMMOUNT DIFFERS WITH PRICE: ' + @price;   
+	DECLARE @msg NVARCHAR(2048) = ('RESERVATION CANNOT BE PLACED - AMMOUNT DIFFERS WITH PRICE: ' + @price);   
 	THROW 51003, @msg, 3;
 END	
 
 INSERT INTO ReservationPayments(Id, ClientId, Amount, ConferencePricesId) VALUES(@reservationId ,@clientId, @price, @priceId)
 RETURN @reservationId;
 
-GO
+GO	

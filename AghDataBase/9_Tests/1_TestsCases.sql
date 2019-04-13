@@ -68,13 +68,29 @@ EXEC MakeReservation '97010207001', @confitura;
 EXEC MakeReservation '97010207002', @confitura;
 
 
-IF (SELECT COUNT(*) FROM Reservations) = 3
+IF (SELECT COUNT(*) FROM Reservations) != 2
 BEGIN
 	set @i = CAST('Assert error.' AS INT);
 END
 
-DECLARE @price decimal;
+DECLARE @dayBefore decimal;
+SELECT @dayBefore = dbo.GetConferencePrice(@confitura,  '97010207001', '2018/08/24');
+SELECT @dayBefore
 
-SELECT @price = dbo.GetConferencePrice(5,  '97010207001', '2017/08/25');
+IF @dayBefore != 400
+BEGIN
+	set @i = CAST(('@dayBefore != 400, ' + @dayBefore) AS INT);
+END
 
+DECLARE @twoWeeksBefore decimal;
+SELECT @twoWeeksBefore = dbo.GetConferencePrice(@confitura,  '97010207001', '2018/08/12');
 
+SELECT @twoWeeksBefore
+IF @twoWeeksBefore != 300
+
+BEGIN
+	set @i = CAST(('@twoWeeksBefore != 300, ' + @twoWeeksBefore) AS INT);
+END
+
+EXEC PayForReservationWithADate  '97010207001', @confitura, '2017/08/24', 400;
+EXEC PayForReservationWithADate  '97010207001', @confitura, '2017/08/10', 300;

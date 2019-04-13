@@ -273,7 +273,7 @@
     <Key>
       <PropertyRef Name="Id" />
     </Key>
-    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Id" Type="int" Nullable="false" />
     <Property Name="PriceStage" Type="nvarchar(max)" Nullable="false" />
     <Property Name="Amount" Type="decimal" Nullable="false" />
     <Property Name="ClientId" Type="int" Nullable="false" />
@@ -1127,7 +1127,7 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="None" />
           <Property Name="PriceStage" Type="String" Nullable="false" />
           <Property Name="Amount" Type="Decimal" Nullable="false" />
           <NavigationProperty Name="Client" Relationship="Model1.PaymentClient" FromRole="Payment" ToRole="Client" />

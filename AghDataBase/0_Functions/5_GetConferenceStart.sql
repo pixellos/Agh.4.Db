@@ -23,14 +23,33 @@ AS
 BEGIN
 	DECLARE @result decimal;
 
-	SELECT TOP(1) @result = Price 
+SELECT TOP(1) @result = Price
 	FROM ConferencePrices
-	WHERE @ConferenceId = ConferenceId AND DATEADD(DD, -TillConferenceStart, dbo.GetConferenceStart(ConferenceId)) <= DATEADD(DD, 0, @PaymentDate)
-	ORDER BY DATEADD(DD, -TillConferenceStart, dbo.GetConferenceStart(ConferenceId))
+	WHERE @ConferenceId = ConferenceId AND DATEADD(DD, -TillConferenceStart, dbo.GetConferenceStart(ConferenceId)) < DATEADD(DD, 0, @PaymentDate)
+	ORDER BY TillConferenceStart
 	
 	RETURN @result;
 END
 GO
+
+
+/*
+    Zwraca id conference price biorąc pod uwagę datę zaksięgowania przelewu
+*/
+CREATE OR ALTER FUNCTION GetConferencePriceId(@ConferenceId int, @PaymentDate datetime)
+RETURNS decimal
+AS
+BEGIN
+	DECLARE @result int;
+
+	SELECT TOP(1) @result = Id
+	FROM ConferencePrices
+	WHERE @ConferenceId = ConferenceId AND DATEADD(DD, -TillConferenceStart, dbo.GetConferenceStart(ConferenceId)) < DATEADD(DD, 0, @PaymentDate)
+	ORDER BY TillConferenceStart
+	RETURN @result;
+END
+GO
+
 
 /*
 	Zwraca cenę konferencji i bierze pod uwagę, czy jest studentem.
