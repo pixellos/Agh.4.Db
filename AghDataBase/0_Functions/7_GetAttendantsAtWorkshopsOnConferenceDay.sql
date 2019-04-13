@@ -19,7 +19,7 @@ RETURN
 	ON CDC.Id = ICCD.ConferenceDays_Id
 
 	LEFT JOIN IndividualClients A
-	ON A.Id = ICCD.IndividualClient_Id
+	ON A.Id = ICCD.IndividualClientConferenceDay_ConferenceDay_Id
 
 	LEFT JOIN Students S
 	ON S.Id = A.Id

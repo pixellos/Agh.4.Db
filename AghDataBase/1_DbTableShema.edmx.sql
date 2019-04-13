@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 04/13/2019 11:58:14
+-- Date Created: 04/13/2019 15:35:16
 -- Generated from EDMX file: C:\Users\rogoz\source\repos\AghDataBase\AghDataBase\1_DbTableShema.edmx
 -- --------------------------------------------------
 
@@ -306,7 +306,8 @@ CREATE TABLE [dbo].[ReservationPayments] (
     [Id] int IDENTITY(1,1) NOT NULL,
     [PriceStage] nvarchar(max)  NOT NULL,
     [Ammount] nvarchar(max)  NOT NULL,
-    [ClientId] int  NOT NULL
+    [ClientId] int  NOT NULL,
+    [ConferencePricesId] int  NULL
 );
 GO
 
@@ -768,6 +769,21 @@ ADD CONSTRAINT [FK_WorkshopReservationPaymentWorkshopReservation]
     REFERENCES [dbo].[WorkshopReservations]
         ([Id])
     ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating foreign key on [ConferencePricesId] in table 'ReservationPayments'
+ALTER TABLE [dbo].[ReservationPayments]
+ADD CONSTRAINT [FK_ConferencePricesReservationPayment]
+    FOREIGN KEY ([ConferencePricesId])
+    REFERENCES [dbo].[ConferencePrices]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_ConferencePricesReservationPayment'
+CREATE INDEX [IX_FK_ConferencePricesReservationPayment]
+ON [dbo].[ReservationPayments]
+    ([ConferencePricesId]);
 GO
 
 -- --------------------------------------------------

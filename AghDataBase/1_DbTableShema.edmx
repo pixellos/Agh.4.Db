@@ -25,7 +25,7 @@
     <EntitySet Name="WorkshopReservations" EntityType="Model1.Store.WorkshopReservations" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="ReservationPayments" EntityType="Model1.Store.ReservationPayments" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="WorkshopReservationPayments" EntityType="Model1.Store.WorkshopReservationPayments" store:Type="Tables" Schema="dbo" />
-    <EntitySet Name="IndividualClientConferenceDay" EntityType="Model1.Store.IndividualClientConferenceDay" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="IndividualClientConferenceDay" EntityType="Model1.Store.IndividualClientConferenceDay" store:Type="Tables" Schema="dbo" />
     <AssociationSet Name="Client_CorporateClient" Association="Model1.Store.Client_CorporateClient">
       <End Role="Client" EntitySet="Clients" />
       <End Role="CorporateClient" EntitySet="CorporateClients" />
@@ -91,12 +91,12 @@
       <End Role="Reservation" EntitySet="Reservations" />
     </AssociationSet>
     <AssociationSet Name="FK_IndividualClientConferenceDay_IndividualClient" Association="Model1.Store.FK_IndividualClientConferenceDay_IndividualClient">
-      <End EntitySet="IndividualClients" Role="IndividualClient" />
-      <End EntitySet="IndividualClientConferenceDay" Role="IndividualClientConferenceDay" />
+      <End Role="IndividualClient" EntitySet="IndividualClients" />
+      <End Role="IndividualClientConferenceDay" EntitySet="IndividualClientConferenceDay" />
     </AssociationSet>
     <AssociationSet Name="FK_IndividualClientConferenceDay_ConferenceDay" Association="Model1.Store.FK_IndividualClientConferenceDay_ConferenceDay">
-      <End EntitySet="ConferenceDays" Role="ConferenceDay" />
-      <End EntitySet="IndividualClientConferenceDay" Role="IndividualClientConferenceDay" />
+      <End Role="ConferenceDay" EntitySet="ConferenceDays" />
+      <End Role="IndividualClientConferenceDay" EntitySet="IndividualClientConferenceDay" />
     </AssociationSet>
     <AssociationSet Name="IndividualClientWorkshopReservation" Association="Model1.Store.IndividualClientWorkshopReservation">
       <End Role="WorkshopReservation" EntitySet="WorkshopReservations" />
@@ -121,6 +121,10 @@
     <AssociationSet Name="WorkshopReservationPaymentWorkshopReservation" Association="Model1.Store.WorkshopReservationPaymentWorkshopReservation">
       <End Role="WorkshopReservationPayment" EntitySet="WorkshopReservationPayments" />
       <End Role="WorkshopReservation" EntitySet="WorkshopReservations" />
+    </AssociationSet>
+    <AssociationSet Name="ConferencePricesReservationPayment" Association="Model1.Store.ConferencePricesReservationPayment">
+      <End Role="ConferencePrices" EntitySet="ConferencePrices" />
+      <End Role="ReservationPayment" EntitySet="ReservationPayments" />
     </AssociationSet>
   </EntityContainer>
   <EntityType Name="Clients">
@@ -273,6 +277,7 @@
     <Property Name="PriceStage" Type="nvarchar(max)" Nullable="false" />
     <Property Name="Ammount" Type="nvarchar(max)" Nullable="false" />
     <Property Name="ClientId" Type="int" Nullable="false" />
+    <Property Name="ConferencePricesId" Type="int" Nullable="true" />
   </EntityType>
   <EntityType Name="WorkshopReservationPayments">
     <Key>
@@ -553,9 +558,21 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="ConferencePricesReservationPayment">
+    <End Role="ConferencePrices" Type="Model1.Store.ConferencePrices" Multiplicity="0..1" />
+    <End Role="ReservationPayment" Type="Model1.Store.ReservationPayments" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ConferencePrices">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="ReservationPayment">
+        <PropertyRef Name="ConferencePricesId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_IndividualClientConferenceDay_IndividualClient">
-    <End Type="Model1.Store.IndividualClients" Multiplicity="1" Role="IndividualClient" />
-    <End Type="Model1.Store.IndividualClientConferenceDay" Multiplicity="*" Role="IndividualClientConferenceDay" />
+    <End Role="IndividualClient" Type="Model1.Store.IndividualClients" Multiplicity="1" />
+    <End Role="IndividualClientConferenceDay" Type="Model1.Store.IndividualClientConferenceDay" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="IndividualClient">
         <PropertyRef Name="Id" />
@@ -566,8 +583,8 @@
     </ReferentialConstraint>
   </Association>
   <Association Name="FK_IndividualClientConferenceDay_ConferenceDay">
-    <End Type="Model1.Store.IndividualClientConferenceDay" Multiplicity="*" Role="IndividualClientConferenceDay" />
-    <End Type="Model1.Store.ConferenceDays" Multiplicity="1" Role="ConferenceDay" />
+    <End Role="IndividualClientConferenceDay" Type="Model1.Store.IndividualClientConferenceDay" Multiplicity="*" />
+    <End Role="ConferenceDay" Type="Model1.Store.ConferenceDays" Multiplicity="1" />
     <ReferentialConstraint>
       <Principal Role="ConferenceDay">
         <PropertyRef Name="Id" />
@@ -1346,6 +1363,7 @@
           <ScalarProperty Name="PriceStage" ColumnName="PriceStage" />
           <ScalarProperty Name="Ammount" ColumnName="Ammount" />
           <ScalarProperty Name="ClientId" ColumnName="ClientId" />
+          <ScalarProperty Name="ConferencePricesId" ColumnName="ConferencePricesId" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

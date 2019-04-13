@@ -139,6 +139,7 @@
     <Content Include="0_Functions\1_Get.sql" />
     <Content Include="0_Functions\2_GetAttendantsAtConferenceDay.sql" />
     <Content Include="0_Functions\5_GetConferenceStart.sql" />
+    <Content Include="0_Functions\7_GetAttendantsAtWorkshopsOnConferenceDay.sql" />
     <Content Include="1_StoredProcedures\8_PayForReservationWithDate.sql" />
     <Content Include="1_StoredProcedures\7_MakeReservation.sql" />
     <Content Include="1_StoredProcedures\6_AddConference.sql" />
