@@ -58,7 +58,7 @@ CREATE OR ALTER FUNCTION GetConferencePrice(
 	@ConferenceId int, 
 	@PersonalNumber nvarchar(50),
 	@PaymentDate DateTime)
-	RETURNS INT
+	RETURNS decimal
 	AS 
 BEGIN
 	DECLARE @conference_price decimal;
@@ -67,11 +67,14 @@ BEGIN
 	DECLARE @client_id int
 	SELECT @client_id = dbo.GetIndividualClientOrThrow(@PersonalNumber);
 
-	DECLARE @student_discount int
+	DECLARE @student_id int
 	SELECT TOP(1)
-		@student_discount = [Id]
+		@student_id = [Id]
 	FROM Students
 	WHERE Id = @client_id;
+
+	DECLARE @student_discount int;
+	SELECT TOP(1) @student_discount = StudentDiscount FROM Conferences where Id = @ConferenceId;
 
 	IF @student_discount is NULL OR @student_discount = 0
 	BEGIN
@@ -80,11 +83,9 @@ BEGIN
 
 	IF @student_discount <= 100
 	BEGIN
-		RETURN @conference_price * @student_discount / 100;
+		RETURN @conference_price * (@student_discount / 100);
 	END
-
-
-
+	   
 	RETURN Cast('Never should be there' as int)
 END
 GO

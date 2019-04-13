@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 04/13/2019 17:22:33
+-- Date Created: 04/13/2019 18:50:09
 -- Generated from EDMX file: C:\Users\rogoz\source\repos\AghDataBase\AghDataBase\1_DbTableShema.edmx
 -- --------------------------------------------------
 
@@ -307,7 +307,6 @@ GO
 -- Creating table 'ReservationPayments'
 CREATE TABLE [dbo].[ReservationPayments] (
     [Id] int  NOT NULL,
-    [PriceStage] nvarchar(max)  NOT NULL,
     [Amount] decimal(18,0)  NOT NULL,
     [ClientId] int  NOT NULL,
     [ConferencePricesId] int  NULL
