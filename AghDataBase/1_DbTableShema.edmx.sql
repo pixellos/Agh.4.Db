@@ -197,6 +197,7 @@ CREATE TABLE [dbo].[Workshops] (
     [Id] int IDENTITY(1,1) NOT NULL,
     [StartTime] datetime  NOT NULL,
     [EndTime] datetime  NOT NULL,
+    [Name] nvarchar(max)  NOT NULL,
     [WorkshopPrice_Id] int  NOT NULL
 );
 GO
