@@ -50,7 +50,7 @@ BEGIN
 	THROW 51003, @msg, 3;
 END	
 
-INSERT INTO ReservationPayments(Id, ClientId, Ammount, ConferencePricesId) VALUES(@reservationId ,@clientId, @price, @priceId)
+INSERT INTO ReservationPayments(Id, ClientId, Amount, ConferencePricesId) VALUES(@reservationId ,@clientId, @price, @priceId)
 RETURN @reservationId;
 
 GO
