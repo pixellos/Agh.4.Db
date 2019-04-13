@@ -2,8 +2,8 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 04/13/2019 15:35:16
--- Generated from EDMX file: C:\Users\rogoz\source\repos\AghDataBase\AghDataBase\1_DbTableShema.edmx
+-- Date Created: 04/13/2019 16:44:07
+-- Generated from EDMX file: C:\Users\Michal\Documents\bazy projekt\https-github.com-pixellos-Agh_DB_4\AghDataBase\1_DbTableShema.edmx
 -- --------------------------------------------------
 
 SET QUOTED_IDENTIFIER OFF;
@@ -88,6 +88,9 @@ IF OBJECT_ID(N'[dbo].[FK_ReservationPaymentReservation]', 'F') IS NOT NULL
 GO
 IF OBJECT_ID(N'[dbo].[FK_WorkshopReservationPaymentWorkshopReservation]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[WorkshopReservationPayments] DROP CONSTRAINT [FK_WorkshopReservationPaymentWorkshopReservation];
+GO
+IF OBJECT_ID(N'[dbo].[FK_ConferencePricesReservationPayment]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[ReservationPayments] DROP CONSTRAINT [FK_ConferencePricesReservationPayment];
 GO
 
 -- --------------------------------------------------
@@ -305,7 +308,7 @@ GO
 CREATE TABLE [dbo].[ReservationPayments] (
     [Id] int IDENTITY(1,1) NOT NULL,
     [PriceStage] nvarchar(max)  NOT NULL,
-    [Ammount] nvarchar(max)  NOT NULL,
+    [Amount] decimal(18,0)  NOT NULL,
     [ClientId] int  NOT NULL,
     [ConferencePricesId] int  NULL
 );

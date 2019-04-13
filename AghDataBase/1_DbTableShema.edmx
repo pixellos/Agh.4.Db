@@ -275,7 +275,7 @@
     </Key>
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="PriceStage" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="Ammount" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Amount" Type="decimal" Nullable="false" />
     <Property Name="ClientId" Type="int" Nullable="false" />
     <Property Name="ConferencePricesId" Type="int" Nullable="true" />
   </EntityType>
@@ -1129,7 +1129,7 @@
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="PriceStage" Type="String" Nullable="false" />
-          <Property Name="Ammount" Type="String" Nullable="false" />
+          <Property Name="Amount" Type="Decimal" Nullable="false" />
           <NavigationProperty Name="Client" Relationship="Model1.PaymentClient" FromRole="Payment" ToRole="Client" />
           <Property Name="ClientId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Reservation" Relationship="Model1.ReservationPaymentReservation" FromRole="ReservationPayment" ToRole="Reservation" />
@@ -1361,7 +1361,7 @@
         <MappingFragment StoreEntitySet="ReservationPayments">
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="PriceStage" ColumnName="PriceStage" />
-          <ScalarProperty Name="Ammount" ColumnName="Ammount" />
+          <ScalarProperty Name="Amount" ColumnName="Amount" />
           <ScalarProperty Name="ClientId" ColumnName="ClientId" />
           <ScalarProperty Name="ConferencePricesId" ColumnName="ConferencePricesId" />
         </MappingFragment>
