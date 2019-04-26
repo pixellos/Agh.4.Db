@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 04/26/2019 18:14:43
+-- Date Created: 04/26/2019 19:45:40
 -- Generated from EDMX file: C:\Users\rogoz\source\repos\AghDataBase\AghDataBase\1_DbTableShema.edmx
 -- --------------------------------------------------
 
@@ -173,8 +173,8 @@ GO
 -- Creating table 'CorporateClients'
 CREATE TABLE [dbo].[CorporateClients] (
     [Id] int  NOT NULL,
-    [CompanyName] nvarchar(max)  NOT NULL,
-    [TaxNumber] nvarchar(max)  NOT NULL
+    [CompanyName] nvarchar(120)  NOT NULL,
+    [TaxNumber] nvarchar(20)  NOT NULL
 );
 GO
 
@@ -183,7 +183,7 @@ CREATE TABLE [dbo].[IndividualClients] (
     [Id] int  NOT NULL,
     [FirstName] nvarchar(max)  NOT NULL,
     [LastName] nvarchar(max)  NOT NULL,
-    [PersonalNumber] nvarchar(max)  NOT NULL
+    [PersonalNumber] nchar(11)  NOT NULL
 );
 GO
 
@@ -234,7 +234,7 @@ GO
 -- Creating table 'Students'
 CREATE TABLE [dbo].[Students] (
     [Id] int  NOT NULL,
-    [StudentId] nvarchar(max)  NOT NULL
+    [StudentId] nvarchar(120)  NOT NULL
 );
 GO
 

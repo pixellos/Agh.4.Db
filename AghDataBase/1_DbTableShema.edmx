@@ -140,8 +140,8 @@
       <PropertyRef Name="Id" />
     </Key>
     <Property Name="Id" Type="int" Nullable="false" />
-    <Property Name="CompanyName" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="TaxNumber" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="CompanyName" Type="nvarchar" Nullable="false" MaxLength="120" />
+    <Property Name="TaxNumber" Type="nvarchar" Nullable="false" MaxLength="20" />
   </EntityType>
   <EntityType Name="IndividualClients">
     <Key>
@@ -150,7 +150,7 @@
     <Property Name="Id" Type="int" Nullable="false" />
     <Property Name="FirstName" Type="nvarchar(max)" Nullable="false" />
     <Property Name="LastName" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="PersonalNumber" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="PersonalNumber" Type="nchar" Nullable="false" MaxLength="11" />
   </EntityType>
   <EntityType Name="CorporateClientEmployes">
     <Key>
@@ -201,7 +201,7 @@
       <PropertyRef Name="Id" />
     </Key>
     <Property Name="Id" Type="int" Nullable="false" />
-    <Property Name="StudentId" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="StudentId" Type="nvarchar" Nullable="false" MaxLength="120" />
   </EntityType>
   <EntityType Name="Cities">
     <Key>
@@ -733,8 +733,8 @@
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="None" />
           <NavigationProperty Name="Client" Relationship="Model1.Client_CorporateClient" FromRole="CorporateClient" ToRole="Client" />
-          <Property Name="CompanyName" Type="String" Nullable="false" />
-          <Property Name="TaxNumber" Type="String" Nullable="false" />
+          <Property Name="CompanyName" Type="String" Nullable="false" MaxLength="120" />
+          <Property Name="TaxNumber" Type="String" Nullable="false" MaxLength="20" />
           <NavigationProperty Name="CorporateClientEmployes" Relationship="Model1.CorporateClientCorporateClientEmploye" FromRole="CorporateClient" ToRole="CorporateClientEmploye" />
           <NavigationProperty Name="Conferences" Relationship="Model1.CorporateClientConference" FromRole="CorporateClient" ToRole="Conference" />
         </EntityType>
@@ -747,7 +747,7 @@
           <NavigationProperty Name="CorporateClientEmploye" Relationship="Model1.CorporateClientEmployeIndividualClient" FromRole="IndividualClient" ToRole="CorporateClientEmploye" />
           <Property Name="FirstName" Type="String" Nullable="false" />
           <Property Name="LastName" Type="String" Nullable="false" />
-          <Property Name="PersonalNumber" Type="String" Nullable="false" />
+          <Property Name="PersonalNumber" Type="String" Nullable="false" MaxLength="11" FixedLength="true" />
           <NavigationProperty Name="Student" Relationship="Model1.StudentIndividualClient" FromRole="IndividualClient" ToRole="Student" />
           <NavigationProperty Name="ConferenceDays" Relationship="Model1.IndividualClientConferenceDay" FromRole="IndividualClient" ToRole="ConferenceDay" />
           <NavigationProperty Name="WorkshopReservations" Relationship="Model1.IndividualClientWorkshopReservation" FromRole="IndividualClient" ToRole="WorkshopReservation" />
@@ -872,7 +872,7 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="None" />
-          <Property Name="StudentId" Type="String" Nullable="false" />
+          <Property Name="StudentId" Type="String" Nullable="false" MaxLength="120" />
           <NavigationProperty Name="IndividualClient" Relationship="Model1.StudentIndividualClient" FromRole="Student" ToRole="IndividualClient" />
         </EntityType>
         <Association Name="StudentIndividualClient">

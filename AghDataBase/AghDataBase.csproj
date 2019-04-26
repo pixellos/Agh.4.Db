@@ -168,7 +168,7 @@
     <Content Include="1_StoredProcedures\0_AddAddres.sql" />
     <Content Include="9_FailingTests\22_FailingOnWrongPesel.sql" />
     <Content Include="3_Views.sql" />
-    <Content Include="2_Triggers.sql" />
+    <Content Include="2_Constraints.sql" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
