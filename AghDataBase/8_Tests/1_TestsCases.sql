@@ -26,12 +26,12 @@ EXEC AddCorporateClient 'ForteDigital', '000000000', '+48 123456789', 'UlicaFort
 EXEC AddCorporateClient 'PowerShellPl', '1234561', '+48 143456789', 'Ulicapower', null, 6 ,'12-122','Kraków', 'Małopolskie', 'Polska';
 EXEC AddCorporateClient 'ForteDigital2', '000000002', '+48 111111111', 'UlicaForte', 10, 6 ,'12-122','Kraków', 'Małopolskie', 'Polska';
 
-EXEC AddClient 'Mateusz', 'Popielarz', '97010207000', '+48 111111112', 'Brodzińskiego', 5, 1, '38-400', 'Krosno', 'Podkarpacie', 'Polska';
-EXEC AddClient 'Mateusz', 'Popielarz', '97010207001', '+48 111111112', 'Brodzińskiego', 5, 1, '38-400', 'Krosno', 'Podkarpacie', 'Polska';
+EXEC AddClient 'Mateusz', 'Popielarz', '97010107005', '+48 111111112', 'Brodzińskiego', 5, 1, '38-400', 'Krosno', 'Podkarpacie', 'Polska';
+EXEC AddClient 'Mateusz', 'Popielarz', '97010307009', '+48 111111112', 'Brodzińskiego', 5, 1, '38-400', 'Krosno', 'Podkarpacie', 'Polska';
 EXEC AddClient 'Mateusz', 'Popielarz', '97010207002', '+48 111111112', 'Mickiewicza', 4, 1, '38-400', 'Krosno', 'Podkarpacie', 'Polska';
 
-EXEC AddStudent 'Mateusz', 'Popielarz', '97010207003','600988', '+48 123456789', 'Mickiewicza', 4, 1, '38-400', 'Krosno', 'Podkarpacie', 'Polska';
-EXEC AddStudent 'NotExisting', 'NotExisting', '97010207999','600000', '+48 123456680', 'Mickiewicza2', 4, 1, '38-400', 'Krosno', 'Podkarpacie', 'Polska';
+EXEC AddStudent 'Mateusz', 'Popielarz', '85082768299','600988', '+48 123456789', 'Mickiewicza', 4, 1, '38-400', 'Krosno', 'Podkarpacie', 'Polska';
+EXEC AddStudent 'NotExisting', 'NotExisting', '68072754249','600000', '+48 123456680', 'Mickiewicza2', 4, 1, '38-400', 'Krosno', 'Podkarpacie', 'Polska';
 
 EXEC AssignEmployerToEmployee '1234561', 'Associate', 'Mateusz', 'Popielarz', '97010207002', '+48 111111112', 'Mickiewicza', 4, 1, '38-400', 'Krosno', 'Podkarpacie', 'Polska';
 EXEC AssignEmployerToEmployee '1234561', 'Associate', 'Mateusz', 'Popielarz', '97010207002', '+48 111111112', 'Mickiewicza', 4, 1, '38-400', 'Krosno', 'Podkarpacie', 'England';
@@ -63,9 +63,9 @@ END
 
 EXEC AddConference '1234561', 'ConfituraStudent', 100, 800, 'Konferencyjna', 14, 7, '32-234', 'Kraków', 'Małopolskie', 'Polska';
 
-EXEC MakeReservation '97010207001', @confitura;
-EXEC MakeReservation '97010207001', @confitura;
-EXEC MakeReservation '97010207002', @confitura;
+EXEC MakeReservation '85082768299', @confitura;
+EXEC MakeReservation '68072754249', @confitura;
+EXEC MakeReservation '68072754249', @confitura;
 
 
 IF (SELECT COUNT(*) FROM Reservations) != 2
@@ -74,7 +74,7 @@ BEGIN
 END
 
 DECLARE @dayBefore decimal;
-SELECT @dayBefore = dbo.GetConferencePrice(@confitura,  '97010207001', '2018/08/24');
+SELECT @dayBefore = dbo.GetConferencePrice(@confitura,  '68072754249', '2018/08/24');
 SELECT @dayBefore
 
 IF @dayBefore != 400
@@ -83,7 +83,7 @@ BEGIN
 END
 
 DECLARE @twoWeeksBefore decimal;
-SELECT @twoWeeksBefore = dbo.GetConferencePrice(@confitura,  '97010207001', '2018/08/12');
+SELECT @twoWeeksBefore = dbo.GetConferencePrice(@confitura,  '68072754249', '2018/08/12');
 
 SELECT @twoWeeksBefore
 IF @twoWeeksBefore != 300
@@ -92,4 +92,4 @@ BEGIN
 	set @i = CAST(('@twoWeeksBefore != 300, ' + @twoWeeksBefore) AS INT);
 END
 
-EXEC PayForReservationWithADate  '97010207001', @confitura, '2018/08/24', 400;
+EXEC PayForReservationWithADate  '68072754249', @confitura, '2018/08/24', 400;

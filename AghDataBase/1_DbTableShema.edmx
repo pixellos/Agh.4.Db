@@ -208,7 +208,7 @@
       <PropertyRef Name="Id" />
     </Key>
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="80" />
     <Property Name="ProvinceId" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="Streets">
@@ -216,8 +216,8 @@
       <PropertyRef Name="Id" />
     </Key>
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
-    <Property Name="ZipCode" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="50" />
+    <Property Name="ZipCode" Type="nvarchar" Nullable="false" MaxLength="20" />
     <Property Name="CityId" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="Provinces">
@@ -225,7 +225,7 @@
       <PropertyRef Name="Id" />
     </Key>
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="50" />
     <Property Name="CountryId" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="Buildings">
@@ -234,7 +234,7 @@
     </Key>
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="StreetId" Type="int" Nullable="false" />
-    <Property Name="Number" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Number" Type="nvarchar" Nullable="false" MaxLength="20" />
     <Property Name="ApartmentNumber" Type="int" Nullable="true" />
   </EntityType>
   <EntityType Name="Countries">
@@ -242,7 +242,7 @@
       <PropertyRef Name="Id" />
     </Key>
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="50" />
   </EntityType>
   <EntityType Name="Reservations">
     <Key>
@@ -892,7 +892,7 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="80" />
           <NavigationProperty Name="Streets" Relationship="Model1.CityStreet" FromRole="City" ToRole="Street" />
           <NavigationProperty Name="Province" Relationship="Model1.ProvinceCity" FromRole="City" ToRole="Province" />
           <Property Name="ProvinceId" Type="Int32" Nullable="false" />
@@ -902,8 +902,8 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" Nullable="false" />
-          <Property Name="ZipCode" Type="String" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" />
+          <Property Name="ZipCode" Type="String" Nullable="false" MaxLength="20" />
           <NavigationProperty Name="City" Relationship="Model1.CityStreet" FromRole="Street" ToRole="City" />
           <Property Name="CityId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Buildings" Relationship="Model1.StreetBuilding" FromRole="Street" ToRole="Building" />
@@ -913,7 +913,7 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" />
           <NavigationProperty Name="Cities" Relationship="Model1.ProvinceCity" FromRole="Province" ToRole="City" />
           <NavigationProperty Name="Country" Relationship="Model1.CountryProvince" FromRole="Province" ToRole="Country" />
           <Property Name="CountryId" Type="Int32" Nullable="false" />
@@ -949,7 +949,7 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <NavigationProperty Name="Street" Relationship="Model1.StreetBuilding" FromRole="Building" ToRole="Street" />
           <Property Name="StreetId" Type="Int32" Nullable="false" />
-          <Property Name="Number" Type="String" Nullable="false" />
+          <Property Name="Number" Type="String" Nullable="false" MaxLength="20" />
           <NavigationProperty Name="Clients" Relationship="Model1.ClientBuilding" FromRole="Building" ToRole="Client" />
           <NavigationProperty Name="Conferences" Relationship="Model1.ConferenceBuilding" FromRole="Building" ToRole="Conference" />
           <Property Name="ApartmentNumber" Type="Int32" Nullable="true" />
@@ -972,7 +972,7 @@
           </Key>
           <Property Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" Type="Int32" />
           <NavigationProperty Name="Provinces" Relationship="Model1.CountryProvince" FromRole="Country" ToRole="Province" />
-          <Property Name="Name" Type="String" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" />
         </EntityType>
         <Association Name="CountryProvince">
           <End Type="Model1.Country" Multiplicity="1" Role="Country" />

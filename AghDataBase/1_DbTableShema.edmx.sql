@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 04/13/2019 18:50:09
+-- Date Created: 04/26/2019 18:14:43
 -- Generated from EDMX file: C:\Users\rogoz\source\repos\AghDataBase\AghDataBase\1_DbTableShema.edmx
 -- --------------------------------------------------
 
@@ -241,7 +241,7 @@ GO
 -- Creating table 'Cities'
 CREATE TABLE [dbo].[Cities] (
     [Id] int IDENTITY(1,1) NOT NULL,
-    [Name] nvarchar(max)  NOT NULL,
+    [Name] nvarchar(80)  NOT NULL,
     [ProvinceId] int  NOT NULL
 );
 GO
@@ -249,8 +249,8 @@ GO
 -- Creating table 'Streets'
 CREATE TABLE [dbo].[Streets] (
     [Id] int IDENTITY(1,1) NOT NULL,
-    [Name] nvarchar(max)  NOT NULL,
-    [ZipCode] nvarchar(max)  NOT NULL,
+    [Name] nvarchar(50)  NOT NULL,
+    [ZipCode] nvarchar(20)  NOT NULL,
     [CityId] int  NOT NULL
 );
 GO
@@ -258,7 +258,7 @@ GO
 -- Creating table 'Provinces'
 CREATE TABLE [dbo].[Provinces] (
     [Id] int IDENTITY(1,1) NOT NULL,
-    [Name] nvarchar(max)  NOT NULL,
+    [Name] nvarchar(50)  NOT NULL,
     [CountryId] int  NOT NULL
 );
 GO
@@ -267,7 +267,7 @@ GO
 CREATE TABLE [dbo].[Buildings] (
     [Id] int IDENTITY(1,1) NOT NULL,
     [StreetId] int  NOT NULL,
-    [Number] nvarchar(max)  NOT NULL,
+    [Number] nvarchar(20)  NOT NULL,
     [ApartmentNumber] int  NULL
 );
 GO
@@ -275,7 +275,7 @@ GO
 -- Creating table 'Countries'
 CREATE TABLE [dbo].[Countries] (
     [Id] int IDENTITY(1,1) NOT NULL,
-    [Name] nvarchar(max)  NOT NULL
+    [Name] nvarchar(50)  NOT NULL
 );
 GO
 

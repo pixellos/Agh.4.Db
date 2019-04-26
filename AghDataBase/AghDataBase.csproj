@@ -146,8 +146,11 @@
     <Content Include="1_StoredProcedures\5_AddPriceToConference.sql" />
     <Content Include="1_StoredProcedures\4_AssignEmployeeToEmployer.sql" />
     <Content Include="1_DbTableShema.edmx.sql" />
-    <Content Include="9_Tests\2_FunctionsTest.sql" />
-    <Content Include="9_Tests\1_TestsCases.sql" />
+    <Content Include="8_Tests\2_FunctionsTest.sql" />
+    <Content Include="8_Tests\1_TestsCases.sql" />
+    <Content Include="9_FailingTests\0_CannotMakeReservationWithInvalidClient.sql" />
+    <Content Include="9_FailingTests\1_FailingOnAddStudentWithSameId.sql" />
+    <Content Include="9_FailingTests\2_FailingOnGoodPeselWithWrongDate.sql" />
     <Content Include="Model1.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Model1.Context.cs</LastGenOutput>
@@ -163,7 +166,7 @@
     <Content Include="1_StoredProcedures\1_AddClient.sql" />
     <Content Include="1_StoredProcedures\2_AddCorporateClient.sql" />
     <Content Include="1_StoredProcedures\0_AddAddres.sql" />
-    <Content Include="9_Tests\9_FailingTests.sql" />
+    <Content Include="9_FailingTests\22_FailingOnWrongPesel.sql" />
     <Content Include="3_Views.sql" />
     <Content Include="2_Triggers.sql" />
   </ItemGroup>
