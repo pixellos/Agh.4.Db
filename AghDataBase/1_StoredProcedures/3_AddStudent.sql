@@ -13,7 +13,6 @@ CREATE PROCEDURE AddStudent
 	@BuildingNumber int,
 	@ZipCode nvarchar(6),
 	@City nvarchar(50),
-	@Province nvarchar(50),
 	@Country nvarchar(50)
 	AS
 
@@ -27,7 +26,7 @@ CREATE PROCEDURE AddStudent
 	SET @student_id = (SELECT Min(Id) FROM [dbo].Students WHERE StudentId = @StudentId);
 	   IF @student_id IS NULL
 	   BEGIN
-		EXEC @student_id = AddClient @FirstName, @LastName, @PersonalNumber, @Telephone, @Street, @ApartmentNumber, @BuildingNumber, @ZipCode, @City, @Province, @Country
+		EXEC @student_id = AddClient @FirstName, @LastName, @PersonalNumber, @Telephone, @Street, @ApartmentNumber, @BuildingNumber, @ZipCode, @City, @Country
 		INSERT INTO [dbo].Students(Id, StudentId) VALUES (@student_id, @StudentId);
 	   END
 	END

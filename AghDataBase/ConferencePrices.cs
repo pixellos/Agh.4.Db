@@ -14,11 +14,19 @@ namespace AghDataBase
     
     public partial class ConferencePrices
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public ConferencePrices()
+        {
+            this.ReservationPayments = new HashSet<ReservationPayment>();
+        }
+    
         public int Id { get; set; }
         public int ConferenceId { get; set; }
-        public System.DateTimeOffset TillConferenceStart { get; set; }
-        public string Price { get; set; }
+        public short TillConferenceStart { get; set; }
+        public decimal Price { get; set; }
     
         public virtual Conference Conference { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ReservationPayment> ReservationPayments { get; set; }
     }
 }

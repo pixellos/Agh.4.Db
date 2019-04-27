@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 04/27/2019 08:20:57
+-- Date Created: 04/27/2019 14:11:07
 -- Generated from EDMX file: C:\Users\rogoz\source\repos\AghDataBase\AghDataBase\1_DbTableShema.edmx
 -- --------------------------------------------------
 
@@ -38,14 +38,8 @@ GO
 IF OBJECT_ID(N'[dbo].[FK_CityStreet]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[Streets] DROP CONSTRAINT [FK_CityStreet];
 GO
-IF OBJECT_ID(N'[dbo].[FK_ProvinceCity]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[Cities] DROP CONSTRAINT [FK_ProvinceCity];
-GO
 IF OBJECT_ID(N'[dbo].[FK_StreetBuilding]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[Buildings] DROP CONSTRAINT [FK_StreetBuilding];
-GO
-IF OBJECT_ID(N'[dbo].[FK_CountryProvince]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[Provinces] DROP CONSTRAINT [FK_CountryProvince];
 GO
 IF OBJECT_ID(N'[dbo].[FK_ClientBuilding]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[Clients] DROP CONSTRAINT [FK_ClientBuilding];
@@ -61,9 +55,6 @@ IF OBJECT_ID(N'[dbo].[FK_WorkshopReservationWorkshop]', 'F') IS NOT NULL
 GO
 IF OBJECT_ID(N'[dbo].[FK_ReservationClient]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[Reservations] DROP CONSTRAINT [FK_ReservationClient];
-GO
-IF OBJECT_ID(N'[dbo].[FK_ConferenceReservation]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[Reservations] DROP CONSTRAINT [FK_ConferenceReservation];
 GO
 IF OBJECT_ID(N'[dbo].[FK_IndividualClientConferenceDay_IndividualClient]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[IndividualClientConferenceDay] DROP CONSTRAINT [FK_IndividualClientConferenceDay_IndividualClient];
@@ -91,6 +82,12 @@ IF OBJECT_ID(N'[dbo].[FK_WorkshopReservationPaymentWorkshopReservation]', 'F') I
 GO
 IF OBJECT_ID(N'[dbo].[FK_ConferencePricesReservationPayment]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[ReservationPayments] DROP CONSTRAINT [FK_ConferencePricesReservationPayment];
+GO
+IF OBJECT_ID(N'[dbo].[FK_ConferenceDayReservation]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Reservations] DROP CONSTRAINT [FK_ConferenceDayReservation];
+GO
+IF OBJECT_ID(N'[dbo].[FK_CountryCity]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Cities] DROP CONSTRAINT [FK_CountryCity];
 GO
 
 -- --------------------------------------------------
@@ -129,9 +126,6 @@ IF OBJECT_ID(N'[dbo].[Cities]', 'U') IS NOT NULL
 GO
 IF OBJECT_ID(N'[dbo].[Streets]', 'U') IS NOT NULL
     DROP TABLE [dbo].[Streets];
-GO
-IF OBJECT_ID(N'[dbo].[Provinces]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[Provinces];
 GO
 IF OBJECT_ID(N'[dbo].[Buildings]', 'U') IS NOT NULL
     DROP TABLE [dbo].[Buildings];
@@ -174,7 +168,7 @@ GO
 CREATE TABLE [dbo].[CorporateClients] (
     [Id] int  NOT NULL,
     [CompanyName] nvarchar(120)  NOT NULL,
-    [TaxNumber] nvarchar(20)  NOT NULL
+    [TaxNumber] nvarchar(30)  NOT NULL
 );
 GO
 
@@ -242,7 +236,7 @@ GO
 CREATE TABLE [dbo].[Cities] (
     [Id] int IDENTITY(1,1) NOT NULL,
     [Name] nvarchar(80)  NOT NULL,
-    [ProvinceId] int  NOT NULL
+    [CountryId] int  NOT NULL
 );
 GO
 
@@ -252,14 +246,6 @@ CREATE TABLE [dbo].[Streets] (
     [Name] nvarchar(50)  NOT NULL,
     [ZipCode] nvarchar(20)  NOT NULL,
     [CityId] int  NOT NULL
-);
-GO
-
--- Creating table 'Provinces'
-CREATE TABLE [dbo].[Provinces] (
-    [Id] int IDENTITY(1,1) NOT NULL,
-    [Name] nvarchar(50)  NOT NULL,
-    [CountryId] int  NOT NULL
 );
 GO
 
@@ -290,7 +276,7 @@ GO
 -- Creating table 'ConferenceDays'
 CREATE TABLE [dbo].[ConferenceDays] (
     [Id] int IDENTITY(1,1) NOT NULL,
-    [Date] nvarchar(max)  NOT NULL,
+    [Date] datetime  NOT NULL,
     [ConferenceId] int  NOT NULL,
     [Capacity] int  NOT NULL
 );
@@ -394,12 +380,6 @@ GO
 -- Creating primary key on [Id] in table 'Streets'
 ALTER TABLE [dbo].[Streets]
 ADD CONSTRAINT [PK_Streets]
-    PRIMARY KEY CLUSTERED ([Id] ASC);
-GO
-
--- Creating primary key on [Id] in table 'Provinces'
-ALTER TABLE [dbo].[Provinces]
-ADD CONSTRAINT [PK_Provinces]
     PRIMARY KEY CLUSTERED ([Id] ASC);
 GO
 
@@ -536,21 +516,6 @@ ON [dbo].[Streets]
     ([CityId]);
 GO
 
--- Creating foreign key on [ProvinceId] in table 'Cities'
-ALTER TABLE [dbo].[Cities]
-ADD CONSTRAINT [FK_ProvinceCity]
-    FOREIGN KEY ([ProvinceId])
-    REFERENCES [dbo].[Provinces]
-        ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
-GO
-
--- Creating non-clustered index for FOREIGN KEY 'FK_ProvinceCity'
-CREATE INDEX [IX_FK_ProvinceCity]
-ON [dbo].[Cities]
-    ([ProvinceId]);
-GO
-
 -- Creating foreign key on [StreetId] in table 'Buildings'
 ALTER TABLE [dbo].[Buildings]
 ADD CONSTRAINT [FK_StreetBuilding]
@@ -564,21 +529,6 @@ GO
 CREATE INDEX [IX_FK_StreetBuilding]
 ON [dbo].[Buildings]
     ([StreetId]);
-GO
-
--- Creating foreign key on [CountryId] in table 'Provinces'
-ALTER TABLE [dbo].[Provinces]
-ADD CONSTRAINT [FK_CountryProvince]
-    FOREIGN KEY ([CountryId])
-    REFERENCES [dbo].[Countries]
-        ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
-GO
-
--- Creating non-clustered index for FOREIGN KEY 'FK_CountryProvince'
-CREATE INDEX [IX_FK_CountryProvince]
-ON [dbo].[Provinces]
-    ([CountryId]);
 GO
 
 -- Creating foreign key on [BuildingId] in table 'Clients'
@@ -786,6 +736,21 @@ GO
 CREATE INDEX [IX_FK_ConferenceDayReservation]
 ON [dbo].[Reservations]
     ([ConferenceDayId]);
+GO
+
+-- Creating foreign key on [CountryId] in table 'Cities'
+ALTER TABLE [dbo].[Cities]
+ADD CONSTRAINT [FK_CountryCity]
+    FOREIGN KEY ([CountryId])
+    REFERENCES [dbo].[Countries]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_CountryCity'
+CREATE INDEX [IX_FK_CountryCity]
+ON [dbo].[Cities]
+    ([CountryId]);
 GO
 
 -- --------------------------------------------------

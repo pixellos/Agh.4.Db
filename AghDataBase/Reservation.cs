@@ -16,9 +16,10 @@ namespace AghDataBase
     {
         public int Id { get; set; }
         public int ClientId { get; set; }
-        public int ConferenceId { get; set; }
+        public int ConferenceDayId { get; set; }
     
         public virtual Client Client { get; set; }
-        public virtual Conference Conference { get; set; }
+        public virtual ReservationPayment ReservationPayment { get; set; }
+        public virtual ConferenceDay ConferenceDay { get; set; }
     }
 }

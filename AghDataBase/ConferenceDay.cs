@@ -14,13 +14,19 @@ namespace AghDataBase
     
     public partial class ConferenceDay
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public ConferenceDay()
+        {
+            this.Reservations = new HashSet<Reservation>();
+        }
+    
         public int Id { get; set; }
-        public string Date { get; set; }
+        public System.DateTime Date { get; set; }
         public int ConferenceId { get; set; }
         public int Capacity { get; set; }
-        public int IndividualClientId { get; set; }
     
         public virtual Conference Conference { get; set; }
-        public virtual IndividualClient IndividualClient { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Reservation> Reservations { get; set; }
     }
 }

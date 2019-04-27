@@ -20,5 +20,6 @@ namespace AghDataBase
     
         public virtual Workshop Workshop { get; set; }
         public virtual IndividualClient IndividualClient { get; set; }
+        public virtual WorkshopReservationPayment WorkshopReservationPayment { get; set; }
     }
 }

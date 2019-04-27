@@ -17,7 +17,6 @@
     <EntitySet Name="Students" EntityType="Model1.Store.Students" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Cities" EntityType="Model1.Store.Cities" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Streets" EntityType="Model1.Store.Streets" store:Type="Tables" Schema="dbo" />
-    <EntitySet Name="Provinces" EntityType="Model1.Store.Provinces" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Buildings" EntityType="Model1.Store.Buildings" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Countries" EntityType="Model1.Store.Countries" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="Reservations" EntityType="Model1.Store.Reservations" store:Type="Tables" Schema="dbo" />
@@ -54,17 +53,9 @@
       <End Role="City" EntitySet="Cities" />
       <End Role="Street" EntitySet="Streets" />
     </AssociationSet>
-    <AssociationSet Name="ProvinceCity" Association="Model1.Store.ProvinceCity">
-      <End Role="Province" EntitySet="Provinces" />
-      <End Role="City" EntitySet="Cities" />
-    </AssociationSet>
     <AssociationSet Name="StreetBuilding" Association="Model1.Store.StreetBuilding">
       <End Role="Street" EntitySet="Streets" />
       <End Role="Building" EntitySet="Buildings" />
-    </AssociationSet>
-    <AssociationSet Name="CountryProvince" Association="Model1.Store.CountryProvince">
-      <End Role="Country" EntitySet="Countries" />
-      <End Role="Province" EntitySet="Provinces" />
     </AssociationSet>
     <AssociationSet Name="ClientBuilding" Association="Model1.Store.ClientBuilding">
       <End Role="Client" EntitySet="Clients" />
@@ -126,6 +117,10 @@
       <End Role="ConferenceDay" EntitySet="ConferenceDays" />
       <End Role="Reservation" EntitySet="Reservations" />
     </AssociationSet>
+    <AssociationSet Name="CountryCity" Association="Model1.Store.CountryCity">
+      <End Role="Country" EntitySet="Countries" />
+      <End Role="City" EntitySet="Cities" />
+    </AssociationSet>
   </EntityContainer>
   <EntityType Name="Clients">
     <Key>
@@ -141,7 +136,7 @@
     </Key>
     <Property Name="Id" Type="int" Nullable="false" />
     <Property Name="CompanyName" Type="nvarchar" Nullable="false" MaxLength="120" />
-    <Property Name="TaxNumber" Type="nvarchar" Nullable="false" MaxLength="20" />
+    <Property Name="TaxNumber" Type="nvarchar" Nullable="false" MaxLength="30" />
   </EntityType>
   <EntityType Name="IndividualClients">
     <Key>
@@ -194,7 +189,7 @@
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="ConferenceId" Type="int" Nullable="false" />
     <Property Name="TillConferenceStart" Type="smallint" Nullable="false" />
-    <Property Name="Price" Type="decimal" Nullable="false" />
+    <Property Name="Price" Type="decimal" Nullable="false" Precision="18" Scale="0" />
   </EntityType>
   <EntityType Name="Students">
     <Key>
@@ -209,7 +204,7 @@
     </Key>
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="80" />
-    <Property Name="ProvinceId" Type="int" Nullable="false" />
+    <Property Name="CountryId" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="Streets">
     <Key>
@@ -219,14 +214,6 @@
     <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="50" />
     <Property Name="ZipCode" Type="nvarchar" Nullable="false" MaxLength="20" />
     <Property Name="CityId" Type="int" Nullable="false" />
-  </EntityType>
-  <EntityType Name="Provinces">
-    <Key>
-      <PropertyRef Name="Id" />
-    </Key>
-    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="50" />
-    <Property Name="CountryId" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="Buildings">
     <Key>
@@ -257,7 +244,7 @@
       <PropertyRef Name="Id" />
     </Key>
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="Date" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Date" Type="datetime" Nullable="false" />
     <Property Name="ConferenceId" Type="int" Nullable="false" />
     <Property Name="Capacity" Type="int" Nullable="false" />
   </EntityType>
@@ -274,7 +261,7 @@
       <PropertyRef Name="Id" />
     </Key>
     <Property Name="Id" Type="int" Nullable="false" />
-    <Property Name="Amount" Type="decimal" Nullable="false" />
+    <Property Name="Amount" Type="decimal" Nullable="false" Precision="18" Scale="0" />
     <Property Name="ClientId" Type="int" Nullable="false" />
     <Property Name="ConferencePricesId" Type="int" Nullable="true" />
   </EntityType>
@@ -377,18 +364,6 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="ProvinceCity">
-    <End Role="Province" Type="Model1.Store.Provinces" Multiplicity="1" />
-    <End Role="City" Type="Model1.Store.Cities" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Province">
-        <PropertyRef Name="Id" />
-      </Principal>
-      <Dependent Role="City">
-        <PropertyRef Name="ProvinceId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
   <Association Name="StreetBuilding">
     <End Role="Street" Type="Model1.Store.Streets" Multiplicity="1" />
     <End Role="Building" Type="Model1.Store.Buildings" Multiplicity="*" />
@@ -398,18 +373,6 @@
       </Principal>
       <Dependent Role="Building">
         <PropertyRef Name="StreetId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="CountryProvince">
-    <End Role="Country" Type="Model1.Store.Countries" Multiplicity="1" />
-    <End Role="Province" Type="Model1.Store.Provinces" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Country">
-        <PropertyRef Name="Id" />
-      </Principal>
-      <Dependent Role="Province">
-        <PropertyRef Name="CountryId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -569,6 +532,18 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="CountryCity">
+    <End Role="Country" Type="Model1.Store.Countries" Multiplicity="1" />
+    <End Role="City" Type="Model1.Store.Cities" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Country">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="City">
+        <PropertyRef Name="CountryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_IndividualClientConferenceDay_IndividualClient">
     <End Role="IndividualClient" Type="Model1.Store.IndividualClients" Multiplicity="1" />
     <End Role="IndividualClientConferenceDay" Type="Model1.Store.IndividualClientConferenceDay" Multiplicity="*" />
@@ -633,14 +608,9 @@
           </AssociationSet>
           <EntitySet Name="Cities" EntityType="Model1.City" />
           <EntitySet Name="Streets" EntityType="Model1.Street" />
-          <EntitySet Name="Provinces" EntityType="Model1.Province" />
           <AssociationSet Name="CityStreet" Association="Model1.CityStreet">
             <End Role="City" EntitySet="Cities" />
             <End Role="Street" EntitySet="Streets" />
-          </AssociationSet>
-          <AssociationSet Name="ProvinceCity" Association="Model1.ProvinceCity">
-            <End Role="Province" EntitySet="Provinces" />
-            <End Role="City" EntitySet="Cities" />
           </AssociationSet>
           <EntitySet Name="Buildings" EntityType="Model1.Building" />
           <AssociationSet Name="StreetBuilding" Association="Model1.StreetBuilding">
@@ -648,10 +618,6 @@
             <End Role="Building" EntitySet="Buildings" />
           </AssociationSet>
           <EntitySet Name="Countries" EntityType="Model1.Country" />
-          <AssociationSet Name="CountryProvince" Association="Model1.CountryProvince">
-            <End EntitySet="Countries" Role="Country" />
-            <End EntitySet="Provinces" Role="Province" />
-          </AssociationSet>
           <AssociationSet Name="ClientBuilding" Association="Model1.ClientBuilding">
             <End Role="Client" EntitySet="Clients" />
             <End Role="Building" EntitySet="Buildings" />
@@ -713,13 +679,17 @@
             <End Role="ConferenceDay" EntitySet="ConferenceDays" />
             <End Role="Reservation" EntitySet="Reservations" />
           </AssociationSet>
+          <AssociationSet Name="CountryCity" Association="Model1.CountryCity">
+            <End Role="Country" EntitySet="Countries" />
+            <End Role="City" EntitySet="Cities" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="Client">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Telephone" Type="String" Nullable="false" />
+          <Property Name="Telephone" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
           <NavigationProperty Name="CorporateClient" Relationship="Model1.Client_CorporateClient" FromRole="Client" ToRole="CorporateClient" />
           <NavigationProperty Name="IndividualClient" Relationship="Model1.Client_IndividualClient" FromRole="Client" ToRole="IndividualClient" />
           <NavigationProperty Name="Building" Relationship="Model1.ClientBuilding" FromRole="Client" ToRole="Building" />
@@ -733,8 +703,8 @@
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="None" />
           <NavigationProperty Name="Client" Relationship="Model1.Client_CorporateClient" FromRole="CorporateClient" ToRole="Client" />
-          <Property Name="CompanyName" Type="String" Nullable="false" MaxLength="120" />
-          <Property Name="TaxNumber" Type="String" Nullable="false" MaxLength="20" />
+          <Property Name="CompanyName" Type="String" Nullable="false" MaxLength="120" Unicode="true" FixedLength="false" />
+          <Property Name="TaxNumber" Type="String" Nullable="false" MaxLength="30" Unicode="true" FixedLength="false" />
           <NavigationProperty Name="CorporateClientEmployes" Relationship="Model1.CorporateClientCorporateClientEmploye" FromRole="CorporateClient" ToRole="CorporateClientEmploye" />
           <NavigationProperty Name="Conferences" Relationship="Model1.CorporateClientConference" FromRole="CorporateClient" ToRole="Conference" />
         </EntityType>
@@ -745,9 +715,9 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="None" />
           <NavigationProperty Name="Client" Relationship="Model1.Client_IndividualClient" FromRole="IndividualClient" ToRole="Client" />
           <NavigationProperty Name="CorporateClientEmploye" Relationship="Model1.CorporateClientEmployeIndividualClient" FromRole="IndividualClient" ToRole="CorporateClientEmploye" />
-          <Property Name="FirstName" Type="String" Nullable="false" />
-          <Property Name="LastName" Type="String" Nullable="false" />
-          <Property Name="PersonalNumber" Type="String" Nullable="false" MaxLength="11" FixedLength="true" />
+          <Property Name="FirstName" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="LastName" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="PersonalNumber" Type="String" Nullable="false" MaxLength="11" FixedLength="true" Unicode="true" />
           <NavigationProperty Name="Student" Relationship="Model1.StudentIndividualClient" FromRole="IndividualClient" ToRole="Student" />
           <NavigationProperty Name="ConferenceDays" Relationship="Model1.IndividualClientConferenceDay" FromRole="IndividualClient" ToRole="ConferenceDay" />
           <NavigationProperty Name="WorkshopReservations" Relationship="Model1.IndividualClientWorkshopReservation" FromRole="IndividualClient" ToRole="WorkshopReservation" />
@@ -782,7 +752,7 @@
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="None" />
           <NavigationProperty Name="IndividualClients" Relationship="Model1.CorporateClientEmployeIndividualClient" FromRole="CorporateClientEmploye" ToRole="IndividualClient" />
-          <Property Name="Title" Type="String" Nullable="false" />
+          <Property Name="Title" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
           <NavigationProperty Name="CorporateClient" Relationship="Model1.CorporateClientCorporateClientEmploye" FromRole="CorporateClientEmploye" ToRole="CorporateClient" />
           <Property Name="CorporateClientId" Type="Int32" Nullable="true" />
         </EntityType>
@@ -815,18 +785,18 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="StartTime" Type="DateTime" Nullable="false" />
-          <Property Name="EndTime" Type="DateTime" Nullable="false" />
+          <Property Name="StartTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="EndTime" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="WorkshopReservations" Relationship="Model1.WorkshopReservationWorkshop" FromRole="Workshop" ToRole="WorkshopReservation" />
           <NavigationProperty Name="WorkshopPrice" Relationship="Model1.WorkshopWorkshopPrice" FromRole="Workshop" ToRole="WorkshopPrice" />
-          <Property Name="Name" Type="String" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
         </EntityType>
         <EntityType Name="WorkshopPrice">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Price" Type="String" Nullable="false" />
+          <Property Name="Price" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
           <NavigationProperty Name="Workshop" Relationship="Model1.WorkshopWorkshopPrice" FromRole="WorkshopPrice" ToRole="Workshop" />
         </EntityType>
         <EntityType Name="Conference">
@@ -835,13 +805,13 @@
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <NavigationProperty Name="ConferencePrices" Relationship="Model1.ConferenceConferencePrices" FromRole="Conference" ToRole="ConferencePrices" />
-          <Property Name="Name" Type="String" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
           <NavigationProperty Name="Building" Relationship="Model1.ConferenceBuilding" FromRole="Conference" ToRole="Building" />
           <Property Name="BuildingId" Type="Int32" Nullable="false" />
           <Property Name="StudentDiscount" Type="Byte" Nullable="false" />
           <NavigationProperty Name="ConferenceDays" Relationship="Model1.ConferenceDayConference" FromRole="Conference" ToRole="ConferenceDay" />
           <NavigationProperty Name="CorporateClient" Relationship="Model1.CorporateClientConference" FromRole="Conference" ToRole="CorporateClient" />
-          <Property Name="Issuer" Type="Int32" Nullable="false" />
+          <Property Name="Issuer" Nullable="false" Type="Int32" />
         </EntityType>
         <EntityType Name="ConferencePrices">
           <Key>
@@ -851,7 +821,7 @@
           <NavigationProperty Name="Conference" Relationship="Model1.ConferenceConferencePrices" FromRole="ConferencePrices" ToRole="Conference" />
           <Property Name="ConferenceId" Type="Int32" Nullable="false" />
           <Property Name="TillConferenceStart" Type="Int16" Nullable="false" />
-          <Property Name="Price" Type="Decimal" Nullable="false" />
+          <Property Name="Price" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
           <NavigationProperty Name="ReservationPayments" Relationship="Model1.ConferencePricesReservationPayment" FromRole="ConferencePrices" ToRole="ReservationPayment" />
         </EntityType>
         <Association Name="ConferenceConferencePrices">
@@ -871,7 +841,7 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="None" />
-          <Property Name="StudentId" Type="String" Nullable="false" MaxLength="120" />
+          <Property Name="StudentId" Type="String" Nullable="false" MaxLength="120" Unicode="true" FixedLength="false" />
           <NavigationProperty Name="IndividualClient" Relationship="Model1.StudentIndividualClient" FromRole="Student" ToRole="IndividualClient" />
         </EntityType>
         <Association Name="StudentIndividualClient">
@@ -891,31 +861,21 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="80" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="80" Unicode="true" FixedLength="false" />
           <NavigationProperty Name="Streets" Relationship="Model1.CityStreet" FromRole="City" ToRole="Street" />
-          <NavigationProperty Name="Province" Relationship="Model1.ProvinceCity" FromRole="City" ToRole="Province" />
-          <Property Name="ProvinceId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Country" Relationship="Model1.CountryCity" FromRole="City" ToRole="Country" />
+          <Property Name="CountryId" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="Street">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" />
-          <Property Name="ZipCode" Type="String" Nullable="false" MaxLength="20" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="ZipCode" Type="String" Nullable="false" MaxLength="20" Unicode="true" FixedLength="false" />
           <NavigationProperty Name="City" Relationship="Model1.CityStreet" FromRole="Street" ToRole="City" />
           <Property Name="CityId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Buildings" Relationship="Model1.StreetBuilding" FromRole="Street" ToRole="Building" />
-        </EntityType>
-        <EntityType Name="Province">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" />
-          <NavigationProperty Name="Cities" Relationship="Model1.ProvinceCity" FromRole="Province" ToRole="City" />
-          <NavigationProperty Name="Country" Relationship="Model1.CountryProvince" FromRole="Province" ToRole="Country" />
-          <Property Name="CountryId" Type="Int32" Nullable="false" />
         </EntityType>
         <Association Name="CityStreet">
           <End Type="Model1.City" Role="City" Multiplicity="1" />
@@ -929,18 +889,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="ProvinceCity">
-          <End Type="Model1.Province" Role="Province" Multiplicity="1" />
-          <End Type="Model1.City" Role="City" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Province">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="City">
-              <PropertyRef Name="ProvinceId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityType Name="Building">
           <Key>
             <PropertyRef Name="Id" />
@@ -948,7 +896,7 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <NavigationProperty Name="Street" Relationship="Model1.StreetBuilding" FromRole="Building" ToRole="Street" />
           <Property Name="StreetId" Type="Int32" Nullable="false" />
-          <Property Name="Number" Type="String" Nullable="false" MaxLength="20" />
+          <Property Name="Number" Type="String" Nullable="false" MaxLength="20" Unicode="true" FixedLength="false" />
           <NavigationProperty Name="Clients" Relationship="Model1.ClientBuilding" FromRole="Building" ToRole="Client" />
           <NavigationProperty Name="Conferences" Relationship="Model1.ConferenceBuilding" FromRole="Building" ToRole="Conference" />
           <Property Name="ApartmentNumber" Type="Int32" Nullable="true" />
@@ -970,21 +918,9 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" Type="Int32" />
-          <NavigationProperty Name="Provinces" Relationship="Model1.CountryProvince" FromRole="Country" ToRole="Province" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <NavigationProperty Name="Cities" Relationship="Model1.CountryCity" FromRole="Country" ToRole="City" />
         </EntityType>
-        <Association Name="CountryProvince">
-          <End Type="Model1.Country" Multiplicity="1" Role="Country" />
-          <End Type="Model1.Province" Multiplicity="*" Role="Province" />
-          <ReferentialConstraint>
-            <Principal Role="Country">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Province">
-              <PropertyRef Name="CountryId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="ClientBuilding">
           <End Type="Model1.Client" Role="Client" Multiplicity="*" />
           <End Type="Model1.Building" Role="Building" Multiplicity="1" />
@@ -1025,7 +961,7 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Date" Type="String" Nullable="false" />
+          <Property Name="Date" Type="DateTime" Nullable="false" />
           <NavigationProperty Name="Conference" Relationship="Model1.ConferenceDayConference" FromRole="ConferenceDay" ToRole="Conference" />
           <Property Name="ConferenceId" Type="Int32" Nullable="false" />
           <Property Name="Capacity" Type="Int32" Nullable="false" />
@@ -1115,7 +1051,7 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="None" />
-          <Property Name="Amount" Type="Decimal" Nullable="false" />
+          <Property Name="Amount" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
           <NavigationProperty Name="Client" Relationship="Model1.PaymentClient" FromRole="Payment" ToRole="Client" />
           <Property Name="ClientId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Reservation" Relationship="Model1.ReservationPaymentReservation" FromRole="ReservationPayment" ToRole="Reservation" />
@@ -1151,7 +1087,7 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Ammount" Type="String" Nullable="false" />
+          <Property Name="Ammount" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
           <NavigationProperty Name="WorkshopReservation" Relationship="Model1.WorkshopReservationPaymentWorkshopReservation" FromRole="WorkshopReservationPayment" ToRole="WorkshopReservation" />
         </EntityType>
         <Association Name="WorkshopReservationPaymentWorkshopReservation">
@@ -1187,6 +1123,18 @@
             </Principal>
             <Dependent Role="Reservation">
               <PropertyRef Name="ConferenceDayId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="CountryCity">
+          <End Type="Model1.Country" Role="Country" Multiplicity="1" />
+          <End Type="Model1.City" Role="City" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Country">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="City">
+              <PropertyRef Name="CountryId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1285,7 +1233,7 @@
         <MappingFragment StoreEntitySet="Cities">
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="Name" ColumnName="Name" />
-          <ScalarProperty Name="ProvinceId" ColumnName="ProvinceId" />
+          <ScalarProperty Name="CountryId" ColumnName="CountryId" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -1296,15 +1244,6 @@
           <ScalarProperty Name="Name" ColumnName="Name" />
           <ScalarProperty Name="ZipCode" ColumnName="ZipCode" />
           <ScalarProperty Name="CityId" ColumnName="CityId" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="Provinces">
-      <EntityTypeMapping TypeName="IsTypeOf(Model1.Province)">
-        <MappingFragment StoreEntitySet="Provinces">
-          <ScalarProperty Name="Id" ColumnName="Id" />
-          <ScalarProperty Name="Name" ColumnName="Name" />
-          <ScalarProperty Name="CountryId" ColumnName="CountryId" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -1404,6 +1343,7 @@
         <DesignerProperty Name="EnablePluralization" Value="True" />
         <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
         <DesignerProperty Name="UseLegacyProvider" Value="False" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
       </DesignerInfoPropertySet>
     </edmx:Options>
     <!-- Diagram content (shape and connector positions) -->
