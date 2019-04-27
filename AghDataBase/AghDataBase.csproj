@@ -140,12 +140,15 @@
     <Content Include="0_Functions\2_GetAttendantsAtConferenceDay.sql" />
     <Content Include="0_Functions\5_GetConferenceStart.sql" />
     <Content Include="0_Functions\7_GetAttendantsAtWorkshopsOnConferenceDay.sql" />
+    <Content Include="1_StoredProcedures\9_DeleteUnpaidReservations.sql" />
     <Content Include="1_StoredProcedures\8_PayForReservationWithDate.sql" />
     <Content Include="1_StoredProcedures\7_MakeReservation.sql" />
     <Content Include="1_StoredProcedures\6_AddConference.sql" />
     <Content Include="1_StoredProcedures\5_AddPriceToConference.sql" />
     <Content Include="1_StoredProcedures\4_AssignEmployeeToEmployer.sql" />
     <Content Include="1_DbTableShema.edmx.sql" />
+    <Content Include="4_Jobs.sql" />
+    <Content Include="5_Triggers.sql" />
     <Content Include="8_Tests\2_FunctionsTest.sql" />
     <Content Include="8_Tests\1_TestsCases.sql" />
     <Content Include="9_FailingTests\0_CannotMakeReservationWithInvalidClient.sql" />
@@ -165,7 +168,7 @@
     <Content Include="1_StoredProcedures\3_AddStudent.sql" />
     <Content Include="1_StoredProcedures\1_AddClient.sql" />
     <Content Include="1_StoredProcedures\2_AddCorporateClient.sql" />
-    <Content Include="1_StoredProcedures\0_AddAddres.sql" />
+    <Content Include="1_StoredProcedures\0_AddAddress.sql" />
     <Content Include="9_FailingTests\22_FailingOnWrongPesel.sql" />
     <Content Include="3_Views.sql" />
     <Content Include="2_Constraints.sql" />

@@ -20,9 +20,9 @@ WHERE ClientId = @client_id and ConferenceId = @ConferenceId;
 IF @reservation_id IS NULL 
 	BEGIN
 	INSERT INTO Reservations
-		(ClientId, ConferenceId)
+		(ClientId, ConferenceId, ReservationDate)
 	VALUES
-		(@client_id, @ConferenceId);
+		(@client_id, @ConferenceId, GETDATE() );
 	SET @reservation_id = @@IDENTITY;
 END
 

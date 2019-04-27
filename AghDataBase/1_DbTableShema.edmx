@@ -1020,6 +1020,7 @@
           <NavigationProperty Name="Client" Relationship="Model1.ReservationClient" FromRole="Reservation" ToRole="Client" />
           <NavigationProperty Name="Conference" Relationship="Model1.ConferenceReservation" FromRole="Reservation" ToRole="Conference" />
           <NavigationProperty Name="ReservationPayment" Relationship="Model1.ReservationPaymentReservation" FromRole="Reservation" ToRole="ReservationPayment" />
+          <Property Name="ReservationDate" Type="String" Nullable="false" />
         </EntityType>
         <EntityType Name="ConferenceDay">
           <Key>
