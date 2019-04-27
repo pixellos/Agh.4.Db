@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 04/26/2019 19:45:40
+-- Date Created: 04/27/2019 08:20:57
 -- Generated from EDMX file: C:\Users\rogoz\source\repos\AghDataBase\AghDataBase\1_DbTableShema.edmx
 -- --------------------------------------------------
 
@@ -283,7 +283,7 @@ GO
 CREATE TABLE [dbo].[Reservations] (
     [Id] int IDENTITY(1,1) NOT NULL,
     [ClientId] int  NOT NULL,
-    [ConferenceId] int  NOT NULL
+    [ConferenceDayId] int  NOT NULL
 );
 GO
 
@@ -656,21 +656,6 @@ ON [dbo].[Reservations]
     ([ClientId]);
 GO
 
--- Creating foreign key on [ConferenceId] in table 'Reservations'
-ALTER TABLE [dbo].[Reservations]
-ADD CONSTRAINT [FK_ConferenceReservation]
-    FOREIGN KEY ([ConferenceId])
-    REFERENCES [dbo].[Conferences]
-        ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
-GO
-
--- Creating non-clustered index for FOREIGN KEY 'FK_ConferenceReservation'
-CREATE INDEX [IX_FK_ConferenceReservation]
-ON [dbo].[Reservations]
-    ([ConferenceId]);
-GO
-
 -- Creating foreign key on [IndividualClientConferenceDay_ConferenceDay_Id] in table 'IndividualClientConferenceDay'
 ALTER TABLE [dbo].[IndividualClientConferenceDay]
 ADD CONSTRAINT [FK_IndividualClientConferenceDay_IndividualClient]
@@ -786,6 +771,21 @@ GO
 CREATE INDEX [IX_FK_ConferencePricesReservationPayment]
 ON [dbo].[ReservationPayments]
     ([ConferencePricesId]);
+GO
+
+-- Creating foreign key on [ConferenceDayId] in table 'Reservations'
+ALTER TABLE [dbo].[Reservations]
+ADD CONSTRAINT [FK_ConferenceDayReservation]
+    FOREIGN KEY ([ConferenceDayId])
+    REFERENCES [dbo].[ConferenceDays]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_ConferenceDayReservation'
+CREATE INDEX [IX_FK_ConferenceDayReservation]
+ON [dbo].[Reservations]
+    ([ConferenceDayId]);
 GO
 
 -- --------------------------------------------------

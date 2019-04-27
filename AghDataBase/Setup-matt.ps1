@@ -14,5 +14,5 @@ Invoke-Sqlcmd -ServerInstance $Server -InputFile (Join-Path $localScriptRoot '.\
 foreach ($s in $scripts) {
     Write-Host "Running Script : " $s.Name -BackgroundColor DarkGreen -ForegroundColor White
     $script = $s.FullName
-    Invoke-Sqlcmd -ServerInstance $Server -InputFile $script -Database AghDataBase 
+    Invoke-Sqlcmd -ServerInstance $Server -InputFile $script -Database AghDataBase  -Verbose -OutputSqlErrors $true
 }
