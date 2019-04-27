@@ -97,8 +97,7 @@ DECLARE @already int;
 SELECT @already = COUNT(*) FROM Reservations Where ConferenceDayId = @conferenceDayId
 
 IF (@capacity >= @already)
-RETURN 1;
-
+	RETURN 1;
 RETURN 0;
 
 END
