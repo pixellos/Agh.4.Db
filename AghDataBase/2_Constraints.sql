@@ -72,11 +72,37 @@ GO
 ALTER TABLE dbo.ConferencePrices ADD CONSTRAINT UC_Price_Stage UNIQUE (ConferenceId, TillConferenceStart)
 GO
 
-/*  Jeden klient może mieć tylko jedną rezerwację na daną konferencji */
+--/*  Jeden klient może mieć tylko jedną rezerwację na daną konferencji */
 
-ALTER TABLE dbo.Reservations ADD CONSTRAINT UC_Client_ConferenceId UNIQUE (ClientId, ConferenceId)
-GO
+--ALTER TABLE dbo.Reservations ADD CONSTRAINT UC_Client_ConferenceId UNIQUE (ClientId, )
+--GO
 
 /* Dla warsztatu upewnijmy się, że nigdy data zakończenia nie będzie poprzedzała daty rozpoczęcia */
 ALTER TABLE dbo.Workshops ADD CONSTRAINT C_IsEndDateAfter CHECK (dbo.IsDateBefore(StartTime, EndTime) = 1)
 GO
+
+/* Nie można zarejestrować się na konferencję */
+CREATE FUNCTION CanReservationBePlaced
+(
+	@conferenceDayId int  
+)
+RETURNS bit
+AS
+BEGIN
+
+DECLARE @capacity int;
+SELECT @capacity = Capacity from ConferenceDays WHERE Id = @conferenceDayId;
+
+DECLARE @already int;
+SELECT @already = COUNT(*) FROM Reservations Where ConferenceDayId = @conferenceDayId
+
+IF (@capacity >= @already)
+RETURN 1;
+
+RETURN 0;
+
+END
+GO
+
+ALTER TABLE dbo.Reservations ADD CONSTRAINT C_IsEnoughtCapacity CHECK (dbo.CanReservationBePlaced(ConferenceDayId) = 1)
+GO 

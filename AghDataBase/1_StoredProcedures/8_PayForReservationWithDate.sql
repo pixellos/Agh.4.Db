@@ -12,13 +12,16 @@
 */
 CREATE OR ALTER PROCEDURE PayForReservationWithADate
 	@PersonalNumber varchar(50),
-	@ConferenceId int,
+	@ConferenceDayId int,
 	@PaymentDate datetime,
 	@Ammount decimal
 AS
 
 DECLARE @clientId INT;
 SELECT @clientId = dbo.GetIndividualClientOrThrow(@PersonalNumber);
+
+DECLARE @conferenceId int;
+SELECT @conferenceId = ConferenceId from ConferenceDays Where Id = @ConferenceDayId ;
 
 DECLARE @price decimal;
 select @price = dbo.GetConferencePrice(@ConferenceId, @PersonalNumber, @PaymentDate);
@@ -27,7 +30,7 @@ DECLARE @priceId int;
 select @priceId = dbo.GetConferencePriceId(@ConferenceId, @PaymentDate);
 
 DECLARE @reservationId int;
-SELECT @reservationId = Id FROM Reservations WHERE ConferenceId = @ConferenceId and ClientId = @clientId;
+SELECT @reservationId = Id FROM Reservations WHERE ConferenceDayId = @ConferenceDayId and ClientId = @clientId;
 
 if @reservationId is null 
 BEGIN
