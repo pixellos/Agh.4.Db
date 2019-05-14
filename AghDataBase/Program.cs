@@ -6,35 +6,83 @@ namespace AghDataBase
 {
     internal class Program
     {
+        private static PeselGenerator peselGenerator = new PeselGenerator();
+
+
         private static void Main(string[] args)
         {
             var context = new Model1Container();
             var availableBuildings = PopulateBuildings();
             var randomizeIndividualClient = PopulateIndividualClient(availableBuildings);
             var randomizeCorporateClient = PopulateCorporateClient(availableBuildings);
-            var randomizeConferences = PopulateConferences(availableBuildings, randomizeCorporateClient);
+            var students = PopulateStudents(availableBuildings);
+            var randomizeConferences = PopulateConferences(availableBuildings, randomizeCorporateClient, students, randomizeIndividualClient);
+
+            var employeRelation = new Faker<CorporateClientEmploye>().RuleFor(x => x.Title, f => f.Company.CatchPhrase())
+                .RuleFor(x => x.CorporateClient, f => f.PickRandom(randomizeCorporateClient))
+                .RuleFor(x => x.IndividualClients, f => f.PickRandom(randomizeIndividualClient));
 
             context.IndividualClients.AddRange(randomizeIndividualClient);
             context.CorporateClients.AddRange(randomizeCorporateClient);
             context.Conferences.AddRange(randomizeConferences);
+            context.Students.AddRange(students);
+            context.CorporateClientEmployes.AddRange(employeRelation.GenerateLazy(700));
 
             context.SaveChanges();
         }
 
-        private static List<Conference> PopulateConferences(List<Building> buildings, List<CorporateClient> corporateClients)
+        private static List<Conference> PopulateConferences(List<Building> buildings, List<CorporateClient> corporateClients, IEnumerable<Student> clients, IEnumerable<IndividualClient> individualClients)
         {
             var conferenceDayFaker = new Faker<ConferenceDay>();
             conferenceDayFaker.RuleFor(x => x.Capacity, x => x.Random.Number(100));
+
+            var workshopFaker = new Faker<Workshop>()
+                .RuleFor(x => x.Name, f => new string(f.Hacker.Verb().Take(48).ToArray()))
+                .RuleFor(x => x.WorkshopPrice, f => f.Random.Bool() ? new WorkshopPrice() { Price = (int)f.Random.Decimal(800) } : null);
+
+            var cls = individualClients.Concat(clients.Select(x=>x.IndividualClient)).Select(x=>x.Client).ToList();
 
             var conferenceFaker = new Faker<Conference>();
             conferenceFaker
                 .RuleFor(x => x.Building, f => buildings[f.Random.Number(buildings.Count - 1)])
                 .RuleFor(x => x.Name, f => f.Lorem.Word())
                 .RuleFor(x => x.StudentDiscount, f => (byte)f.Random.Number(99))
-                .RuleFor(x => x.ConferenceDays, f => new[] { conferenceDayFaker.Generate() })
+                .RuleFor(x => x.ConferenceDays, f =>
+                {
+                    var list = new List<ConferenceDay>();
+                    var r = f.Random.Number(1, 5);
+                    var r2 = f.Random.Number(0, 3);
+                    for (var i = 0; i < r; i++)
+                    {
+                        var date = f.Date.PastOffset(3);
+                        var day = conferenceDayFaker.Generate();
+                        for (var res = 0; res < f.Random.Number(day.Capacity); res++)
+                        {
+                            var reservation = new Reservation();
+                            reservation.Client = f.PickRandom(cls);
+                            day.Reservations.Add(reservation);
+                        }
+
+                        var randomDate = f.Date.RecentOffset(r, date);
+                        day.Date = randomDate.Date;
+                        if (list.All(x => x.Date != day.Date))
+                        {
+                            for (var w = 0; w < r2; w++)
+                            {
+                                var workshop = workshopFaker.Generate();
+                                workshop.StartTime = f.Date.Between(day.Date, day.Date.AddDays(1));
+                                workshop.EndTime = f.Date.Between(workshop.StartTime, day.Date.AddDays(1));
+                                day.Workshops.Add(workshop);
+                            }
+
+                            list.Add(day);
+                        }
+                    }
+                    return list;
+                })
                 .RuleFor(x => x.CorporateClient, f => corporateClients[f.Random.Number(corporateClients.Count - 1)]);
 
-            return conferenceFaker.GenerateLazy(8).ToList();
+            return conferenceFaker.GenerateLazy(2 * 3 * 12 + 5).ToList();
         }
 
         private static List<CorporateClient> PopulateCorporateClient(List<Building> buildings)
@@ -50,10 +98,10 @@ namespace AghDataBase
 
             var icFaker = new Faker<CorporateClient>()
                 .RuleFor(x => x.CompanyName, f => f.Company.CompanyName())
-                .RuleFor(x => x.TaxNumber, f => f.Finance.Iban())
+                .RuleFor(x => x.TaxNumber, f => f.Finance.Account(29))
                 .RuleFor(x => x.Client, f => clientFaker.Generate());
 
-            return icFaker.GenerateLazy(3).ToList();
+            return icFaker.GenerateLazy(40).ToList();
         }
 
         private static List<IndividualClient> PopulateIndividualClient(List<Building> buildings)
@@ -62,7 +110,6 @@ namespace AghDataBase
                 .RuleFor(x => x.Telephone, f => f.Person.Phone)
                 .RuleFor(x => x.Building, f => buildings[f.Random.Number(buildings.Count - 1)]);
 
-            var peselGenerator = new PeselGenerator();
 
             var icFaker = new Faker<IndividualClient>();
             icFaker.RuleFor(x => x.FirstName, f => f.Name.FirstName())
@@ -70,8 +117,18 @@ namespace AghDataBase
             .RuleFor(x => x.PersonalNumber, f => peselGenerator.Generate())
             .RuleFor(x => x.Client, f => clientFaker.Generate());
 
-            return icFaker.GenerateLazy(3).ToList();
+            return icFaker.GenerateLazy(100).ToList();
         }
+
+        private static List<Student> PopulateStudents(List<Building> buildings)
+        {
+            var studentFaker = new Faker<Student>();
+            studentFaker
+                .RuleFor(x => x.StudentId, f => new string(f.Random.Chars('0', '9', 9)))
+                .RuleFor(x => x.IndividualClient, f => PopulateIndividualClient(buildings).First());
+            return studentFaker.GenerateLazy(500).ToList();
+        }
+
 
         private static List<Building> PopulateBuildings()
         {
@@ -91,17 +148,17 @@ namespace AghDataBase
                 .RuleFor(o => o.ApartmentNumber, f => f.Random.Number(100))
                 .RuleFor(o => o.Number, f => f.Address.BuildingNumber());
 
-            var countries = countryFaker.Generate(3);
+            var countries = countryFaker.Generate(4);
 
             foreach (var country in countries)
             {
-                foreach (var cf in cityFaker.Generate(3))
+                foreach (var cf in cityFaker.Generate(8))
                 {
                     cf.Country = country;
-                    foreach (var sf in streetFaker.Generate(4))
+                    foreach (var sf in streetFaker.Generate(5))
                     {
                         sf.City = cf;
-                        foreach (var bf in buildingFaker.Generate(4))
+                        foreach (var bf in buildingFaker.Generate(2))
                         {
                             bf.Street = sf;
                             availableBuildings.Add(bf);
@@ -111,5 +168,7 @@ namespace AghDataBase
             }
             return availableBuildings;
         }
+
+
     }
 }

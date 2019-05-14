@@ -15,11 +15,11 @@ namespace AghDataBase
     public partial class WorkshopReservation
     {
         public int Id { get; set; }
+        public int ClientId { get; set; }
         public int WorkshopId { get; set; }
-        public int IndividualClientId { get; set; }
     
-        public virtual Workshop Workshop { get; set; }
-        public virtual IndividualClient IndividualClient { get; set; }
         public virtual WorkshopReservationPayment WorkshopReservationPayment { get; set; }
+        public virtual Client Client { get; set; }
+        public virtual Workshop Workshop { get; set; }
     }
 }

@@ -32,20 +32,21 @@
         <EntityTypeShape EntityType="Model1.ConferenceDay" Width="1.5" PointX="0.875" PointY="2.75" IsExpanded="true" />
         <AssociationConnector Association="Model1.ConferenceDayConference" />
         <EntityTypeShape EntityType="Model1.WorkshopReservation" Width="1.5" PointX="4.875" PointY="9.125" />
-        <AssociationConnector Association="Model1.WorkshopReservationWorkshop" />
         <AssociationConnector Association="Model1.ReservationClient" />
         <AssociationConnector Association="Model1.IndividualClientConferenceDay" />
-        <AssociationConnector Association="Model1.IndividualClientWorkshopReservation" />
-        <AssociationConnector Association="Model1.WorkshopWorkshopPrice" />
         <AssociationConnector Association="Model1.CorporateClientConference" />
         <EntityTypeShape EntityType="Model1.ReservationPayment" Width="2.125" PointX="20.5" PointY="6.25" />
         <AssociationConnector Association="Model1.PaymentClient" />
         <AssociationConnector Association="Model1.ReservationPaymentReservation" />
-        <EntityTypeShape EntityType="Model1.WorkshopReservationPayment" Width="1.5" PointX="6.75" PointY="9" />
+        <EntityTypeShape EntityType="Model1.WorkshopReservationPayment" Width="2.375" PointX="6.75" PointY="9" />
         <AssociationConnector Association="Model1.WorkshopReservationPaymentWorkshopReservation" />
         <AssociationConnector Association="Model1.ConferencePricesReservationPayment" />
         <AssociationConnector Association="Model1.ConferenceDayReservation" />
         <AssociationConnector Association="Model1.CountryCity" />
+        <AssociationConnector Association="Model1.ConferenceDayWorkshop" />
+        <AssociationConnector Association="Model1.ClientWorkshopReservation" />
+        <AssociationConnector Association="Model1.WorkshopWorkshopReservation" />
+        <AssociationConnector Association="Model1.WorkshopWorkshopPrice" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
