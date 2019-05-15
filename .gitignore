@@ -261,3 +261,4 @@ __pycache__/
 *.pyc
 /AghDataBase/Watch-mf.ps1
 /AghDataBase/Setup-mf.ps1
+/AghDataBase/TextFile1.txt

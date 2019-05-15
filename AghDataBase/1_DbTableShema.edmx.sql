@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 05/15/2019 04:56:38
+-- Date Created: 05/15/2019 16:20:57
 -- Generated from EDMX file: C:\AGH\bazy projekt\https-github.com-pixellos-Agh_DB_4\AghDataBase\1_DbTableShema.edmx
 -- --------------------------------------------------
 
@@ -272,7 +272,7 @@ GO
 CREATE TABLE [dbo].[Reservations] (
     [Id] int IDENTITY(1,1) NOT NULL,
     [ClientId] int  NOT NULL,
-    [ReservationDate] nvarchar(max)  NOT NULL,
+    [ReservationDate] datetime  NOT NULL,
     [ConferenceDayId] int  NOT NULL
 );
 GO
@@ -619,15 +619,6 @@ ON [dbo].[IndividualClientConferenceDay]
     ([ConferenceDays_Id]);
 GO
 
--- Creating foreign key on [Id] in table 'WorkshopPrices'
-ALTER TABLE [dbo].[WorkshopPrices]
-ADD CONSTRAINT [FK_WorkshopWorkshopPrice]
-    FOREIGN KEY ([Id])
-    REFERENCES [dbo].[Workshops]
-        ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
-GO
-
 -- Creating foreign key on [Issuer] in table 'Conferences'
 ALTER TABLE [dbo].[Conferences]
 ADD CONSTRAINT [FK_CorporateClientConference]
@@ -764,6 +755,15 @@ GO
 CREATE INDEX [IX_FK_WorkshopWorkshopReservation]
 ON [dbo].[WorkshopReservations]
     ([WorkshopId]);
+GO
+
+-- Creating foreign key on [Id] in table 'WorkshopPrices'
+ALTER TABLE [dbo].[WorkshopPrices]
+ADD CONSTRAINT [FK_WorkshopWorkshopPrice]
+    FOREIGN KEY ([Id])
+    REFERENCES [dbo].[Workshops]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
 GO
 
 -- --------------------------------------------------
