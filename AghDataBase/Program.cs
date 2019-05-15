@@ -27,8 +27,76 @@ namespace AghDataBase
             context.Conferences.AddRange(randomizeConferences);
             context.Students.AddRange(students);
             context.CorporateClientEmployes.AddRange(employeRelation.GenerateLazy(700));
-
             context.SaveChanges();
+
+            var faker = new Faker();
+            var conferences = context.Conferences.ToArray();
+            foreach (var conference in conferences)
+            {
+                var prices = faker.Random.Number(5);
+                var tillDays = 0;
+                var price = 0;
+
+                for (var p = 0; p < prices; p++)
+                {
+                    tillDays += faker.Random.Number(1, 14);
+                    var priceAddition = faker.Random.Number(1, 200);
+                    price += priceAddition;
+                    var toAdd = new ConferencePrices
+                    {
+                        TillConferenceStart = (short)tillDays,
+                        Price = price
+                    };
+                    conference.ConferencePrices.Add(toAdd);
+                }
+            }
+            context.SaveChanges();
+
+            foreach (var conference in context.Conferences)
+            {
+                foreach (var day in conference.ConferenceDays)
+                {
+                    foreach (var reservation in day.Reservations)
+                    {
+                        if(faker.Random.Bool() && conference.ConferencePrices.Any())
+                        {
+                            var price = faker.PickRandom(conference.ConferencePrices);
+                            reservation.ReservationPayment = new ReservationPayment()
+                            {
+                                Client = reservation.Client,
+                                Amount = price.Price,
+                                ConferencePrice = price,
+                            };
+                        }
+                    }
+                }
+            }
+
+            var workshops = context.Workshops.ToArray();
+            foreach (var workshop in workshops)
+            {
+                var prices = faker.Random.Number(500);
+
+                if (faker.Random.Bool())
+                {
+                    var toAdd = new WorkshopPrice
+                    {
+                        Price = faker.Random.Number(1, 400),
+                    };
+                    workshop.WorkshopPrice = toAdd;
+
+                    foreach (var res in workshop.WorkshopReservations)
+                    {
+                        res.WorkshopReservationPayment = new WorkshopReservationPayment
+                        {
+                            Amount = workshop.WorkshopPrice.Price,
+                        };
+                    }
+                }
+            }
+            context.SaveChanges();
+
+
         }
 
         private static List<Conference> PopulateConferences(List<Building> buildings, List<CorporateClient> corporateClients, IEnumerable<Student> clients, IEnumerable<IndividualClient> individualClients)
@@ -40,7 +108,7 @@ namespace AghDataBase
                 .RuleFor(x => x.Name, f => new string(f.Hacker.Verb().Take(48).ToArray()))
                 .RuleFor(x => x.WorkshopPrice, f => f.Random.Bool() ? new WorkshopPrice() { Price = (int)f.Random.Decimal(800) } : null);
 
-            var cls = individualClients.Concat(clients.Select(x=>x.IndividualClient)).Select(x=>x.Client).ToList();
+            var cls = individualClients.Concat(clients.Select(x => x.IndividualClient)).Select(x => x.Client).ToList();
 
             var conferenceFaker = new Faker<Conference>();
             conferenceFaker
@@ -49,6 +117,7 @@ namespace AghDataBase
                 .RuleFor(x => x.StudentDiscount, f => (byte)f.Random.Number(99))
                 .RuleFor(x => x.ConferenceDays, f =>
                 {
+
                     var list = new List<ConferenceDay>();
                     var r = f.Random.Number(1, 5);
                     var r2 = f.Random.Number(0, 3);
@@ -73,6 +142,15 @@ namespace AghDataBase
                                 workshop.StartTime = f.Date.Between(day.Date, day.Date.AddDays(1));
                                 workshop.EndTime = f.Date.Between(workshop.StartTime, day.Date.AddDays(1));
                                 day.Workshops.Add(workshop);
+
+                                var r3 = f.Random.Int(0, 7);
+                                for (var rr3 = 0; rr3 < r3; rr3++)
+                                {
+                                    workshop.WorkshopReservations.Add(new WorkshopReservation
+                                    {
+                                        Client = f.PickRandom(cls)
+                                    });
+                                }
                             }
 
                             list.Add(day);
@@ -128,7 +206,6 @@ namespace AghDataBase
                 .RuleFor(x => x.IndividualClient, f => PopulateIndividualClient(buildings).First());
             return studentFaker.GenerateLazy(500).ToList();
         }
-
 
         private static List<Building> PopulateBuildings()
         {

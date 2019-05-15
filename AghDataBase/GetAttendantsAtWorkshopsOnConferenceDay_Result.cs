@@ -10,13 +10,15 @@
 namespace AghDataBase
 {
     using System;
-    using System.Collections.Generic;
     
-    public partial class WorkshopReservationPayment
+    public partial class GetAttendantsAtWorkshopsOnConferenceDay_Result
     {
-        public int Id { get; set; }
-        public decimal Amount { get; set; }
-    
-        public virtual WorkshopReservation WorkshopReservation { get; set; }
+        public int ConferenceDayId { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string PersonalNumber { get; set; }
+        public string StudentId { get; set; }
+        public string CompanyName { get; set; }
+        public string Name { get; set; }
     }
 }

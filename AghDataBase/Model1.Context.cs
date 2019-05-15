@@ -12,6 +12,8 @@ namespace AghDataBase
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
+    using System.Data.Entity.Core.Objects;
+    using System.Linq;
     
     public partial class Model1Container : DbContext
     {
@@ -44,5 +46,380 @@ namespace AghDataBase
         public virtual DbSet<WorkshopReservation> WorkshopReservations { get; set; }
         public virtual DbSet<ReservationPayment> ReservationPayments { get; set; }
         public virtual DbSet<WorkshopReservationPayment> WorkshopReservationPayments { get; set; }
+    
+        public virtual int AddAddress(string street, Nullable<int> apartmentNumber, Nullable<int> buildingNumber, string zipCode, string city, string country)
+        {
+            var streetParameter = street != null ?
+                new ObjectParameter("Street", street) :
+                new ObjectParameter("Street", typeof(string));
+    
+            var apartmentNumberParameter = apartmentNumber.HasValue ?
+                new ObjectParameter("ApartmentNumber", apartmentNumber) :
+                new ObjectParameter("ApartmentNumber", typeof(int));
+    
+            var buildingNumberParameter = buildingNumber.HasValue ?
+                new ObjectParameter("BuildingNumber", buildingNumber) :
+                new ObjectParameter("BuildingNumber", typeof(int));
+    
+            var zipCodeParameter = zipCode != null ?
+                new ObjectParameter("ZipCode", zipCode) :
+                new ObjectParameter("ZipCode", typeof(string));
+    
+            var cityParameter = city != null ?
+                new ObjectParameter("City", city) :
+                new ObjectParameter("City", typeof(string));
+    
+            var countryParameter = country != null ?
+                new ObjectParameter("Country", country) :
+                new ObjectParameter("Country", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("AddAddress", streetParameter, apartmentNumberParameter, buildingNumberParameter, zipCodeParameter, cityParameter, countryParameter);
+        }
+    
+        public virtual int AddClient(string firstName, string lastName, string personalNumber, string telephone, string street, Nullable<int> apartmentNumber, Nullable<int> buildingNumber, string zipCode, string city, string country)
+        {
+            var firstNameParameter = firstName != null ?
+                new ObjectParameter("FirstName", firstName) :
+                new ObjectParameter("FirstName", typeof(string));
+    
+            var lastNameParameter = lastName != null ?
+                new ObjectParameter("LastName", lastName) :
+                new ObjectParameter("LastName", typeof(string));
+    
+            var personalNumberParameter = personalNumber != null ?
+                new ObjectParameter("PersonalNumber", personalNumber) :
+                new ObjectParameter("PersonalNumber", typeof(string));
+    
+            var telephoneParameter = telephone != null ?
+                new ObjectParameter("Telephone", telephone) :
+                new ObjectParameter("Telephone", typeof(string));
+    
+            var streetParameter = street != null ?
+                new ObjectParameter("Street", street) :
+                new ObjectParameter("Street", typeof(string));
+    
+            var apartmentNumberParameter = apartmentNumber.HasValue ?
+                new ObjectParameter("ApartmentNumber", apartmentNumber) :
+                new ObjectParameter("ApartmentNumber", typeof(int));
+    
+            var buildingNumberParameter = buildingNumber.HasValue ?
+                new ObjectParameter("BuildingNumber", buildingNumber) :
+                new ObjectParameter("BuildingNumber", typeof(int));
+    
+            var zipCodeParameter = zipCode != null ?
+                new ObjectParameter("ZipCode", zipCode) :
+                new ObjectParameter("ZipCode", typeof(string));
+    
+            var cityParameter = city != null ?
+                new ObjectParameter("City", city) :
+                new ObjectParameter("City", typeof(string));
+    
+            var countryParameter = country != null ?
+                new ObjectParameter("Country", country) :
+                new ObjectParameter("Country", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("AddClient", firstNameParameter, lastNameParameter, personalNumberParameter, telephoneParameter, streetParameter, apartmentNumberParameter, buildingNumberParameter, zipCodeParameter, cityParameter, countryParameter);
+        }
+    
+        public virtual int AddConference(string issuerCompanyTaxNumber, string conferenceName, Nullable<decimal> studentDiscount, Nullable<int> price, string street, Nullable<int> apartmentNumber, Nullable<int> buildingNumber, string zipCode, string city, string country)
+        {
+            var issuerCompanyTaxNumberParameter = issuerCompanyTaxNumber != null ?
+                new ObjectParameter("IssuerCompanyTaxNumber", issuerCompanyTaxNumber) :
+                new ObjectParameter("IssuerCompanyTaxNumber", typeof(string));
+    
+            var conferenceNameParameter = conferenceName != null ?
+                new ObjectParameter("ConferenceName", conferenceName) :
+                new ObjectParameter("ConferenceName", typeof(string));
+    
+            var studentDiscountParameter = studentDiscount.HasValue ?
+                new ObjectParameter("StudentDiscount", studentDiscount) :
+                new ObjectParameter("StudentDiscount", typeof(decimal));
+    
+            var priceParameter = price.HasValue ?
+                new ObjectParameter("Price", price) :
+                new ObjectParameter("Price", typeof(int));
+    
+            var streetParameter = street != null ?
+                new ObjectParameter("Street", street) :
+                new ObjectParameter("Street", typeof(string));
+    
+            var apartmentNumberParameter = apartmentNumber.HasValue ?
+                new ObjectParameter("ApartmentNumber", apartmentNumber) :
+                new ObjectParameter("ApartmentNumber", typeof(int));
+    
+            var buildingNumberParameter = buildingNumber.HasValue ?
+                new ObjectParameter("BuildingNumber", buildingNumber) :
+                new ObjectParameter("BuildingNumber", typeof(int));
+    
+            var zipCodeParameter = zipCode != null ?
+                new ObjectParameter("ZipCode", zipCode) :
+                new ObjectParameter("ZipCode", typeof(string));
+    
+            var cityParameter = city != null ?
+                new ObjectParameter("City", city) :
+                new ObjectParameter("City", typeof(string));
+    
+            var countryParameter = country != null ?
+                new ObjectParameter("Country", country) :
+                new ObjectParameter("Country", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("AddConference", issuerCompanyTaxNumberParameter, conferenceNameParameter, studentDiscountParameter, priceParameter, streetParameter, apartmentNumberParameter, buildingNumberParameter, zipCodeParameter, cityParameter, countryParameter);
+        }
+    
+        public virtual int AddConferenceDay(Nullable<int> conferenceId, Nullable<System.DateTime> date, Nullable<int> capacity)
+        {
+            var conferenceIdParameter = conferenceId.HasValue ?
+                new ObjectParameter("ConferenceId", conferenceId) :
+                new ObjectParameter("ConferenceId", typeof(int));
+    
+            var dateParameter = date.HasValue ?
+                new ObjectParameter("Date", date) :
+                new ObjectParameter("Date", typeof(System.DateTime));
+    
+            var capacityParameter = capacity.HasValue ?
+                new ObjectParameter("Capacity", capacity) :
+                new ObjectParameter("Capacity", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("AddConferenceDay", conferenceIdParameter, dateParameter, capacityParameter);
+        }
+    
+        public virtual int AddCorporateClient(string companyName, string taxNumber, string telephone, string street, Nullable<int> apartmentNumber, Nullable<int> buildingNumber, string zipCode, string city, string country)
+        {
+            var companyNameParameter = companyName != null ?
+                new ObjectParameter("CompanyName", companyName) :
+                new ObjectParameter("CompanyName", typeof(string));
+    
+            var taxNumberParameter = taxNumber != null ?
+                new ObjectParameter("TaxNumber", taxNumber) :
+                new ObjectParameter("TaxNumber", typeof(string));
+    
+            var telephoneParameter = telephone != null ?
+                new ObjectParameter("Telephone", telephone) :
+                new ObjectParameter("Telephone", typeof(string));
+    
+            var streetParameter = street != null ?
+                new ObjectParameter("Street", street) :
+                new ObjectParameter("Street", typeof(string));
+    
+            var apartmentNumberParameter = apartmentNumber.HasValue ?
+                new ObjectParameter("ApartmentNumber", apartmentNumber) :
+                new ObjectParameter("ApartmentNumber", typeof(int));
+    
+            var buildingNumberParameter = buildingNumber.HasValue ?
+                new ObjectParameter("BuildingNumber", buildingNumber) :
+                new ObjectParameter("BuildingNumber", typeof(int));
+    
+            var zipCodeParameter = zipCode != null ?
+                new ObjectParameter("ZipCode", zipCode) :
+                new ObjectParameter("ZipCode", typeof(string));
+    
+            var cityParameter = city != null ?
+                new ObjectParameter("City", city) :
+                new ObjectParameter("City", typeof(string));
+    
+            var countryParameter = country != null ?
+                new ObjectParameter("Country", country) :
+                new ObjectParameter("Country", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("AddCorporateClient", companyNameParameter, taxNumberParameter, telephoneParameter, streetParameter, apartmentNumberParameter, buildingNumberParameter, zipCodeParameter, cityParameter, countryParameter);
+        }
+    
+        public virtual int AddPriceToConference(Nullable<decimal> price, Nullable<int> daysToConferenceStart, Nullable<int> conferenceId)
+        {
+            var priceParameter = price.HasValue ?
+                new ObjectParameter("Price", price) :
+                new ObjectParameter("Price", typeof(decimal));
+    
+            var daysToConferenceStartParameter = daysToConferenceStart.HasValue ?
+                new ObjectParameter("DaysToConferenceStart", daysToConferenceStart) :
+                new ObjectParameter("DaysToConferenceStart", typeof(int));
+    
+            var conferenceIdParameter = conferenceId.HasValue ?
+                new ObjectParameter("ConferenceId", conferenceId) :
+                new ObjectParameter("ConferenceId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("AddPriceToConference", priceParameter, daysToConferenceStartParameter, conferenceIdParameter);
+        }
+    
+        public virtual int AddStudent(string firstName, string lastName, string personalNumber, string studentId, string telephone, string street, Nullable<int> apartmentNumber, Nullable<int> buildingNumber, string zipCode, string city, string country)
+        {
+            var firstNameParameter = firstName != null ?
+                new ObjectParameter("FirstName", firstName) :
+                new ObjectParameter("FirstName", typeof(string));
+    
+            var lastNameParameter = lastName != null ?
+                new ObjectParameter("LastName", lastName) :
+                new ObjectParameter("LastName", typeof(string));
+    
+            var personalNumberParameter = personalNumber != null ?
+                new ObjectParameter("PersonalNumber", personalNumber) :
+                new ObjectParameter("PersonalNumber", typeof(string));
+    
+            var studentIdParameter = studentId != null ?
+                new ObjectParameter("StudentId", studentId) :
+                new ObjectParameter("StudentId", typeof(string));
+    
+            var telephoneParameter = telephone != null ?
+                new ObjectParameter("Telephone", telephone) :
+                new ObjectParameter("Telephone", typeof(string));
+    
+            var streetParameter = street != null ?
+                new ObjectParameter("Street", street) :
+                new ObjectParameter("Street", typeof(string));
+    
+            var apartmentNumberParameter = apartmentNumber.HasValue ?
+                new ObjectParameter("ApartmentNumber", apartmentNumber) :
+                new ObjectParameter("ApartmentNumber", typeof(int));
+    
+            var buildingNumberParameter = buildingNumber.HasValue ?
+                new ObjectParameter("BuildingNumber", buildingNumber) :
+                new ObjectParameter("BuildingNumber", typeof(int));
+    
+            var zipCodeParameter = zipCode != null ?
+                new ObjectParameter("ZipCode", zipCode) :
+                new ObjectParameter("ZipCode", typeof(string));
+    
+            var cityParameter = city != null ?
+                new ObjectParameter("City", city) :
+                new ObjectParameter("City", typeof(string));
+    
+            var countryParameter = country != null ?
+                new ObjectParameter("Country", country) :
+                new ObjectParameter("Country", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("AddStudent", firstNameParameter, lastNameParameter, personalNumberParameter, studentIdParameter, telephoneParameter, streetParameter, apartmentNumberParameter, buildingNumberParameter, zipCodeParameter, cityParameter, countryParameter);
+        }
+    
+        public virtual int AssignEmployerToEmployee(string tax_number, string employeeTitle, string firstName, string lastName, string personalNumber, string telephone, string street, Nullable<int> apartmentNumber, Nullable<int> buildingNumber, string zipCode, string city, string country)
+        {
+            var tax_numberParameter = tax_number != null ?
+                new ObjectParameter("tax_number", tax_number) :
+                new ObjectParameter("tax_number", typeof(string));
+    
+            var employeeTitleParameter = employeeTitle != null ?
+                new ObjectParameter("EmployeeTitle", employeeTitle) :
+                new ObjectParameter("EmployeeTitle", typeof(string));
+    
+            var firstNameParameter = firstName != null ?
+                new ObjectParameter("FirstName", firstName) :
+                new ObjectParameter("FirstName", typeof(string));
+    
+            var lastNameParameter = lastName != null ?
+                new ObjectParameter("LastName", lastName) :
+                new ObjectParameter("LastName", typeof(string));
+    
+            var personalNumberParameter = personalNumber != null ?
+                new ObjectParameter("PersonalNumber", personalNumber) :
+                new ObjectParameter("PersonalNumber", typeof(string));
+    
+            var telephoneParameter = telephone != null ?
+                new ObjectParameter("Telephone", telephone) :
+                new ObjectParameter("Telephone", typeof(string));
+    
+            var streetParameter = street != null ?
+                new ObjectParameter("Street", street) :
+                new ObjectParameter("Street", typeof(string));
+    
+            var apartmentNumberParameter = apartmentNumber.HasValue ?
+                new ObjectParameter("ApartmentNumber", apartmentNumber) :
+                new ObjectParameter("ApartmentNumber", typeof(int));
+    
+            var buildingNumberParameter = buildingNumber.HasValue ?
+                new ObjectParameter("BuildingNumber", buildingNumber) :
+                new ObjectParameter("BuildingNumber", typeof(int));
+    
+            var zipCodeParameter = zipCode != null ?
+                new ObjectParameter("ZipCode", zipCode) :
+                new ObjectParameter("ZipCode", typeof(string));
+    
+            var cityParameter = city != null ?
+                new ObjectParameter("City", city) :
+                new ObjectParameter("City", typeof(string));
+    
+            var countryParameter = country != null ?
+                new ObjectParameter("Country", country) :
+                new ObjectParameter("Country", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("AssignEmployerToEmployee", tax_numberParameter, employeeTitleParameter, firstNameParameter, lastNameParameter, personalNumberParameter, telephoneParameter, streetParameter, apartmentNumberParameter, buildingNumberParameter, zipCodeParameter, cityParameter, countryParameter);
+        }
+    
+        [DbFunction("Model1Container", "GetAttendantsAtConferenceDay")]
+        public virtual IQueryable<GetAttendantsAtConferenceDay_Result> GetAttendantsAtConferenceDay(Nullable<int> conferenceId, Nullable<int> conferenceDay)
+        {
+            var conferenceIdParameter = conferenceId.HasValue ?
+                new ObjectParameter("ConferenceId", conferenceId) :
+                new ObjectParameter("ConferenceId", typeof(int));
+    
+            var conferenceDayParameter = conferenceDay.HasValue ?
+                new ObjectParameter("ConferenceDay", conferenceDay) :
+                new ObjectParameter("ConferenceDay", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<GetAttendantsAtConferenceDay_Result>("[Model1Container].[GetAttendantsAtConferenceDay](@ConferenceId, @ConferenceDay)", conferenceIdParameter, conferenceDayParameter);
+        }
+    
+        [DbFunction("Model1Container", "GetAttendantsAtWorkshopsOnConferenceDay")]
+        public virtual IQueryable<GetAttendantsAtWorkshopsOnConferenceDay_Result> GetAttendantsAtWorkshopsOnConferenceDay(Nullable<int> conferenceId, Nullable<int> conferenceDay)
+        {
+            var conferenceIdParameter = conferenceId.HasValue ?
+                new ObjectParameter("ConferenceId", conferenceId) :
+                new ObjectParameter("ConferenceId", typeof(int));
+    
+            var conferenceDayParameter = conferenceDay.HasValue ?
+                new ObjectParameter("ConferenceDay", conferenceDay) :
+                new ObjectParameter("ConferenceDay", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<GetAttendantsAtWorkshopsOnConferenceDay_Result>("[Model1Container].[GetAttendantsAtWorkshopsOnConferenceDay](@ConferenceId, @ConferenceDay)", conferenceIdParameter, conferenceDayParameter);
+        }
+    
+        public virtual int MakeReservation(string personalNumber, Nullable<int> conferenceDayId)
+        {
+            var personalNumberParameter = personalNumber != null ?
+                new ObjectParameter("PersonalNumber", personalNumber) :
+                new ObjectParameter("PersonalNumber", typeof(string));
+    
+            var conferenceDayIdParameter = conferenceDayId.HasValue ?
+                new ObjectParameter("ConferenceDayId", conferenceDayId) :
+                new ObjectParameter("ConferenceDayId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("MakeReservation", personalNumberParameter, conferenceDayIdParameter);
+        }
+    
+        public virtual int MakeReservationCorporation(string taxNumber, Nullable<int> conferenceDayId, Nullable<int> ammount)
+        {
+            var taxNumberParameter = taxNumber != null ?
+                new ObjectParameter("TaxNumber", taxNumber) :
+                new ObjectParameter("TaxNumber", typeof(string));
+    
+            var conferenceDayIdParameter = conferenceDayId.HasValue ?
+                new ObjectParameter("ConferenceDayId", conferenceDayId) :
+                new ObjectParameter("ConferenceDayId", typeof(int));
+    
+            var ammountParameter = ammount.HasValue ?
+                new ObjectParameter("Ammount", ammount) :
+                new ObjectParameter("Ammount", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("MakeReservationCorporation", taxNumberParameter, conferenceDayIdParameter, ammountParameter);
+        }
+    
+        public virtual int PayForReservationWithADate(string personalNumber, Nullable<int> conferenceDayId, Nullable<System.DateTime> paymentDate, Nullable<decimal> ammount)
+        {
+            var personalNumberParameter = personalNumber != null ?
+                new ObjectParameter("PersonalNumber", personalNumber) :
+                new ObjectParameter("PersonalNumber", typeof(string));
+    
+            var conferenceDayIdParameter = conferenceDayId.HasValue ?
+                new ObjectParameter("ConferenceDayId", conferenceDayId) :
+                new ObjectParameter("ConferenceDayId", typeof(int));
+    
+            var paymentDateParameter = paymentDate.HasValue ?
+                new ObjectParameter("PaymentDate", paymentDate) :
+                new ObjectParameter("PaymentDate", typeof(System.DateTime));
+    
+            var ammountParameter = ammount.HasValue ?
+                new ObjectParameter("Ammount", ammount) :
+                new ObjectParameter("Ammount", typeof(decimal));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("PayForReservationWithADate", personalNumberParameter, conferenceDayIdParameter, paymentDateParameter, ammountParameter);
+        }
     }
 }

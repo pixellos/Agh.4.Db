@@ -174,7 +174,7 @@
       <PropertyRef Name="Id" />
     </Key>
     <Property Name="Id" Type="int" Nullable="false" />
-    <Property Name="Price" Type="decimal" Nullable="false" />
+    <Property Name="Price" Type="decimal" Nullable="false" Precision="18" Scale="0" />
   </EntityType>
   <EntityType Name="Conferences">
     <Key>
@@ -274,8 +274,8 @@
     <Key>
       <PropertyRef Name="Id" />
     </Key>
-    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="Ammount" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Id" Type="int" Nullable="false" />
+    <Property Name="Amount" Type="decimal" Nullable="false" />
   </EntityType>
   <EntityType Name="IndividualClientConferenceDay">
     <Key>
@@ -706,6 +706,109 @@
             <End Role="Workshop" EntitySet="Workshops" />
             <End Role="WorkshopPrice" EntitySet="WorkshopPrices" />
           </AssociationSet>
+          <FunctionImport Name="AddAddress">
+            <Parameter Name="Street" Mode="In" Type="String" />
+            <Parameter Name="ApartmentNumber" Mode="In" Type="Int32" />
+            <Parameter Name="BuildingNumber" Mode="In" Type="Int32" />
+            <Parameter Name="ZipCode" Mode="In" Type="String" />
+            <Parameter Name="City" Mode="In" Type="String" />
+            <Parameter Name="Country" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="AddClient">
+            <Parameter Name="FirstName" Mode="In" Type="String" />
+            <Parameter Name="LastName" Mode="In" Type="String" />
+            <Parameter Name="PersonalNumber" Mode="In" Type="String" />
+            <Parameter Name="Telephone" Mode="In" Type="String" />
+            <Parameter Name="Street" Mode="In" Type="String" />
+            <Parameter Name="ApartmentNumber" Mode="In" Type="Int32" />
+            <Parameter Name="BuildingNumber" Mode="In" Type="Int32" />
+            <Parameter Name="ZipCode" Mode="In" Type="String" />
+            <Parameter Name="City" Mode="In" Type="String" />
+            <Parameter Name="Country" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="AddConference">
+            <Parameter Name="IssuerCompanyTaxNumber" Mode="In" Type="String" />
+            <Parameter Name="ConferenceName" Mode="In" Type="String" />
+            <Parameter Name="StudentDiscount" Mode="In" Type="Decimal" />
+            <Parameter Name="Price" Mode="In" Type="Int32" />
+            <Parameter Name="Street" Mode="In" Type="String" />
+            <Parameter Name="ApartmentNumber" Mode="In" Type="Int32" />
+            <Parameter Name="BuildingNumber" Mode="In" Type="Int32" />
+            <Parameter Name="ZipCode" Mode="In" Type="String" />
+            <Parameter Name="City" Mode="In" Type="String" />
+            <Parameter Name="Country" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="AddConferenceDay">
+            <Parameter Name="ConferenceId" Mode="In" Type="Int32" />
+            <Parameter Name="Date" Mode="In" Type="DateTime" />
+            <Parameter Name="Capacity" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="AddCorporateClient">
+            <Parameter Name="CompanyName" Mode="In" Type="String" />
+            <Parameter Name="TaxNumber" Mode="In" Type="String" />
+            <Parameter Name="Telephone" Mode="In" Type="String" />
+            <Parameter Name="Street" Mode="In" Type="String" />
+            <Parameter Name="ApartmentNumber" Mode="In" Type="Int32" />
+            <Parameter Name="BuildingNumber" Mode="In" Type="Int32" />
+            <Parameter Name="ZipCode" Mode="In" Type="String" />
+            <Parameter Name="City" Mode="In" Type="String" />
+            <Parameter Name="Country" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="AddPriceToConference">
+            <Parameter Name="Price" Mode="In" Type="Decimal" />
+            <Parameter Name="DaysToConferenceStart" Mode="In" Type="Int32" />
+            <Parameter Name="ConferenceId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="AddStudent">
+            <Parameter Name="FirstName" Mode="In" Type="String" />
+            <Parameter Name="LastName" Mode="In" Type="String" />
+            <Parameter Name="PersonalNumber" Mode="In" Type="String" />
+            <Parameter Name="StudentId" Mode="In" Type="String" />
+            <Parameter Name="Telephone" Mode="In" Type="String" />
+            <Parameter Name="Street" Mode="In" Type="String" />
+            <Parameter Name="ApartmentNumber" Mode="In" Type="Int32" />
+            <Parameter Name="BuildingNumber" Mode="In" Type="Int32" />
+            <Parameter Name="ZipCode" Mode="In" Type="String" />
+            <Parameter Name="City" Mode="In" Type="String" />
+            <Parameter Name="Country" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="AssignEmployerToEmployee">
+            <Parameter Name="tax_number" Mode="In" Type="String" />
+            <Parameter Name="EmployeeTitle" Mode="In" Type="String" />
+            <Parameter Name="FirstName" Mode="In" Type="String" />
+            <Parameter Name="LastName" Mode="In" Type="String" />
+            <Parameter Name="PersonalNumber" Mode="In" Type="String" />
+            <Parameter Name="Telephone" Mode="In" Type="String" />
+            <Parameter Name="Street" Mode="In" Type="String" />
+            <Parameter Name="ApartmentNumber" Mode="In" Type="Int32" />
+            <Parameter Name="BuildingNumber" Mode="In" Type="Int32" />
+            <Parameter Name="ZipCode" Mode="In" Type="String" />
+            <Parameter Name="City" Mode="In" Type="String" />
+            <Parameter Name="Country" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="GetAttendantsAtConferenceDay" IsComposable="true" ReturnType="Collection(Model1.GetAttendantsAtConferenceDay_Result)">
+            <Parameter Name="ConferenceId" Mode="In" Type="Int32" />
+            <Parameter Name="ConferenceDay" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="GetAttendantsAtWorkshopsOnConferenceDay" IsComposable="true" ReturnType="Collection(Model1.GetAttendantsAtWorkshopsOnConferenceDay_Result)">
+            <Parameter Name="ConferenceId" Mode="In" Type="Int32" />
+            <Parameter Name="ConferenceDay" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="MakeReservation">
+            <Parameter Name="PersonalNumber" Mode="In" Type="String" />
+            <Parameter Name="ConferenceDayId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="MakeReservationCorporation">
+            <Parameter Name="TaxNumber" Mode="In" Type="String" />
+            <Parameter Name="ConferenceDayId" Mode="In" Type="Int32" />
+            <Parameter Name="Ammount" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="PayForReservationWithADate">
+            <Parameter Name="PersonalNumber" Mode="In" Type="String" />
+            <Parameter Name="ConferenceDayId" Mode="In" Type="Int32" />
+            <Parameter Name="PaymentDate" Mode="In" Type="DateTime" />
+            <Parameter Name="Ammount" Mode="In" Type="Decimal" />
+          </FunctionImport>
         </EntityContainer>
         <EntityType Name="Client">
           <Key>
@@ -821,7 +924,7 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="None" />
-          <Property Name="Price" Type="Decimal" Nullable="false" />
+          <Property Name="Price" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
           <NavigationProperty Name="Workshop" Relationship="Model1.WorkshopWorkshopPrice" FromRole="WorkshopPrice" ToRole="Workshop" />
         </EntityType>
         <EntityType Name="Conference">
@@ -1088,8 +1191,8 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Ammount" Type="String" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="None" />
+          <Property Name="Amount" Type="Decimal" Nullable="false" />
           <NavigationProperty Name="WorkshopReservation" Relationship="Model1.WorkshopReservationPaymentWorkshopReservation" FromRole="WorkshopReservationPayment" ToRole="WorkshopReservation" />
         </EntityType>
         <Association Name="WorkshopReservationPaymentWorkshopReservation">
@@ -1189,6 +1292,23 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <ComplexType Name="GetAttendantsAtConferenceDay_Result">
+          <Property Type="Int32" Name="ConferenceDayId" Nullable="false" />
+          <Property Type="String" Name="FirstName" Nullable="true" />
+          <Property Type="String" Name="LastName" Nullable="true" />
+          <Property Type="String" Name="PersonalNumber" Nullable="true" MaxLength="11" />
+          <Property Type="String" Name="StudentId" Nullable="true" MaxLength="120" />
+          <Property Type="String" Name="CompanyName" Nullable="true" MaxLength="120" />
+        </ComplexType>
+        <ComplexType Name="GetAttendantsAtWorkshopsOnConferenceDay_Result">
+          <Property Type="Int32" Name="ConferenceDayId" Nullable="false" />
+          <Property Type="String" Name="FirstName" Nullable="true" />
+          <Property Type="String" Name="LastName" Nullable="true" />
+          <Property Type="String" Name="PersonalNumber" Nullable="true" MaxLength="11" />
+          <Property Type="String" Name="StudentId" Nullable="true" MaxLength="120" />
+          <Property Type="String" Name="CompanyName" Nullable="true" MaxLength="120" />
+          <Property Type="String" Name="Name" Nullable="false" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1360,7 +1480,7 @@
       <EntityTypeMapping TypeName="IsTypeOf(Model1.WorkshopReservationPayment)">
         <MappingFragment StoreEntitySet="WorkshopReservationPayments">
           <ScalarProperty Name="Id" ColumnName="Id" />
-          <ScalarProperty Name="Ammount" ColumnName="Ammount" />
+          <ScalarProperty Name="Amount" ColumnName="Amount" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
