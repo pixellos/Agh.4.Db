@@ -2,8 +2,8 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 04/27/2019 08:20:57
--- Generated from EDMX file: C:\Users\rogoz\source\repos\AghDataBase\AghDataBase\1_DbTableShema.edmx
+-- Date Created: 05/15/2019 04:56:38
+-- Generated from EDMX file: C:\AGH\bazy projekt\https-github.com-pixellos-Agh_DB_4\AghDataBase\1_DbTableShema.edmx
 -- --------------------------------------------------
 
 SET QUOTED_IDENTIFIER OFF;
@@ -62,9 +62,6 @@ GO
 IF OBJECT_ID(N'[dbo].[FK_ReservationClient]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[Reservations] DROP CONSTRAINT [FK_ReservationClient];
 GO
-IF OBJECT_ID(N'[dbo].[FK_ConferenceReservation]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[Reservations] DROP CONSTRAINT [FK_ConferenceReservation];
-GO
 IF OBJECT_ID(N'[dbo].[FK_IndividualClientConferenceDay_IndividualClient]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[IndividualClientConferenceDay] DROP CONSTRAINT [FK_IndividualClientConferenceDay_IndividualClient];
 GO
@@ -91,6 +88,9 @@ IF OBJECT_ID(N'[dbo].[FK_WorkshopReservationPaymentWorkshopReservation]', 'F') I
 GO
 IF OBJECT_ID(N'[dbo].[FK_ConferencePricesReservationPayment]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[ReservationPayments] DROP CONSTRAINT [FK_ConferencePricesReservationPayment];
+GO
+IF OBJECT_ID(N'[dbo].[FK_ConferenceDayReservation]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Reservations] DROP CONSTRAINT [FK_ConferenceDayReservation];
 GO
 
 -- --------------------------------------------------
@@ -283,6 +283,7 @@ GO
 CREATE TABLE [dbo].[Reservations] (
     [Id] int IDENTITY(1,1) NOT NULL,
     [ClientId] int  NOT NULL,
+    [ReservationDate] nvarchar(max)  NOT NULL,
     [ConferenceDayId] int  NOT NULL
 );
 GO
@@ -746,7 +747,7 @@ ADD CONSTRAINT [FK_ReservationPaymentReservation]
     FOREIGN KEY ([Id])
     REFERENCES [dbo].[Reservations]
         ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
+    ON DELETE CASCADE ON UPDATE NO ACTION;
 GO
 
 -- Creating foreign key on [Id] in table 'WorkshopReservationPayments'

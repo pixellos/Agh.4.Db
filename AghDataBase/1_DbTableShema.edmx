@@ -250,6 +250,7 @@
     </Key>
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="ClientId" Type="int" Nullable="false" />
+    <Property Name="ReservationDate" Type="nvarchar(max)" Nullable="false" />
     <Property Name="ConferenceDayId" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="ConferenceDays">
@@ -523,7 +524,9 @@
   </Association>
   <Association Name="ReservationPaymentReservation">
     <End Role="ReservationPayment" Type="Model1.Store.ReservationPayments" Multiplicity="0..1" />
-    <End Role="Reservation" Type="Model1.Store.Reservations" Multiplicity="1" />
+    <End Role="Reservation" Type="Model1.Store.Reservations" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
     <ReferentialConstraint>
       <Principal Role="Reservation">
         <PropertyRef Name="Id" />
@@ -1136,8 +1139,11 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="ReservationPaymentReservation">
-          <End Type="Model1.ReservationPayment" Role="ReservationPayment" Multiplicity="0..1" />
-          <End Type="Model1.Reservation" Role="Reservation" Multiplicity="1" />
+          <End Type="Model1.ReservationPayment" Role="ReservationPayment" Multiplicity="0..1" >
+          </End>
+          <End Type="Model1.Reservation" Role="Reservation" Multiplicity="1" >
+            <OnDelete Action="Cascade" />
+          </End>
           <ReferentialConstraint>
             <Principal Role="Reservation">
               <PropertyRef Name="Id" />
@@ -1332,6 +1338,7 @@
         <MappingFragment StoreEntitySet="Reservations">
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="ClientId" ColumnName="ClientId" />
+          <ScalarProperty Name="ReservationDate" ColumnName="ReservationDate" />
           <ScalarProperty Name="ConferenceDayId" ColumnName="ConferenceDayId" />
         </MappingFragment>
       </EntityTypeMapping>

@@ -20,3 +20,4 @@ CREATE OR ALTER VIEW LoyalClientsView
 		ON R.Id = RP.Id
 	GROUP BY IC.FirstName, IC.LastName, CC.CompanyName
 	ORDER BY TotalPaid DESC;
+

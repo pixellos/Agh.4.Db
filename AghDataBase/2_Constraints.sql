@@ -103,5 +103,6 @@ RETURN 0;
 END
 GO
 
-ALTER TABLE dbo.Reservations ADD CONSTRAINT C_IsEnoughtCapacity CHECK (dbo.CanReservationBePlaced(ConferenceDayId) = 1)
-GO 
+ALTER TABLE dbo.Reservations ADD CONSTRAINT C_IsEnoughtCapacity CHECK (dbo.CanReservationBePlaced(ConferenceDayId) = 1);
+ALTER TABLE dbo.Reservations ADD CONSTRAINT DF_ReservationDate DEFAULT GETDATE() FOR ReservationDate;
+GO

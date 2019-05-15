@@ -92,4 +92,13 @@ BEGIN
 	set @i = CAST(('@twoWeeksBefore != 300, ' + @twoWeeksBefore) AS INT);
 END
 
-EXEC PayForReservationWithADate  '68072754249', @confitura, '2018/08/24', 400;
+EXEC PayForReservationWithADate '68072754249', @confitura, '2018/08/24', 400;
+
+/* DeleteUnpaidReservation */
+DELETE FROM Reservations WHERE Id > 0;
+INSERT INTO Reservations VALUES (4, '2018/08/24', 1 );
+EXEC DeleteUnpaidReservations;
+IF(SELECT COUNT(*) FROM Reservations where ClientId = 4) > 0
+BEGIN
+	set @i = CAST('Assert error - DeleteUnpaidReservation' AS INT);
+END
