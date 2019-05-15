@@ -18,6 +18,8 @@ namespace AghDataBase
         public Client()
         {
             this.Reservations = new HashSet<Reservation>();
+            this.Payments = new HashSet<ReservationPayment>();
+            this.WorkshopReservations = new HashSet<WorkshopReservation>();
         }
     
         public int Id { get; set; }
@@ -29,5 +31,9 @@ namespace AghDataBase
         public virtual Building Building { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Reservation> Reservations { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ReservationPayment> Payments { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<WorkshopReservation> WorkshopReservations { get; set; }
     }
 }

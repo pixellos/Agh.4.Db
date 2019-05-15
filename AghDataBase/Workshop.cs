@@ -23,7 +23,10 @@ namespace AghDataBase
         public int Id { get; set; }
         public System.DateTime StartTime { get; set; }
         public System.DateTime EndTime { get; set; }
+        public string Name { get; set; }
+        public int ConferenceDayId { get; set; }
     
+        public virtual ConferenceDay ConferenceDay { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<WorkshopReservation> WorkshopReservations { get; set; }
         public virtual WorkshopPrice WorkshopPrice { get; set; }

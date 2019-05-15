@@ -13,14 +13,13 @@ CREATE PROCEDURE AddConference
 		@BuildingNumber int,
 		@ZipCode nvarchar(6),
 		@City nvarchar(50),
-		@Province nvarchar(50),
 		@Country nvarchar(50)
 	AS
 	DECLARE @conference_id int;
 
 	BEGIN TRANSACTION
 		DECLARE @address int;
-		EXEC @address = AddAddress @Street, @ApartmentNumber, @BuildingNumber, @ZipCode, @City, @Province, @Country;
+		EXEC @address = AddAddress @Street, @ApartmentNumber, @BuildingNumber, @ZipCode, @City, @Country;
 
 		DECLARE @company_id int = (SELECT Min(Id) FROM CorporateClients WHERE TaxNumber = @IssuerCompanyTaxNumber);
 

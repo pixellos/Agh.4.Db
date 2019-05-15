@@ -1,6 +1,6 @@
 ﻿/* SAME OBJECT AS PREVIOUS TEST, SHOULD BE CRAETED */
 DECLARE @confitura int;
-EXEC @confitura = AddConference '1234561', 'ConfituraPL',0 , 500, 'Konferencyjna', 14, 7, '32-234', 'Kraków', 'Małopolskie', 'Polska';
+EXEC @confitura = AddConference '1234561', 'ConfituraPL',0 , 500, 'Konferencyjna', 14, 7, '32-234', 'Kraków', 'Polska';
 
 EXEC AddConferenceDay @confitura,  '2018/08/25', 4
 

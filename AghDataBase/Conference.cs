@@ -19,20 +19,19 @@ namespace AghDataBase
         {
             this.ConferencePrices = new HashSet<ConferencePrices>();
             this.ConferenceDays = new HashSet<ConferenceDay>();
-            this.Reservations = new HashSet<Reservation>();
         }
     
         public int Id { get; set; }
         public string Name { get; set; }
         public int BuildingId { get; set; }
-        public byte Discount { get; set; }
+        public byte StudentDiscount { get; set; }
+        public int Issuer { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ConferencePrices> ConferencePrices { get; set; }
         public virtual Building Building { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ConferenceDay> ConferenceDays { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Reservation> Reservations { get; set; }
+        public virtual CorporateClient CorporateClient { get; set; }
     }
 }

@@ -37,11 +37,12 @@ namespace AghDataBase
         public virtual DbSet<Student> Students { get; set; }
         public virtual DbSet<City> Cities { get; set; }
         public virtual DbSet<Street> Streets { get; set; }
-        public virtual DbSet<Province> Provinces { get; set; }
         public virtual DbSet<Building> Buildings { get; set; }
         public virtual DbSet<Country> Countries { get; set; }
         public virtual DbSet<Reservation> Reservations { get; set; }
         public virtual DbSet<ConferenceDay> ConferenceDays { get; set; }
         public virtual DbSet<WorkshopReservation> WorkshopReservations { get; set; }
+        public virtual DbSet<ReservationPayment> ReservationPayments { get; set; }
+        public virtual DbSet<WorkshopReservationPayment> WorkshopReservationPayments { get; set; }
     }
 }

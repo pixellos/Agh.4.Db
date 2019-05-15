@@ -32,7 +32,30 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Bogus, Version=26.0.2.0, Culture=neutral, PublicKeyToken=fa1bb3f3f218129a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Bogus.26.0.2\lib\net40\Bogus.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
@@ -52,6 +75,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="1_DbTableShema.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>1_DbTableShema.edmx</DependentUpon>
+    </Compile>
     <Compile Include="Building.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -92,17 +120,14 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
-    <Compile Include="1_DbTableShema.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>1_DbTableShema.edmx</DependentUpon>
-    </Compile>
+    <Compile Include="PeselCheckSumCalculator.cs" />
+    <Compile Include="PeselGenerator.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Province.cs">
+    <Compile Include="Reservation.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
-    <Compile Include="Reservation.cs">
+    <Compile Include="ReservationPayment.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Street.cs">
@@ -120,12 +145,16 @@
     <Compile Include="WorkshopReservation.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="WorkshopReservationPayment.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <EntityDeploy Include="1_DbTableShema.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>1_DbTableShema.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>DbSchema</CustomToolNamespace>
     </EntityDeploy>
     <None Include="1_DbTableShema.edmx.diagram">
       <DependentUpon>1_DbTableShema.edmx</DependentUpon>
@@ -143,6 +172,7 @@
     <Content Include="0_Functions\7_GetAttendantsAtWorkshopsOnConferenceDay.sql" />
     <Content Include="1_StoredProcedures\9_DeleteUnpaidReservations.sql" />
     <Content Include="1_StoredProcedures\8_PayForReservationWithADate.sql" />
+    <Content Include="1_StoredProcedures\10_Workshops.sql" />
     <Content Include="1_StoredProcedures\7_MakeReservation.sql" />
     <Content Include="1_StoredProcedures\6_AddConference.sql" />
     <Content Include="1_StoredProcedures\5_AddPriceToConference.sql" />

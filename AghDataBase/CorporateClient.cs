@@ -18,6 +18,7 @@ namespace AghDataBase
         public CorporateClient()
         {
             this.CorporateClientEmployes = new HashSet<CorporateClientEmploye>();
+            this.Conferences = new HashSet<Conference>();
         }
     
         public int Id { get; set; }
@@ -27,5 +28,7 @@ namespace AghDataBase
         public virtual Client Client { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CorporateClientEmploye> CorporateClientEmployes { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Conference> Conferences { get; set; }
     }
 }

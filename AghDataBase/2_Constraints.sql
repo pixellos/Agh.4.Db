@@ -22,9 +22,8 @@ BEGIN
 
   IF (SELECT SUM(CONVERT(INT, SUBSTRING(@number, Pos, 1)) * W) % 10 FROM @vals ) = 0
   BEGIN
-	DECLARE @month int = CONVERT(INT, SUBSTRING(@number, 3, 2))
 	DECLARE @day int = CONVERT(INT, SUBSTRING(@number, 5, 2))
-	IF(@month < 13 AND @day < 32)
+	IF(@day < 32)
 	RETURN 1
   END
   RETURN 0
@@ -61,8 +60,7 @@ GO
 /* Warunki integralnościowe dla niepowtarzających się krotek adresu. */
 
 ALTER TABLE dbo.Countries ADD CONSTRAINT UC_Country UNIQUE (Name);
-ALTER TABLE dbo.Provinces ADD CONSTRAINT UC_Province UNIQUE (Name, CountryId);
-ALTER TABLE dbo.Cities ADD CONSTRAINT UC_City UNIQUE (Name, ProvinceId);
+ALTER TABLE dbo.Cities ADD CONSTRAINT UC_City UNIQUE (Name, CountryId);
 ALTER TABLE dbo.Streets ADD CONSTRAINT UC_Street UNIQUE (Name, ZipCode, CityId);
 ALTER TABLE dbo.Buildings ADD CONSTRAINT UC_Buildings UNIQUE (StreetId, Number, ApartmentNumber);
 GO
@@ -72,7 +70,7 @@ GO
 ALTER TABLE dbo.ConferencePrices ADD CONSTRAINT UC_Price_Stage UNIQUE (ConferenceId, TillConferenceStart)
 GO
 
---/*  Jeden klient może mieć tylko jedną rezerwację na daną konferencji */
+--/*  Jeden klient może mieć tylko jedną rezerwację na daną konferencji - */
 
 --ALTER TABLE dbo.Reservations ADD CONSTRAINT UC_Client_ConferenceId UNIQUE (ClientId, )
 --GO

@@ -17,14 +17,13 @@ CREATE   PROCEDURE AssignEmployerToEmployee
 		@BuildingNumber int,
 		@ZipCode nvarchar(6),
 		@City nvarchar(50),
-		@Province nvarchar(50),
 		@Country nvarchar(50)
 	AS
 	DECLARE @employee_employer  int;
 
 	BEGIN TRANSACTION
 		DECLARE @employee_id int;
-		EXEC @employee_id = AddClient @FirstName, @LastName, @PersonalNumber, @Telephone, @Street, @ApartmentNumber, @BuildingNumber, @ZipCode, @City, @Province, @Country;
+		EXEC @employee_id = AddClient @FirstName, @LastName, @PersonalNumber, @Telephone, @Street, @ApartmentNumber, @BuildingNumber, @ZipCode, @City, @Country;
 	
 		SET @employee_employer = (SELECT Min(Id) FROM [dbo].CorporateClientEmployes WHERE Id = @employee_id);
 		IF @employee_employer is NULL 

@@ -13,7 +13,6 @@ CREATE PROCEDURE AddClient
 	@BuildingNumber int,
 	@ZipCode nvarchar(6),
 	@City nvarchar(50),
-	@Province nvarchar(50),
 	@Country nvarchar(50)
 	AS
 
@@ -27,7 +26,6 @@ CREATE PROCEDURE AddClient
 	@BuildingNumber,
 	@ZipCode,
 	@City,
-	@Province,
 	@Country
 	
 	BEGIN

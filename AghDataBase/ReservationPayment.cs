@@ -12,18 +12,15 @@ namespace AghDataBase
     using System;
     using System.Collections.Generic;
     
-    public partial class Country
+    public partial class ReservationPayment
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Country()
-        {
-            this.Cities = new HashSet<City>();
-        }
-    
         public int Id { get; set; }
-        public string Name { get; set; }
+        public decimal Amount { get; set; }
+        public int ClientId { get; set; }
+        public Nullable<int> ConferencePricesId { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<City> Cities { get; set; }
+        public virtual Client Client { get; set; }
+        public virtual Reservation Reservation { get; set; }
+        public virtual ConferencePrices ConferencePrice { get; set; }
     }
 }

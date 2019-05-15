@@ -10,7 +10,6 @@ CREATE PROCEDURE AddAddress
 	@BuildingNumber int,
 	@ZipCode nvarchar(6),
 	@City nvarchar(50),
-	@Province nvarchar(50),
 	@Country nvarchar(50)
 AS
 
@@ -28,26 +27,15 @@ DECLARE @country_id int;
 SET @country_id = (SELECT MIN(Id) FROM [dbo].[Countries] WHERE Name = @Country);
 
 BEGIN
-   IF NOT EXISTS (SELECT * FROM [dbo].Provinces WHERE Name = @Province and CountryId = @country_id)
+   IF NOT EXISTS (SELECT * FROM [dbo].Cities WHERE Name = @City and @country_id = CountryId)
    BEGIN
-       INSERT INTO [dbo].[Provinces](Name, CountryId)
-       VALUES (@Province, @country_id)
-   END
-END
-
-DECLARE @province_id int;
-SET @province_id =  (SELECT MIN(Id) FROM [dbo].[Provinces] WHERE Name = @Province and CountryId = @country_id);
-
-BEGIN
-   IF NOT EXISTS (SELECT * FROM [dbo].Cities WHERE Name = @City and ProvinceId = @province_id)
-   BEGIN
-       INSERT INTO [dbo].Cities(Name, ProvinceId)
-       VALUES (@City, @province_id)
+       INSERT INTO [dbo].Cities(Name, CountryId)
+       VALUES (@City, @country_id)
    END
 END
 
 DECLARE @city_id int;
-SET @city_id = (SELECT MIN(Id) FROM [dbo].[Cities] WHERE Name = @City and ProvinceId = @province_id);
+SET @city_id = (SELECT MIN(Id) FROM [dbo].[Cities] WHERE Name = @City and CountryId = @country_id);
 
 BEGIN
    IF NOT EXISTS (SELECT * FROM [dbo].Streets WHERE Name = @Street and ZipCode = @ZipCode and CityId = @city_id)
