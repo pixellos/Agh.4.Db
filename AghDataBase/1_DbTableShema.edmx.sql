@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 05/14/2019 20:15:57
+-- Date Created: 05/15/2019 21:06:00
 -- Generated from EDMX file: C:\Users\rogoz\source\repos\AghDataBase\AghDataBase\1_DbTableShema.edmx
 -- --------------------------------------------------
 
@@ -59,9 +59,6 @@ GO
 IF OBJECT_ID(N'[dbo].[FK_IndividualClientConferenceDay_ConferenceDay]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[IndividualClientConferenceDay] DROP CONSTRAINT [FK_IndividualClientConferenceDay_ConferenceDay];
 GO
-IF OBJECT_ID(N'[dbo].[FK_WorkshopWorkshopPrice]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[WorkshopPrices] DROP CONSTRAINT [FK_WorkshopWorkshopPrice];
-GO
 IF OBJECT_ID(N'[dbo].[FK_CorporateClientConference]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[Conferences] DROP CONSTRAINT [FK_CorporateClientConference];
 GO
@@ -91,6 +88,9 @@ IF OBJECT_ID(N'[dbo].[FK_ClientWorkshopReservation]', 'F') IS NOT NULL
 GO
 IF OBJECT_ID(N'[dbo].[FK_WorkshopWorkshopReservation]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[WorkshopReservations] DROP CONSTRAINT [FK_WorkshopWorkshopReservation];
+GO
+IF OBJECT_ID(N'[dbo].[FK_WorkshopWorkshopPrice]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[WorkshopPrices] DROP CONSTRAINT [FK_WorkshopWorkshopPrice];
 GO
 
 -- --------------------------------------------------
@@ -304,8 +304,8 @@ GO
 
 -- Creating table 'WorkshopReservationPayments'
 CREATE TABLE [dbo].[WorkshopReservationPayments] (
-    [Id] int IDENTITY(1,1) NOT NULL,
-    [Ammount] nvarchar(max)  NOT NULL
+    [Id] int  NOT NULL,
+    [Amount] decimal(18,0)  NOT NULL
 );
 GO
 
@@ -618,15 +618,6 @@ ON [dbo].[IndividualClientConferenceDay]
     ([ConferenceDays_Id]);
 GO
 
--- Creating foreign key on [Id] in table 'WorkshopPrices'
-ALTER TABLE [dbo].[WorkshopPrices]
-ADD CONSTRAINT [FK_WorkshopWorkshopPrice]
-    FOREIGN KEY ([Id])
-    REFERENCES [dbo].[Workshops]
-        ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
-GO
-
 -- Creating foreign key on [Issuer] in table 'Conferences'
 ALTER TABLE [dbo].[Conferences]
 ADD CONSTRAINT [FK_CorporateClientConference]
@@ -763,6 +754,15 @@ GO
 CREATE INDEX [IX_FK_WorkshopWorkshopReservation]
 ON [dbo].[WorkshopReservations]
     ([WorkshopId]);
+GO
+
+-- Creating foreign key on [Id] in table 'WorkshopPrices'
+ALTER TABLE [dbo].[WorkshopPrices]
+ADD CONSTRAINT [FK_WorkshopWorkshopPrice]
+    FOREIGN KEY ([Id])
+    REFERENCES [dbo].[Workshops]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
 GO
 
 -- --------------------------------------------------
