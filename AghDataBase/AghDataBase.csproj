@@ -185,6 +185,7 @@
     <Content Include="1_StoredProcedures\4_AssignEmployeeToEmployer.sql" />
     <Content Include="1_DbTableShema.edmx.sql" />
     <Content Include="4_Jobs.sql" />
+    <Content Include="6_Roles.sql" />
     <Content Include="5_Triggers.sql" />
     <Content Include="8_Tests\2_FunctionsTest.sql" />
     <Content Include="8_Tests\1_TestsCases.sql" />
