@@ -12,11 +12,57 @@ lorem ipsum
 
 ## Użytkownicy i role
 
-lorem ipsum
+- ### customerservice
+
+  Osoba obsługująca klientów indywidualnych i korporacyjnych. Zajmuje się zapisywaniem uczestników na konferencje i warsztaty, oraz obsługuje płatności.
+
+  ```mssql
+  CREATE ROLE [customerservice]
+  GRANT SELECT ON GetAttendantsAtConferenceDay TO customerservice
+  GRANT SELECT ON GetAttendantsAtWorkshopsOnConferenceDay TO customerservice
+  GRANT SELECT ON GetConferenceStart TO customerservice
+  GRANT SELECT ON GetIndividualClientOrThrow TO customerservice
+  GRANT SELECT ON GetConferenceWithPriceAccordingToDate TO customerservice
+  GRANT SELECT ON LoyalClientsView TO customerservice
+  GRANT EXECUTE ON AddAddress TO customerservice
+  GRANT EXECUTE ON AddClient TO customerservice
+  GRANT EXECUTE ON AddCorporateClient TO customerservice
+  GRANT EXECUTE ON AddStudent TO customerservice
+  GRANT EXECUTE ON AssignEmployerToEmployee TO customerservice
+  GRANT EXECUTE ON MakeReservation TO customerservice
+  GRANT EXECUTE ON MakeReservationCorporation TO customerservice
+  GRANT EXECUTE ON PayForReservationWithADate TO customerservice
+  GRANT EXECUTE ON DeleteUnpaidReservations TO customerservice
+  GRANT EXECUTE ON ReserveAPlaceForAWorkshop TO customerservice
+  ```
+
+  
+
+- ### organizer
+
+  Tworzy konferencje oraz warsztaty, nadaje im ceny za uczestnictwo.
+
+```mssql
+  CREATE ROLE [organizer]
+  GRANT SELECT ON GetAttendantsAtConferenceDay TO customerservice
+  GRANT SELECT ON GetAttendantsAtWorkshopsOnConferenceDay TO customerservice
+  GRANT SELECT ON GetConferenceStart TO customerservice
+  GRANT SELECT ON LoyalClientsView TO customerservice
+  GRANT EXECUTE ON DeleteUnpaidReservations TO customerservice
+  GRANT EXECUTE ON AddPriceToConference TO customerservice
+  GRANT EXECUTE ON AddConference TO customerservice
+  GRANT EXECUTE ON AddConferenceDay TO customerservice
+  GRANT EXECUTE ON AddWorkshop TO customerservice
+  GRANT EXECUTE ON AddPriceToWorkshop TO customerservice
+```
+
+  
 
 ## Schemat bazy danych
 
-tutaj bobrazek
+- ### Schemat UML
+
+- ### Definicje tabel wraz z warunkami integracyjnymi
 
 ## Widoki
 
@@ -45,7 +91,197 @@ tutaj bobrazek
 
 ## Funkcje
 
-lorem ipsum
+- ### GetIndividualClientOrThrow
+
+  Zwraca ID klienta po PESEL-u.
+
+  ```mssql
+  
+  CREATE FUNCTION GetIndividualClientOrThrow(@PersonalNumber nvarchar(50))
+  RETURNS INT
+  AS
+  BEGIN
+  
+  	DECLARE @client_id int;
+  	SELECT @client_id = Min(Id) FROM IndividualClients WHERE PersonalNumber = @PersonalNumber;
+  
+  	IF @client_id IS NULL 
+  	BEGIN
+  		 RETURN CAST('Client canont be found.' AS INT);
+  	END	
+  
+  	RETURN @client_id;
+  END
+  GO
+  
+  ```
+
+  
+
+- ### GetAttendantsAtConferenceDay
+
+  Podaje listę osób zarejestrowanych na dany dzień konferencji.
+
+  ```mssql
+  CREATE FUNCTION GetAttendantsAtConferenceDay (
+  	@ConferenceId int,
+  	@ConferenceDay int
+  	)  
+  RETURNS TABLE  
+  AS  
+  RETURN   
+  (  
+      SELECT CDC.Id as ConferenceDayId, A.FirstName, A.LastName, A.PersonalNumber, S.StudentId, CC.CompanyName
+  	from (
+  		SELECT * FROM ConferenceDays CD 
+  		where CD.ConferenceId = @conferenceId
+  		ORDER BY CD.Date ASC
+  		OFFSET @ConferenceDay ROWS
+  		FETCH NEXT 1 ROW ONLY
+  	) AS CDC
+  
+  	LEFT JOIN IndividualClientConferenceDay ICCD
+  	ON CDC.Id = ICCD.ConferenceDays_Id
+  
+  	LEFT JOIN IndividualClients A
+  	ON A.Id = ICCD.IndividualClientConferenceDay_ConferenceDay_Id
+  
+  	LEFT JOIN Students S
+  	ON S.Id = A.Id
+  
+  	LEFT JOIN CorporateClientEmployes CCE
+  	ON A.Id = CCE.Id
+  
+  	LEFT JOIN CorporateClients CC
+  	ON CC.Id = CCE.CorporateClientId
+  );  
+  ```
+
+  
+
+- ### GetConferenceStart
+
+  Zwraca datę początku konferencji.
+
+  ```mssql
+  /*
+      Zwraca Datę początku konferencji (Za początek konferencji przyjmujemy pierwszy dzień konferencji przypisany doń)
+  */
+  CREATE OR ALTER FUNCTION GetConferenceStart(@ConferenceIds int)
+  RETURNS DATETIME
+  AS
+  BEGIN
+  	DECLARE @date datetime;
+  	SELECT @date = [Date]
+  	FROM ConferenceDays
+  	WHERE ConferenceId = @ConferenceIds
+  	ORDER BY [Date];
+  	RETURN @date;
+  END
+  GO
+  ```
+
+  
+
+- ### GetConferenceWithPriceAccordingToDate
+
+  Zwraca cenę konferencji biorąc pod uwagę datę zaksięgowania przelewu.
+
+  ```mssql
+  /*
+      Zwraca cenę konferencji biorąc pod uwagę datę zaksięgowania przelewu
+  */
+  CREATE OR ALTER FUNCTION GetConferenceWithPriceAccordingToDate(@ConferenceId int, @PaymentDate datetime)
+  RETURNS decimal
+  AS
+  BEGIN
+  	DECLARE @result decimal;
+  
+  SELECT TOP(1) @result = Price
+  	FROM ConferencePrices
+  	WHERE @ConferenceId = ConferenceId AND DATEADD(DD, -TillConferenceStart, dbo.GetConferenceStart(ConferenceId)) < DATEADD(DD, 0, @PaymentDate)
+  	ORDER BY TillConferenceStart
+  	
+  	RETURN @result;
+  END
+  GO
+  
+  ```
+
+  
+
+- ### GetConferencePriceId
+
+  Zwraca id conferenceprice biorąc pod uwagę datę zaksięgowania przelewu.
+
+  ```mssql
+  /*
+      Zwraca id conference price biorąc pod uwagę datę zaksięgowania przelewu
+  */
+  CREATE OR ALTER FUNCTION GetConferencePriceId(@ConferenceId int, @PaymentDate datetime)
+  RETURNS int
+  AS
+  BEGIN
+  	DECLARE @result int;
+  
+  	SELECT TOP(1) @result = Id
+  	FROM ConferencePrices
+  	WHERE @ConferenceId = ConferenceId AND DATEADD(DD, -TillConferenceStart, dbo.GetConferenceStart(ConferenceId)) < DATEADD(DD, 0, @PaymentDate)
+  	ORDER BY TillConferenceStart
+  	RETURN @result;
+  END
+  GO
+  
+  ```
+
+  
+
+- ### GetConferencePrice
+
+  Zwraca cenę konferencji i bierze pod uwagę, czy jest się studentem.
+
+  ```mssql
+  /*
+  	Zwraca cenę konferencji i bierze pod uwagę, czy jest studentem.
+  */
+  CREATE OR ALTER FUNCTION GetConferencePrice(
+  	@ConferenceId int, 
+  	@PersonalNumber nvarchar(50),
+  	@PaymentDate DateTime)
+  	RETURNS decimal
+  	AS 
+  BEGIN
+  	DECLARE @conference_price decimal;
+  	SELECT @conference_price = dbo.GetConferenceWithPriceAccordingToDate(@ConferenceId, @PaymentDate)
+  
+  	DECLARE @client_id int
+  	SELECT @client_id = dbo.GetIndividualClientOrThrow(@PersonalNumber);
+  
+  	DECLARE @student_id int
+  	SELECT TOP(1)
+  		@student_id = [Id]
+  	FROM Students
+  	WHERE Id = @client_id;
+  
+  	DECLARE @student_discount int;
+  	SELECT TOP(1) @student_discount = StudentDiscount FROM Conferences where Id = @ConferenceId;
+  
+  	IF @student_discount is NULL OR @student_discount = 0
+  	BEGIN
+  		RETURN @conference_price;
+  	END
+  
+  	IF @student_discount <= 100
+  	BEGIN
+  		RETURN @conference_price * (@student_discount / 100);
+  	END
+  	   
+  	RETURN Cast('Never should be there' as int)
+  END
+  GO
+  ```
+
+  
 
 ## Procedury
 
@@ -569,18 +805,369 @@ lorem ipsum
   GO	
   ```
 
+- ### AddWorkshop
+
+  Dodaje warsztat i przypisuje go do dnia konferencji.
+
+  ```mssql
+    /*
+     Tworzymy warsztat
+  */
+  CREATE PROCEDURE AddWorkshop 
+  	@ConferenceDayId int,
+  	@StartDate datetime,
+  	@EndDate datetime,
+  	@Name nvarchar(50)
+  	AS
+  	DECLARE @workshop_id int;
+  
+  	BEGIN TRANSACTION
+  		INSERT INTO Workshops(StartTime, EndTime, ConferenceDayId, Name) VALUES 
+  		(@StartDate, @EndDate, @ConferenceDayId, @Name);
+  			
+  		SET @workshop_id = @@IDENTITY;
+  	COMMIT;
+  	
+  	RETURN @workshop_id;
+  GO
+  ```
+
+  
+
+- ### AddPriceToWorkshop
+
+  Ustanawia cenę udziału w warsztacie.
+
+  ```mssql
+  CREATE PROCEDURE AddPriceToWorkshop
+  	@Price decimal,
+  	@WorkshopId int
+  	as 
+  
+  	IF @Price < 0
+  	BEGIN
+  		RETURN -1;
+  	END
+  
+  	INSERT INTO WorkshopPrices(Id, Price) VALUES (@WorkshopId, @Price);
+  
+  	RETURN @@IDENTITY;
+  GO
+  ```
+
+  
+
+- ### ReserveAPlaceForAWorkshop
+
+  Rezerwuje udział w warsztacie dla klienta.
+
+  ```mssql
+  CREATE PROCEDURE ReserveAPlaceForAWorkshop
+  	@WorkshopId int,
+  	@ClientId int
+  	as 
+  
+      INSERT INTO WorkshopReservations(ClientId, WorkshopId) VALUES (@ClientId, @WorkshopId)
+  
+  	RETURN @@IDENTITY;
+  GO
+  ```
+
   
 
 ## Triggery
 
-lorem ipsum
+- ### DISALLOW_WORKSHOP_RESERVATION_FOR_SAME_CLIENT
+
+  Zapewnia, że klient nie zarejestruje się na równocześnie trwające warsztaty.
+
+  ```mssql
+  CREATE TRIGGER DISALLOW_WORKSHOP_RESERVATION_FOR_SAME_CLIENT
+  ON [WorkshopReservations]
+  AFTER INSERT
+  AS
+  
+  IF EXISTS (
+  SELECT * FROM inserted i INNER JOIN Workshops WI ON i.Id = WI.Id where 
+  	(SELECT COUNT(*) FROM WorkshopReservations INNER JOIN Workshops WRW ON WorkshopReservations.Id = WRW.Id 
+  		WHERE  WI.StartTime <= WRW.StartTime AND WI.EndTime <= WRW.EndTime AND WI.EndTime >= WRW.StartTime
+  	)
+  	> 0
+  )
+  BEGIN
+  RAISERROR ('Same client can not have overlapping time.', 16, 1);
+  ROLLBACK TRANSACTION;
+  RETURN 
+  END;
+  
+  GO
+  ```
+
+  
 
 ## Dane
 
-lorem ipsum
+
 
 ## Generator danych
 
-lorem ipsum
+Generator danych został stworzony z użyciem biblioteki Bogus.
+
+```c#
+using Bogus;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace AghDataBase
+{
+    internal class Program
+    {
+        private static PeselGenerator peselGenerator = new PeselGenerator();
+
+
+        private static void Main(string[] args)
+        {
+            var context = new Model1Container();
+            var availableBuildings = PopulateBuildings();
+            var randomizeIndividualClient = PopulateIndividualClient(availableBuildings);
+            var randomizeCorporateClient = PopulateCorporateClient(availableBuildings);
+            var students = PopulateStudents(availableBuildings);
+            var randomizeConferences = PopulateConferences(availableBuildings, randomizeCorporateClient, students, randomizeIndividualClient);
+
+            var employeRelation = new Faker<CorporateClientEmploye>().RuleFor(x => x.Title, f => f.Company.CatchPhrase())
+                .RuleFor(x => x.CorporateClient, f => f.PickRandom(randomizeCorporateClient))
+                .RuleFor(x => x.IndividualClients, f => f.PickRandom(randomizeIndividualClient));
+
+            context.IndividualClients.AddRange(randomizeIndividualClient);
+            context.CorporateClients.AddRange(randomizeCorporateClient);
+            context.Conferences.AddRange(randomizeConferences);
+            context.Students.AddRange(students);
+            context.CorporateClientEmployes.AddRange(employeRelation.GenerateLazy(700));
+            context.SaveChanges();
+
+            var faker = new Faker();
+            var conferences = context.Conferences.ToArray();
+            foreach (var conference in conferences)
+            {
+                var prices = faker.Random.Number(5);
+                var tillDays = 0;
+                var price = 0;
+
+                for (var p = 0; p < prices; p++)
+                {
+                    tillDays += faker.Random.Number(1, 14);
+                    var priceAddition = faker.Random.Number(1, 200);
+                    price += priceAddition;
+                    var toAdd = new ConferencePrices
+                    {
+                        TillConferenceStart = (short)tillDays,
+                        Price = price
+                    };
+                    conference.ConferencePrices.Add(toAdd);
+                }
+            }
+            context.SaveChanges();
+
+            foreach (var conference in context.Conferences)
+            {
+                foreach (var day in conference.ConferenceDays)
+                {
+                    foreach (var reservation in day.Reservations)
+                    {
+                        if(faker.Random.Bool() && conference.ConferencePrices.Any())
+                        {
+                            var price = faker.PickRandom(conference.ConferencePrices);
+                            reservation.ReservationPayment = new ReservationPayment()
+                            {
+                                Client = reservation.Client,
+                                Amount = price.Price,
+                                ConferencePrice = price,
+                            };
+                        }
+                    }
+                }
+            }
+
+            var workshops = context.Workshops.ToArray();
+            foreach (var workshop in workshops)
+            {
+                var prices = faker.Random.Number(500);
+
+                if (faker.Random.Bool())
+                {
+                    var toAdd = new WorkshopPrice
+                    {
+                        Price = faker.Random.Number(1, 400),
+                    };
+                    workshop.WorkshopPrice = toAdd;
+
+                    foreach (var res in workshop.WorkshopReservations)
+                    {
+                        res.WorkshopReservationPayment = new WorkshopReservationPayment
+                        {
+                            Amount = workshop.WorkshopPrice.Price,
+                        };
+                    }
+                }
+            }
+            context.SaveChanges();
+
+
+        }
+
+        private static List<Conference> PopulateConferences(List<Building> buildings, List<CorporateClient> corporateClients, IEnumerable<Student> clients, IEnumerable<IndividualClient> individualClients)
+        {
+            var conferenceDayFaker = new Faker<ConferenceDay>();
+            conferenceDayFaker.RuleFor(x => x.Capacity, x => x.Random.Number(100));
+
+            var workshopFaker = new Faker<Workshop>()
+                .RuleFor(x => x.Name, f => new string(f.Hacker.Verb().Take(48).ToArray()))
+                .RuleFor(x => x.WorkshopPrice, f => f.Random.Bool() ? new WorkshopPrice() { Price = (int)f.Random.Decimal(800) } : null);
+
+            var cls = individualClients.Concat(clients.Select(x => x.IndividualClient)).Select(x => x.Client).ToList();
+
+            var conferenceFaker = new Faker<Conference>();
+            conferenceFaker
+                .RuleFor(x => x.Building, f => buildings[f.Random.Number(buildings.Count - 1)])
+                .RuleFor(x => x.Name, f => f.Lorem.Word())
+                .RuleFor(x => x.StudentDiscount, f => (byte)f.Random.Number(99))
+                .RuleFor(x => x.ConferenceDays, f =>
+                {
+
+                    var list = new List<ConferenceDay>();
+                    var r = f.Random.Number(1, 5);
+                    var r2 = f.Random.Number(0, 3);
+                    for (var i = 0; i < r; i++)
+                    {
+                        var date = f.Date.PastOffset(3);
+                        var day = conferenceDayFaker.Generate();
+                        for (var res = 0; res < f.Random.Number(day.Capacity); res++)
+                        {
+                            var reservation = new Reservation();
+                            reservation.Client = f.PickRandom(cls);
+                            day.Reservations.Add(reservation);
+                        }
+
+                        var randomDate = f.Date.RecentOffset(r, date);
+                        day.Date = randomDate.Date;
+                        if (list.All(x => x.Date != day.Date))
+                        {
+                            for (var w = 0; w < r2; w++)
+                            {
+                                var workshop = workshopFaker.Generate();
+                                workshop.StartTime = f.Date.Between(day.Date, day.Date.AddDays(1));
+                                workshop.EndTime = f.Date.Between(workshop.StartTime, day.Date.AddDays(1));
+                                day.Workshops.Add(workshop);
+
+                                var r3 = f.Random.Int(0, 7);
+                                for (var rr3 = 0; rr3 < r3; rr3++)
+                                {
+                                    workshop.WorkshopReservations.Add(new WorkshopReservation
+                                    {
+                                        Client = f.PickRandom(cls)
+                                    });
+                                }
+                            }
+
+                            list.Add(day);
+                        }
+                    }
+                    return list;
+                })
+                .RuleFor(x => x.CorporateClient, f => corporateClients[f.Random.Number(corporateClients.Count - 1)]);
+
+            return conferenceFaker.GenerateLazy(2 * 3 * 12 + 5).ToList();
+        }
+
+        private static List<CorporateClient> PopulateCorporateClient(List<Building> buildings)
+        {
+            var clientFaker = new Faker<Client>()
+                .RuleFor(x => x.Telephone, f => f.Person.Phone)
+                .RuleFor(x => x.Building, f => buildings[f.Random.Number(buildings.Count - 1)]);
+
+            var conferenceDay = new Faker<ConferenceDay>()
+                .RuleFor(x => x.Date, f => f.Date.Future());
+
+            var peselGenerator = new PeselGenerator();
+
+            var icFaker = new Faker<CorporateClient>()
+                .RuleFor(x => x.CompanyName, f => f.Company.CompanyName())
+                .RuleFor(x => x.TaxNumber, f => f.Finance.Account(29))
+                .RuleFor(x => x.Client, f => clientFaker.Generate());
+
+            return icFaker.GenerateLazy(40).ToList();
+        }
+
+        private static List<IndividualClient> PopulateIndividualClient(List<Building> buildings)
+        {
+            var clientFaker = new Faker<Client>()
+                .RuleFor(x => x.Telephone, f => f.Person.Phone)
+                .RuleFor(x => x.Building, f => buildings[f.Random.Number(buildings.Count - 1)]);
+
+
+            var icFaker = new Faker<IndividualClient>();
+            icFaker.RuleFor(x => x.FirstName, f => f.Name.FirstName())
+            .RuleFor(x => x.LastName, f => f.Name.LastName())
+            .RuleFor(x => x.PersonalNumber, f => peselGenerator.Generate())
+            .RuleFor(x => x.Client, f => clientFaker.Generate());
+
+            return icFaker.GenerateLazy(100).ToList();
+        }
+
+        private static List<Student> PopulateStudents(List<Building> buildings)
+        {
+            var studentFaker = new Faker<Student>();
+            studentFaker
+                .RuleFor(x => x.StudentId, f => new string(f.Random.Chars('0', '9', 9)))
+                .RuleFor(x => x.IndividualClient, f => PopulateIndividualClient(buildings).First());
+            return studentFaker.GenerateLazy(500).ToList();
+        }
+
+        private static List<Building> PopulateBuildings()
+        {
+            var availableBuildings = new List<Building>();
+
+            var countryFaker = new Faker<Country>()
+                .RuleFor(o => o.Name, f => f.Address.Country());
+
+            var cityFaker = new Faker<City>()
+                .RuleFor(o => o.Name, f => f.Address.City());
+
+            var streetFaker = new Faker<Street>()
+                .RuleFor(o => o.ZipCode, f => f.Address.ZipCode())
+                .RuleFor(o => o.Name, f => f.Address.StreetName());
+
+            var buildingFaker = new Faker<Building>()
+                .RuleFor(o => o.ApartmentNumber, f => f.Random.Number(100))
+                .RuleFor(o => o.Number, f => f.Address.BuildingNumber());
+
+            var countries = countryFaker.Generate(4);
+
+            foreach (var country in countries)
+            {
+                foreach (var cf in cityFaker.Generate(8))
+                {
+                    cf.Country = country;
+                    foreach (var sf in streetFaker.Generate(5))
+                    {
+                        sf.City = cf;
+                        foreach (var bf in buildingFaker.Generate(2))
+                        {
+                            bf.Street = sf;
+                            availableBuildings.Add(bf);
+                        }
+                    }
+                }
+            }
+            return availableBuildings;
+        }
+
+
+    }
+}
+```
+
+
 
 ## Podsumowanie i wnioski
+
