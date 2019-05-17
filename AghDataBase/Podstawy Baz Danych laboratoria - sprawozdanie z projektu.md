@@ -1644,6 +1644,140 @@ lorem ipsum
 
 Generator danych został stworzony z użyciem biblioteki Bogus.
 
+Generujemy ` return conferenceFaker.GenerateLazy(2 * 3 * 12 + 5).ToList();` konferencji, co odpowiada 2 konferencjom przez trzy lata.
+
+Każda konferencja ma regułę, że posiada do 100 miejsc
+`conferenceDayFaker.RuleFor(x => x.Capacity, x => x.Random.Number(100));`
+ponadto
+`var r = f.Random.Number(1, 5);` 
+odpowiada za liczbę dni na konferencję, biblioteka gwarantuje nam rozkład normalny generowanych wartości, więc średnio będzie to 2,3 dni.
+
+Za warsztaty odpowiada ` var r2 = f.Random.Number(0, 8);` - średnio będzie 4 warsztaty na dzień, na każdy będzie od 0 do 8 warsztatów.
+
+Za przypisanie uczestników do konferencji odpowiada fragment 
+```c#
+        foreach (var conference in context.Conferences)
+            {
+                foreach (var day in conference.ConferenceDays)
+                {
+                    foreach (var reservation in day.Reservations)
+                    {
+                        if(faker.Random.Bool() && conference.ConferencePrices.Any())
+                        {
+                            var price = faker.PickRandom(conference.ConferencePrices);
+                            reservation.ReservationPayment = new ReservationPayment()
+                            {
+                                Client = reservation.Client,
+                                Amount = price.Price,
+                                ConferencePrice = price,
+                            };
+                        }
+                    }
+                }
+            }
+```
+Dla każdej stworzonej konferencji, która ma cenę (mogą być darmowe) tworzymy prezentacje i losową spłacamy.
+Fragment 
+```c#
+    var workshops = context.Workshops.ToArray();
+            foreach (var workshop in workshops)
+            {
+                var prices = faker.Random.Number(500);
+
+                if (faker.Random.Bool())
+                {
+                    var toAdd = new WorkshopPrice
+                    {
+                        Price = faker.Random.Number(1, 400),
+                    };
+                    workshop.WorkshopPrice = toAdd;
+
+                    foreach (var res in workshop.WorkshopReservations)
+                    {
+                        res.WorkshopReservationPayment = new WorkshopReservationPayment
+                        {
+                            Amount = workshop.WorkshopPrice.Price,
+                        };
+                    }
+                }
+            }
+```
+wykonuje analogiczną operację dla warsztatu.
+
+Stworzone zostały też metody `PopulateBuildings`, `PopulateIndividualClient`, `PopulateCorporateClient`,
+ `PopulateStudents`, które losują poszczególne adresy, klientów, klientów korporacyjnych i studentów.
+
+Dla klientów indywidualnych został zaimplementowany generator pesel.
+
+```C#
+using System;
+using System.Text;
+
+namespace AghDataBase
+{
+    public class PeselGenerator
+    {
+        private readonly Random _random;
+
+        public PeselGenerator()
+        {
+            this._random = new Random();
+        }
+
+        public string Generate()
+        {
+            var peselStringBuilder = new StringBuilder();
+            var birthDate = this.GenerateDate(1900, 2099);
+
+            this.AppendPeselDate(birthDate, peselStringBuilder);
+
+            peselStringBuilder.Append(this.GenerateRandomNumbers(4));
+
+            peselStringBuilder.Append(PeselCheckSumCalculator.Calculate(peselStringBuilder.ToString()));
+
+            return peselStringBuilder.ToString();
+        }
+
+        public static string GetPeselMonthShiftedByYear(DateTime date)
+        {
+            if (date.Year < 1900 || date.Year > 2299)
+            {
+                throw new NotSupportedException(System.String.Format("PESEL for year: {0} is not supported", date.Year));
+            }
+
+            var monthShift = (int)((date.Year - 1900) / 100) * 20;
+
+            return (date.Month + monthShift).ToString("00");
+        }
+
+        private DateTime GenerateDate(int yearFrom, int yearTo)
+        {
+            var year = this._random.Next(yearFrom, yearTo + 1);
+            var month = this._random.Next(12) + 1;
+            var day = this._random.Next(DateTime.DaysInMonth(year, month)) + 1;
+
+            return new DateTime(year, month, day);
+        }
+
+        private void AppendPeselDate(DateTime date, StringBuilder builder)
+        {
+            builder.Append((date.Year % 100).ToString("00"));
+            builder.Append(GetPeselMonthShiftedByYear(date));
+            builder.Append(date.Day.ToString("00"));
+        }
+
+        private string GenerateRandomNumbers(int numbersCount)
+        {
+            var maxValue = (int)Math.Pow(10, numbersCount);
+            var format = "D" + numbersCount;
+
+            return this._random.Next(maxValue).ToString(format);
+        }
+    }
+}
+```
+
+
 ```c#
 using Bogus;
 using System.Collections.Generic;
@@ -1767,7 +1901,7 @@ namespace AghDataBase
 
                     var list = new List<ConferenceDay>();
                     var r = f.Random.Number(1, 5);
-                    var r2 = f.Random.Number(0, 3);
+                    var r2 = f.Random.Number(0, 8);
                     for (var i = 0; i < r; i++)
                     {
                         var date = f.Date.PastOffset(3);
