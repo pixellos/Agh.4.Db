@@ -8,7 +8,19 @@
 
 ## Opis funkcjonalności bazy
 
-lorem ipsum
+Baza danych obsługuje firmę organizującą konferencje.
+
+Klientami mogą być zarówno indywidualne osoby jak i firmy. Osoby mogą zapisać się na poszczególne dni konferencji, opłata jest jednak za całość.
+
+W ramach konferencji organizowane są warsztaty. Osoba może zapisać się na warsztat trwający podczas konferencji na którą jest zapisany, ale nie może na dwa warsztaty które pokrywają się czasowo.
+
+Wysokość opłaty jest zmienna w zależności od terminu płatności. Istnieje procedura służąca do usuwania rezerwacji nieopłaconych do tygodnia przed rozpoczęciem konferencji, jednak MSSQL w wersji Express oraz tej udostępnionej przez AGH nie umożliwia zaplanowanego uruchamiania jej w określonym czasie. Studenci mają możliwość otrzymania zniżki.
+
+Firma ma dostęp do raportów pokazujących listę stałych klientów, oraz uczestników konferencji i warsztatów w poszczególny dzień.
+
+Stworzony jest również generator danych symulujący 3-letnią działalność firmy.
+
+
 
 ## Użytkownicy i role
 
@@ -226,7 +238,7 @@ lorem ipsum
   GO
   ```
 
-- ### Warunki integracyjne - klucze
+- ### Warunki intregralnościowe - klucze
 
   ```mssql
   -- --------------------------------------------------
@@ -387,12 +399,6 @@ lorem ipsum
       ON DELETE NO ACTION ON UPDATE NO ACTION;
   GO
   
-  -- Creating non-clustered index for FOREIGN KEY 'FK_CorporateClientCorporateClientEmploye'
-  CREATE INDEX [IX_FK_CorporateClientCorporateClientEmploye]
-  ON [dbo].[CorporateClientEmployes]
-      ([CorporateClientId]);
-  GO
-  
   -- Creating foreign key on [ConferenceId] in table 'ConferencePrices'
   ALTER TABLE [dbo].[ConferencePrices]
   ADD CONSTRAINT [FK_ConferenceConferencePrices]
@@ -400,12 +406,6 @@ lorem ipsum
       REFERENCES [dbo].[Conferences]
           ([Id])
       ON DELETE NO ACTION ON UPDATE NO ACTION;
-  GO
-  
-  -- Creating non-clustered index for FOREIGN KEY 'FK_ConferenceConferencePrices'
-  CREATE INDEX [IX_FK_ConferenceConferencePrices]
-  ON [dbo].[ConferencePrices]
-      ([ConferenceId]);
   GO
   
   -- Creating foreign key on [Id] in table 'Students'
@@ -426,12 +426,6 @@ lorem ipsum
       ON DELETE NO ACTION ON UPDATE NO ACTION;
   GO
   
-  -- Creating non-clustered index for FOREIGN KEY 'FK_CityStreet'
-  CREATE INDEX [IX_FK_CityStreet]
-  ON [dbo].[Streets]
-      ([CityId]);
-  GO
-  
   -- Creating foreign key on [StreetId] in table 'Buildings'
   ALTER TABLE [dbo].[Buildings]
   ADD CONSTRAINT [FK_StreetBuilding]
@@ -441,26 +435,13 @@ lorem ipsum
       ON DELETE NO ACTION ON UPDATE NO ACTION;
   GO
   
-  -- Creating non-clustered index for FOREIGN KEY 'FK_StreetBuilding'
-  CREATE INDEX [IX_FK_StreetBuilding]
-  ON [dbo].[Buildings]
-      ([StreetId]);
-  GO
-  
   -- Creating foreign key on [BuildingId] in table 'Clients'
   ALTER TABLE [dbo].[Clients]
   ADD CONSTRAINT [FK_ClientBuilding]
       FOREIGN KEY ([BuildingId])
       REFERENCES [dbo].[Buildings]
           ([Id])
-      ON DELETE NO ACTION ON UPDATE NO ACTION;
-  GO
-  
-  -- Creating non-clustered index for FOREIGN KEY 'FK_ClientBuilding'
-  CREATE INDEX [IX_FK_ClientBuilding]
-  ON [dbo].[Clients]
-      ([BuildingId]);
-  GO
+      ON DEL
   
   -- Creating foreign key on [BuildingId] in table 'Conferences'
   ALTER TABLE [dbo].[Conferences]
@@ -469,12 +450,6 @@ lorem ipsum
       REFERENCES [dbo].[Buildings]
           ([Id])
       ON DELETE NO ACTION ON UPDATE NO ACTION;
-  GO
-  
-  -- Creating non-clustered index for FOREIGN KEY 'FK_ConferenceBuilding'
-  CREATE INDEX [IX_FK_ConferenceBuilding]
-  ON [dbo].[Conferences]
-      ([BuildingId]);
   GO
   
   -- Creating foreign key on [ConferenceId] in table 'ConferenceDays'
@@ -486,12 +461,6 @@ lorem ipsum
       ON DELETE NO ACTION ON UPDATE NO ACTION;
   GO
   
-  -- Creating non-clustered index for FOREIGN KEY 'FK_ConferenceDayConference'
-  CREATE INDEX [IX_FK_ConferenceDayConference]
-  ON [dbo].[ConferenceDays]
-      ([ConferenceId]);
-  GO
-  
   -- Creating foreign key on [ClientId] in table 'Reservations'
   ALTER TABLE [dbo].[Reservations]
   ADD CONSTRAINT [FK_ReservationClient]
@@ -499,12 +468,6 @@ lorem ipsum
       REFERENCES [dbo].[Clients]
           ([Id])
       ON DELETE NO ACTION ON UPDATE NO ACTION;
-  GO
-  
-  -- Creating non-clustered index for FOREIGN KEY 'FK_ReservationClient'
-  CREATE INDEX [IX_FK_ReservationClient]
-  ON [dbo].[Reservations]
-      ([ClientId]);
   GO
   
   -- Creating foreign key on [IndividualClientConferenceDay_ConferenceDay_Id] in table 'IndividualClientConferenceDay'
@@ -525,12 +488,6 @@ lorem ipsum
       ON DELETE NO ACTION ON UPDATE NO ACTION;
   GO
   
-  -- Creating non-clustered index for FOREIGN KEY 'FK_IndividualClientConferenceDay_ConferenceDay'
-  CREATE INDEX [IX_FK_IndividualClientConferenceDay_ConferenceDay]
-  ON [dbo].[IndividualClientConferenceDay]
-      ([ConferenceDays_Id]);
-  GO
-  
   -- Creating foreign key on [Issuer] in table 'Conferences'
   ALTER TABLE [dbo].[Conferences]
   ADD CONSTRAINT [FK_CorporateClientConference]
@@ -540,12 +497,6 @@ lorem ipsum
       ON DELETE NO ACTION ON UPDATE NO ACTION;
   GO
   
-  -- Creating non-clustered index for FOREIGN KEY 'FK_CorporateClientConference'
-  CREATE INDEX [IX_FK_CorporateClientConference]
-  ON [dbo].[Conferences]
-      ([Issuer]);
-  GO
-  
   -- Creating foreign key on [ClientId] in table 'ReservationPayments'
   ALTER TABLE [dbo].[ReservationPayments]
   ADD CONSTRAINT [FK_PaymentClient]
@@ -553,12 +504,6 @@ lorem ipsum
       REFERENCES [dbo].[Clients]
           ([Id])
       ON DELETE NO ACTION ON UPDATE NO ACTION;
-  GO
-  
-  -- Creating non-clustered index for FOREIGN KEY 'FK_PaymentClient'
-  CREATE INDEX [IX_FK_PaymentClient]
-  ON [dbo].[ReservationPayments]
-      ([ClientId]);
   GO
   
   -- Creating foreign key on [Id] in table 'ReservationPayments'
@@ -588,12 +533,6 @@ lorem ipsum
       ON DELETE NO ACTION ON UPDATE NO ACTION;
   GO
   
-  -- Creating non-clustered index for FOREIGN KEY 'FK_ConferencePricesReservationPayment'
-  CREATE INDEX [IX_FK_ConferencePricesReservationPayment]
-  ON [dbo].[ReservationPayments]
-      ([ConferencePricesId]);
-  GO
-  
   -- Creating foreign key on [ConferenceDayId] in table 'Reservations'
   ALTER TABLE [dbo].[Reservations]
   ADD CONSTRAINT [FK_ConferenceDayReservation]
@@ -601,12 +540,6 @@ lorem ipsum
       REFERENCES [dbo].[ConferenceDays]
           ([Id])
       ON DELETE NO ACTION ON UPDATE NO ACTION;
-  GO
-  
-  -- Creating non-clustered index for FOREIGN KEY 'FK_ConferenceDayReservation'
-  CREATE INDEX [IX_FK_ConferenceDayReservation]
-  ON [dbo].[Reservations]
-      ([ConferenceDayId]);
   GO
   
   -- Creating foreign key on [CountryId] in table 'Cities'
@@ -618,12 +551,6 @@ lorem ipsum
       ON DELETE NO ACTION ON UPDATE NO ACTION;
   GO
   
-  -- Creating non-clustered index for FOREIGN KEY 'FK_CountryCity'
-  CREATE INDEX [IX_FK_CountryCity]
-  ON [dbo].[Cities]
-      ([CountryId]);
-  GO
-  
   -- Creating foreign key on [ConferenceDayId] in table 'Workshops'
   ALTER TABLE [dbo].[Workshops]
   ADD CONSTRAINT [FK_ConferenceDayWorkshop]
@@ -632,13 +559,6 @@ lorem ipsum
           ([Id])
       ON DELETE NO ACTION ON UPDATE NO ACTION;
   GO
-  
-  -- Creating non-clustered index for FOREIGN KEY 'FK_ConferenceDayWorkshop'
-  CREATE INDEX [IX_FK_ConferenceDayWorkshop]
-  ON [dbo].[Workshops]
-      ([ConferenceDayId]);
-  GO
-  
   -- Creating foreign key on [ClientId] in table 'WorkshopReservations'
   ALTER TABLE [dbo].[WorkshopReservations]
   ADD CONSTRAINT [FK_ClientWorkshopReservation]
@@ -648,12 +568,6 @@ lorem ipsum
       ON DELETE NO ACTION ON UPDATE NO ACTION;
   GO
   
-  -- Creating non-clustered index for FOREIGN KEY 'FK_ClientWorkshopReservation'
-  CREATE INDEX [IX_FK_ClientWorkshopReservation]
-  ON [dbo].[WorkshopReservations]
-      ([ClientId]);
-  GO
-  
   -- Creating foreign key on [WorkshopId] in table 'WorkshopReservations'
   ALTER TABLE [dbo].[WorkshopReservations]
   ADD CONSTRAINT [FK_WorkshopWorkshopReservation]
@@ -661,12 +575,6 @@ lorem ipsum
       REFERENCES [dbo].[Workshops]
           ([Id])
       ON DELETE NO ACTION ON UPDATE NO ACTION;
-  GO
-  
-  -- Creating non-clustered index for FOREIGN KEY 'FK_WorkshopWorkshopReservation'
-  CREATE INDEX [IX_FK_WorkshopWorkshopReservation]
-  ON [dbo].[WorkshopReservations]
-      ([WorkshopId]);
   GO
   
   -- Creating foreign key on [Id] in table 'WorkshopPrices'
@@ -679,10 +587,10 @@ lorem ipsum
   GO
   
   ```
-
   
-
-- ### Warunki integracyjne - pozostałe
+  
+  
+- ### Warunki integralnościowe - pozostałe
 
   ```mssql
   /*
@@ -793,7 +701,114 @@ lorem ipsum
   GO
   ```
 
-  
+- ### Indeksy
+
+
+```mssql
+-- Creating non-clustered index for FOREIGN KEY 'FK_CorporateClientCorporateClientEmploye'
+CREATE INDEX [IX_FK_CorporateClientCorporateClientEmploye]
+ON [dbo].[CorporateClientEmployes]
+    ([CorporateClientId]);
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_ConferenceConferencePrices'
+CREATE INDEX [IX_FK_ConferenceConferencePrices]
+ON [dbo].[ConferencePrices]
+    ([ConferenceId]);
+GO
+-- Creating non-clustered index for FOREIGN KEY 'FK_CityStreet'
+CREATE INDEX [IX_FK_CityStreet]
+ON [dbo].[Streets]
+    ([CityId]);
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_StreetBuilding'
+CREATE INDEX [IX_FK_StreetBuilding]
+ON [dbo].[Buildings]
+    ([StreetId]);
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_ClientBuilding'
+CREATE INDEX [IX_FK_ClientBuilding]
+ON [dbo].[Clients]
+    ([BuildingId]);
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_ConferenceBuilding'
+CREATE INDEX [IX_FK_ConferenceBuilding]
+ON [dbo].[Conferences]
+    ([BuildingId]);
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_ConferenceDayConference'
+CREATE INDEX [IX_FK_ConferenceDayConference]
+ON [dbo].[ConferenceDays]
+    ([ConferenceId]);
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_ReservationClient'
+CREATE INDEX [IX_FK_ReservationClient]
+ON [dbo].[Reservations]
+    ([ClientId]);
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_IndividualClientConferenceDay_ConferenceDay'
+CREATE INDEX [IX_FK_IndividualClientConferenceDay_ConferenceDay]
+ON [dbo].[IndividualClientConferenceDay]
+    ([ConferenceDays_Id]);
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_CorporateClientConference'
+CREATE INDEX [IX_FK_CorporateClientConference]
+ON [dbo].[Conferences]
+    ([Issuer]);
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_PaymentClient'
+CREATE INDEX [IX_FK_PaymentClient]
+ON [dbo].[ReservationPayments]
+    ([ClientId]);
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_ConferencePricesReservationPayment'
+CREATE INDEX [IX_FK_ConferencePricesReservationPayment]
+ON [dbo].[ReservationPayments]
+    ([ConferencePricesId]);
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_ConferenceDayReservation'
+CREATE INDEX [IX_FK_ConferenceDayReservation]
+ON [dbo].[Reservations]
+    ([ConferenceDayId]);
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_CountryCity'
+CREATE INDEX [IX_FK_CountryCity]
+ON [dbo].[Cities]
+    ([CountryId]);
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_ConferenceDayWorkshop'
+CREATE INDEX [IX_FK_ConferenceDayWorkshop]
+ON [dbo].[Workshops]
+    ([ConferenceDayId]);
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_ClientWorkshopReservation'
+CREATE INDEX [IX_FK_ClientWorkshopReservation]
+ON [dbo].[WorkshopReservations]
+    ([ClientId]);
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_WorkshopWorkshopReservation'
+CREATE INDEX [IX_FK_WorkshopWorkshopReservation]
+ON [dbo].[WorkshopReservations]
+    ([WorkshopId]);
+GO
+
+```
+
+​    
 
 ## Widoki
 
@@ -1636,10 +1651,6 @@ lorem ipsum
 
   
 
-## Dane
-
-
-
 ## Generator danych
 
 Generator danych został stworzony z użyciem biblioteki Bogus.
@@ -2035,3 +2046,11 @@ namespace AghDataBase
 
 
 ## Podsumowanie i wnioski
+
+Napotkaliśmy stosunkowo dużą ilość nieoczywistych do rozwiązania problemów przy projektowaniu bazy.
+
+Jednym z problemów było stworzenie klienta, który pokrywałby się zarówno z firmą jak i osobą w zależoności od zapotrzebowania. Zastosowaliśmy tzw. table per type, gdzie dziedziczenie implementujemy przez tabele powiązane kluczem głównym, który jednocześnie jest kluczem obcym do klucza głównego encji bazowej.
+
+Problematyczny był również sposób przechowywania zmiennych progów cenowych w czasie.
+
+Podsumowując projekt poszerzył naszą świadomość o złożoności i potencjalnych problemach przy projektowaniu nietrywialnych systemów bazodanowych.

@@ -166,6 +166,7 @@
       <DependentUpon>1_DbTableShema.edmx</DependentUpon>
     </None>
     <None Include="packages.config" />
+    <None Include="Podstawy Baz Danych laboratoria - sprawozdanie z projektu Michal Flak Mateusz Popielarz.pdf" />
     <None Include="Setup.ps1" />
     <None Include="Watch.ps1" />
   </ItemGroup>
