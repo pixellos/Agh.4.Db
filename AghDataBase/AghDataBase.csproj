@@ -193,6 +193,7 @@
     <Content Include="9_FailingTests\1_FailingOnAddStudentWithSameId.sql" />
     <Content Include="9_FailingTests\3_FailingOnTooMuchReservations.sql" />
     <Content Include="9_FailingTests\2_FailingOnGoodPeselWithWrongDate.sql" />
+    <Content Include="edmx-1.png" />
     <Content Include="Model1.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Model1.Context.cs</LastGenOutput>
