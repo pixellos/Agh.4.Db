@@ -5,10 +5,10 @@ GO
 CREATE ROLE [customerservice]
 GRANT SELECT ON GetAttendantsAtConferenceDay TO customerservice
 GRANT SELECT ON GetAttendantsAtWorkshopsOnConferenceDay TO customerservice
-GRANT SELECT ON GetConferenceStart TO customerservice
-GRANT SELECT ON GetIndividualClientOrThrow TO customerservice
-GRANT SELECT ON GetConferenceWithPriceAccordingToDate TO customerservice
-GRANT SELECT ON LoyalClientsView TO customerservice
+GRANT EXECUTE ON GetConferenceStart TO customerservice
+GRANT EXECUTE ON GetIndividualClientOrThrow TO customerservice
+GRANT EXECUTE ON GetConferenceWithPriceAccordingToDate TO customerservice
+GRANT EXECUTE ON LoyalClientsView TO customerservice
 GRANT EXECUTE ON AddAddress TO customerservice
 GRANT EXECUTE ON AddClient TO customerservice
 GRANT EXECUTE ON AddCorporateClient TO customerservice
